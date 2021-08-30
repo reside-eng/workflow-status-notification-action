@@ -27,7 +27,8 @@ runs:
         key: last-run-status-${{ github.run_id }}
 
     - name: Retrieve last runs from same run ID if exists
-      shell: |
+      shell: bash
+      run: |
         if test -f "last-run-status"; then
           lastRunStatus=$(cat last-run-status)
         else
@@ -36,20 +37,23 @@ runs:
         echo "LAST_RUN_STATUS=$lastRunStatus" >> $GITHUB_ENV
 
     - name: Retrieve last runs status
+      shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
-      shell: |
+      run: |
         if [[ "$LAST_RUN_STATUS" == 'first_run' ]]; then
           lastRunStatus=$( gh run list -w ${{ github.workflow }} | grep "${{ github.workflow }}	${{ github.head_ref }}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}' )
           echo "LAST_RUN_STATUS=$lastRunStatus" >> $GITHUB_ENV
         fi
 
     - name: Store current run status
-      shell: |
+      shell: bash
+      run: |
         echo "completed/${{ inputs.current-status }}" > last-run-status
 
     - name: Prepare Slack Notification
-      shell: |
+      shell: bash
+      run: |
         if [[ ${{ inputs.current-status }} == 'success' && "$LAST_RUN_STATUS" == 'completed/failure' ]]; then
           echo "SLACK_CHANNEL=${{ inputs.slack-channel }}" >> $GITHUB_ENV
           echo "SLACK_MESSAGE=Previously failing ${{ github.workflow }} workflow in ${{ github.repository }} succeed." >> $GITHUB_ENV
