@@ -1,0 +1,58 @@
+name: 'Workflow Status Slack Notification'
+description: 'Notify uppon workflow failure/success'
+inputs:
+  current-status:
+    description: 'Status of the current run'
+    required: true
+    default: 'failure'
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/cache@v2
+      id: cache
+      with:
+        path: last-run-status
+        key: last-run-status-${{ github.run_id }}
+
+    - name: Retrieve last runs from same run ID if exists
+      run: |
+        if test -f "last-run-status"; then
+          lastRunStatus=$(cat last-run-status)
+        else
+          lastRunStatus="first_run"
+        fi
+        echo "LAST_RUN_STATUS=$lastRunStatus" >> $GITHUB_ENV
+
+    - name: Retrieve last runs status
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      run: |
+        lastRunStatus=$( gh run list -w ${{ github.workflow }} | grep "${{ github.workflow }}	${{ github.head_ref }}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}' )
+        echo "LAST_RUN_STATUS=$lastRunStatus" >> $GITHUB_ENV
+      if: env.LAST_RUN_STATUS == 'first_run'
+
+    - name: Store current run status
+      run: |
+        echo "completed/${{ inputs.current-status }}" > last-run-status
+
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_CHANNEL: admin-ui-ci
+        SLACK_COLOR: 'success'
+        SLACK_TITLE: '${{ github.workflow }} workflow succeed'
+        SLACK_MESSAGE: 'Previously failing ${{ github.workflow }} workflow in ${{ github.repository }} succeed.'
+        SLACK_FOOTER: ''
+      if: inputs.current-status == 'success' && env.LAST_RUN_STATUS == 'completed/failure'
+
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_CHANNEL: admin-ui-ci
+        SLACK_COLOR: 'failure'
+        SLACK_TITLE: '${{ github.workflow }} workflow failed'
+        SLACK_MESSAGE: '${{ github.workflow }} workflow in ${{ github.repository }} failed.'
+        SLACK_FOOTER: ''
+      if: inputs.current-status == 'failure' && ( env.LAST_RUN_STATUS == 'completed/success' || env.LAST_RUN_STATUS == '' )
