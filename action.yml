@@ -55,21 +55,21 @@ runs:
       shell: bash
       run: |
         if [[ ${{ inputs.current-status }} == 'success' && "$LAST_RUN_STATUS" == 'completed/failure' ]]; then
-          echo "SLACK_CHANNEL=${{ inputs.slack-channel }}" >> $GITHUB_ENV
           echo "SLACK_MESSAGE=Previously failing ${{ github.workflow }} workflow in ${{ github.repository }} succeed." >> $GITHUB_ENV
+          echo "SLACK_WEBHOOK=${{ inputs.slack-webhook }}" >> $GITHUB_ENV
         elif [[ ${{ inputs.current-status }} == 'failure' && ( "$LAST_RUN_STATUS" == 'completed/success' || "$LAST_RUN_STATUS" == '' ) ]]; then
-          echo "SLACK_CHANNEL=${{ inputs.slack-channel }}" >> $GITHUB_ENV
           echo "SLACK_MESSAGE=${{ github.workflow }} workflow in ${{ github.repository }} failed." >> $GITHUB_ENV
+          echo "SLACK_WEBHOOK=${{ inputs.slack-webhook }}" >> $GITHUB_ENV
         else
-          echo "SLACK_CHANNEL=none" >> $GITHUB_ENV
           echo "SLACK_MESSAGE=none" >> $GITHUB_ENV
+          echo "SLACK_WEBHOOK=none" >> $GITHUB_ENV
         fi
 
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
       env:
-        SLACK_WEBHOOK: ${{ inputs.slack-webhook }}
-        SLACK_CHANNEL: ${{ env.SLACK_CHANNEL }}
+        SLACK_WEBHOOK: ${{ env.SLACK_WEBHOOK }}
+        SLACK_CHANNEL: ${{ inputs.slack-channel }}
         SLACK_COLOR: '${{ inputs.current-status }}'
         SLACK_TITLE: '${{ github.workflow }} workflow ${{ inputs.current-status }}'
         SLACK_MESSAGE: '${{ env.SLACK_MESSAGE }}'
