@@ -62,8 +62,10 @@ runs:
           echo "SLACK_WEBHOOK=${{ inputs.slack-webhook }}" >> $GITHUB_ENV
         else
           echo "SLACK_MESSAGE=none" >> $GITHUB_ENV
-          echo "SLACK_WEBHOOK=none" >> $GITHUB_ENV
+          echo "SLACK_WEBHOOK=${{ inputs.slack-webhook }}none" >> $GITHUB_ENV
         fi
+
+#TO-DO: Find how to avoid message sent according to SLACK_WEBHOOK or something else
 
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
