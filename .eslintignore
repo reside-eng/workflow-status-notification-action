@@ -1,0 +1,8 @@
+node_modules
+coverage
+
+# Build from ncc
+dist
+
+# Build from Typescript
+lib

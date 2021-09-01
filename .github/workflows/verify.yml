@@ -1,0 +1,58 @@
+name: Verify
+
+on: [pull_request]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ${{ matrix.os }}
+    if: github.actor != 'dependabot[bot]'
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [14.x]
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: Checkout Code
+        uses: actions/checkout@v2.3.4
+
+      - name: Use Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Configure Package Manager
+        run: |
+          echo Configuring NPM_READ_TOKEN globally for .npmrc
+          npm config set '//registry.npmjs.org/:_authToken' ${{ secrets.NPM_READ_TOKEN }}
+          npm whoami
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2.1.6
+        # Use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Test
+        uses: raulanatol/jest-coverage-comment-action@v1.1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          jest-command: yarn test --coverage --silent
+
+      - name: Build
+        run: yarn build
