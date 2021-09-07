@@ -1,5 +1,6 @@
 # workflow-status-slack-notification
 
+test
 Github action that keeps track and retrieves previous workflow runs status for the same workflow on the same branch.
 According to current and previous runs status, it will send a notification to a Slack channel using an Incoming webhook app.
 
