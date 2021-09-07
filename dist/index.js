@@ -61774,35 +61774,6 @@ var exec = __nccwpck_require__(1514);
 var cache = __nccwpck_require__(7799);
 // EXTERNAL MODULE: external "https"
 var external_https_ = __nccwpck_require__(7211);
-;// CONCATENATED MODULE: ./src/constants.ts
-var Inputs;
-(function (Inputs) {
-    Inputs["CurrentStatus"] = "current-status";
-    Inputs["SlackChannel"] = "slack-channel";
-    Inputs["SlackWebhook"] = "slack-webhook";
-    Inputs["GithubToken"] = "github-token";
-    Inputs["UploadChunkSize"] = "upload-chunk-size";
-    Inputs["Key"] = "key";
-    Inputs["Path"] = "path";
-    Inputs["RestoreKeys"] = "restore-keys";
-})(Inputs || (Inputs = {}));
-var Outputs;
-(function (Outputs) {
-    Outputs["CacheHit"] = "cache-hit";
-})(Outputs || (Outputs = {}));
-var State;
-(function (State) {
-    State["CachePrimaryKey"] = "CACHE_KEY";
-    State["CacheMatchedKey"] = "CACHE_RESULT";
-})(State || (State = {}));
-var Events;
-(function (Events) {
-    Events["Key"] = "GITHUB_EVENT_NAME";
-    Events["Push"] = "push";
-    Events["PullRequest"] = "pull_request";
-})(Events || (Events = {}));
-const RefKey = "GITHUB_REF";
-
 ;// CONCATENATED MODULE: ./src/main.ts
 
 
@@ -61810,11 +61781,19 @@ const RefKey = "GITHUB_REF";
 
 
 
-
+var Inputs;
+(function (Inputs) {
+    Inputs["CurrentStatus"] = "current-status";
+    Inputs["SlackChannel"] = "slack-channel";
+    Inputs["SlackWebhook"] = "slack-webhook";
+    Inputs["GithubToken"] = "github-token";
+})(Inputs || (Inputs = {}));
 const { context } = github;
 const { workflow } = context;
 const repository = context.repo.repo;
-const cachePrimaryKey = `last-run-status-${context.runId}-${Math.random().toString(36).substr(2, 12)}`;
+const cachePrimaryKey = `last-run-status-${context.runId}-${Math.random()
+    .toString(36)
+    .substr(2, 12)}`;
 const cacheRestoreKeys = [`last-run-status-${context.runId}-`];
 const cachePaths = ['last-run-status'];
 /**
@@ -61823,14 +61802,15 @@ const cachePaths = ['last-run-status'];
  * @returns last run status
  */
 async function getLastRunStatus() {
+    let lastStatus = '';
     try {
         const cacheKey = await cache.restoreCache(cachePaths, cachePrimaryKey, cacheRestoreKeys);
-        let lastStatus = '';
         if (!cacheKey || (cacheKey && !external_fs_.existsSync(cachePaths[0]))) {
             core.info('Cache not found, retrieve status from previous run.');
-            var headRef = undefined;
-            if (context.payload.pull_request != undefined) {
-                headRef = JSON.parse(JSON.stringify(context.payload.pull_request)).head.ref;
+            let headRef;
+            if (context.payload.pull_request !== undefined) {
+                headRef = JSON.parse(JSON.stringify(context.payload.pull_request)).head
+                    .ref;
             }
             else {
                 headRef = context.ref.split('/').pop();
@@ -61842,7 +61822,7 @@ async function getLastRunStatus() {
             options.listeners = {
                 stdout: (data) => {
                     lastStatus += data.toString();
-                }
+                },
             };
             await exec.exec('/bin/bash', [
                 '-c',
@@ -61855,84 +61835,81 @@ async function getLastRunStatus() {
             lastStatus = external_fs_.readFileSync(cachePaths[0], 'utf8');
             core.info(`Cache Found status: ${lastStatus}`);
         }
-        return lastStatus;
     }
     catch (error) {
         core.setFailed(error.message);
     }
+    return lastStatus;
 }
 /**
  * Prepare slack notification
+ *
  * @param webhookURL
  * @param messageBody
- * @return the Slack message body
+ * @param message
+ * @param status
+ * @returns the Slack message body
  */
 async function prepareSlackNotification(message, status) {
-    try {
-        const sha = context.sha;
-        const ref = context.ref;
-        const event = context.eventName;
-        const actor = context.actor;
-        const serverUrl = context.serverUrl;
-        const color = (status == 'success') ? 'good' : 'danger';
-        const messageBody = {
-            "username": `${repository} CI alert`,
-            "icon_emoji": ":bangbang:",
-            "attachments": [{
-                    "color": `${color}`,
-                    "author_name": `${actor}`,
-                    "author_link": `${serverUrl}/${actor}`,
-                    "author_icon": `${serverUrl}/${actor}.png?size=32`,
-                    "fields": [
-                        {
-                            "title": "Ref",
-                            "value": `${ref}`,
-                            "short": true
-                        },
-                        {
-                            "title": "Event",
-                            "value": `${event}`,
-                            "short": true
-                        },
-                        {
-                            "title": "Action URL",
-                            "value": `<${serverUrl}/${repository}/commit/${sha}/checks|${workflow}>`,
-                            "short": true
-                        },
-                        {
-                            "title": "Commit",
-                            "value": `<${serverUrl}/${repository}/commit/${sha}|${sha}>`,
-                            "short": true
-                        },
-                        {
-                            "title": `${workflow} workflow ${status}`,
-                            "value": `${message}`,
-                            "short": false // long fields will be full width
-                        }
-                    ]
-                }]
-        };
-        return messageBody;
-    }
-    catch (error) {
-        core.setFailed(error.message);
-    }
+    const { sha } = context;
+    const { ref } = context;
+    const event = context.eventName;
+    const { actor } = context;
+    const { serverUrl } = context;
+    const color = status === 'success' ? 'good' : 'danger';
+    const messageBody = {
+        username: `${repository} CI alert`,
+        icon_emoji: ':bangbang:',
+        attachments: [
+            {
+                // this defines the attachment block, allows for better layout usage
+                color: `${color}`,
+                author_name: `${actor}`,
+                author_link: `${serverUrl}/${actor}`,
+                author_icon: `${serverUrl}/${actor}.png?size=32`,
+                fields: [
+                    // actual fields
+                    {
+                        title: 'Ref',
+                        value: `${ref}`,
+                        short: true,
+                    },
+                    {
+                        title: 'Event',
+                        value: `${event}`,
+                        short: true,
+                    },
+                    {
+                        title: 'Action URL',
+                        value: `<${serverUrl}/${repository}/commit/${sha}/checks|${workflow}>`,
+                        short: true,
+                    },
+                    {
+                        title: 'Commit',
+                        value: `<${serverUrl}/${repository}/commit/${sha}|${sha}>`,
+                        short: true,
+                    },
+                    {
+                        title: `${workflow} workflow ${status}`,
+                        value: `${message}`,
+                        short: false, // long fields will be full width
+                    },
+                ],
+            },
+        ],
+    };
+    return messageBody;
 }
 /**
  * Handles the actual sending request.
  * We're turning the https.request into a promise here for convenience
+ *
  * @param webhookURL
  * @param messageBody
- * @return {Promise}
+ * @returns {Promise}
  */
 function sendSlackMessage(webhookURL, messageBody) {
     // make sure the incoming message body can be parsed into valid JSON
-    try {
-        messageBody = JSON.stringify(messageBody);
-    }
-    catch (error) {
-        core.setFailed(error.message);
-    }
     core.info(`Message body: ${messageBody}`);
     // Promisify the https.request
     return new Promise((resolve, reject) => {
@@ -61940,8 +61917,8 @@ function sendSlackMessage(webhookURL, messageBody) {
         const requestOptions = {
             method: 'POST',
             header: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         };
         // actual request
         const req = external_https_.request(webhookURL, requestOptions, (res) => {
@@ -61989,7 +61966,8 @@ async function pipeline() {
         const slackResponse = await sendSlackMessage(webhookUrl, message);
         core.info(`Message response ${slackResponse}`);
     }
-    else if (currentStatus === 'failure' && (lastStatus === 'completed/success' || lastStatus === '')) {
+    else if (currentStatus === 'failure' &&
+        (lastStatus === 'completed/success' || lastStatus === '')) {
         const message = await prepareSlackNotification(`${workflow} workflow in ${repository} failed.`, currentStatus);
         const slackResponse = await sendSlackMessage(webhookUrl, message);
         core.info(`Message response ${slackResponse}`);

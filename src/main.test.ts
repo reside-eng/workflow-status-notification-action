@@ -4,8 +4,10 @@ import * as github from '@actions/github';
 import * as exec from '@actions/exec';
 import * as cache from '@actions/cache';
 import fse from 'fs-extra';
-import { PayloadRepository } from '@actions/github/lib/interfaces';
-import { WebhookPayload } from '@actions/github/lib/interfaces';
+import {
+  PayloadRepository,
+  WebhookPayload,
+} from '@actions/github/lib/interfaces';
 import run from './main';
 
 jest.mock('@actions/core');
@@ -18,7 +20,7 @@ interface MockObj {
   repo: string;
   workflow: string;
   runId: number;
-  head_ref: string;
+  headRef: string;
   sha: string;
   ref: string;
   eventName: string;
@@ -47,7 +49,7 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       repo: 'workflow-status-slack-notification',
       workflow: 'Verify',
       runId: 23456,
-      head_ref: 'test-ci',
+      headRef: 'test-ci',
       sha: 'af3ec70',
       ref: 'af3ec704b410630b7fb60b458a4c0aff261959b4',
       eventName: 'pull_request',
@@ -72,9 +74,9 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
     (github.context.workflow as string) = mock.workflow;
     (github.context.runId as number) = mock.runId;
     (github.context.payload.pull_request as Partial<PayloadRepository>) = {
-      head: {
-        ref: mock.head_ref
-      }
+      head: {
+        ref: mock.headRef,
+      },
     };
     (github.context.sha as string) = mock.sha;
     (github.context.ref as string) = mock.ref;
