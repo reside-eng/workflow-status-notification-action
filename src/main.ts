@@ -86,18 +86,14 @@ async function getLastRunStatus() {
 }
 
 /**
- * Prepare slack notification
- *
+ * Handles the actual sending request.
+ * We're turning the https.request into a promise here for convenience
  * @param webhookURL
- * @param messageBody
  * @param message
  * @param status
- * @returns the Slack message body
  */
-async function prepareSlackNotification(
-  message: string,
-  status: string,
-): Promise<any> {
+async function sendSlackMessage(webhookURL: string, message: string, status: string,) {
+
   const { sha } = context;
   const { ref } = context;
   const event = context.eventName;
@@ -105,62 +101,48 @@ async function prepareSlackNotification(
   const { serverUrl } = context;
   const color = status === 'success' ? 'good' : 'danger';
 
-  const messageBody = {
-    username: `${repository} CI alert`, // This will appear as user name who posts the message
-    icon_emoji: ':bangbang:', // User icon, you can also use custom icons here
-    attachments: [
-      {
-        // this defines the attachment block, allows for better layout usage
-        color: `${color}`, // color of the attachments sidebar.
-        author_name: `${actor}`,
-        author_link: `${serverUrl}/${actor}`,
-        author_icon: `${serverUrl}/${actor}.png?size=32`,
-        fields: [
-          // actual fields
-          {
-            title: 'Ref',
-            value: `${ref}`,
-            short: true,
-          },
-          {
-            title: 'Event',
-            value: `${event}`,
-            short: true,
-          },
-          {
-            title: 'Action URL',
-            value: `<${serverUrl}/${repository}/commit/${sha}/checks|${workflow}>`,
-            short: true,
-          },
-          {
-            title: 'Commit',
-            value: `<${serverUrl}/${repository}/commit/${sha}|${sha}>`,
-            short: true,
-          },
-          {
-            title: `${workflow} workflow ${status}`,
-            value: `${message}`, // Custom value
-            short: false, // long fields will be full width
-          },
-        ],
-      },
-    ],
-  };
-  return messageBody;
-}
-
-/**
- * Handles the actual sending request.
- * We're turning the https.request into a promise here for convenience
- *
- * @param webhookURL
- * @param messageBody
- */
-async function sendSlackMessage(webhookURL: string, messageBody: any) {
-  core.info(`Message body: ${JSON.stringify(messageBody)}`);
-
   const {data} = await got.post(webhookURL, {
-    json: messageBody
+    json: {
+      username: `${repository} CI alert`, // This will appear as user name who posts the message
+      icon_emoji: ':bangbang:', // User icon, you can also use custom icons here
+      attachments: [
+        {
+          // this defines the attachment block, allows for better layout usage
+          color: `${color}`, // color of the attachments sidebar.
+          author_name: `${actor}`,
+          author_link: `${serverUrl}/${actor}`,
+          author_icon: `${serverUrl}/${actor}.png?size=32`,
+          fields: [
+            // actual fields
+            {
+              title: 'Ref',
+              value: `${ref}`,
+              short: true,
+            },
+            {
+              title: 'Event',
+              value: `${event}`,
+              short: true,
+            },
+            {
+              title: 'Action URL',
+              value: `<${serverUrl}/${repository}/commit/${sha}/checks|${workflow}>`,
+              short: true,
+            },
+            {
+              title: 'Commit',
+              value: `<${serverUrl}/${repository}/commit/${sha}|${sha}>`,
+              short: true,
+            },
+            {
+              title: `${workflow} workflow ${status}`,
+              value: `${message}`, // Custom value
+              short: false, // long fields will be full width
+            },
+          ],
+        },
+      ],
+    }
   }).json();
 
   core.info(`Slack response ${data}`);
@@ -198,17 +180,9 @@ async function pipeline() {
   await cache.saveCache(cachePaths, cachePrimaryKey);
 
   if (currentStatus === 'success' && lastStatus === 'completed/failure') {
-    const message = await prepareSlackNotification(
-      `Previously failing ${workflow} workflow in ${repository} succeed.`,
-      currentStatus,
-    );
-    await sendSlackMessage(webhookUrl, message);
+    await sendSlackMessage(webhookUrl, `Previously failing ${workflow} workflow in ${repository} succeed.`, currentStatus);
   } else if (currentStatus === 'failure' && ( lastStatus === 'completed/success' || lastStatus === '' )) {
-    const message = await prepareSlackNotification(
-      `${workflow} workflow in ${repository} failed.`,
-      currentStatus,
-    );
-    await sendSlackMessage(webhookUrl, message);
+    await sendSlackMessage(webhookUrl, `${workflow} workflow in ${repository} failed.`, currentStatus);
   } else {
     core.info(`No notification needed.`);
   }
