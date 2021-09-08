@@ -160,7 +160,7 @@ async function sendSlackMessage(webhookURL: string, messageBody: Record<string, 
   core.info(`Message body: ${JSON.stringify(messageBody)}`);
 
   const {data} = await got.post(webhookURL, {
-    json: messageBody
+    json: JSON.parse(JSON.stringify(messageBody))
   }).json();
 
   core.info(`Slack response ${data}`);
