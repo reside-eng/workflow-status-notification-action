@@ -69443,8 +69443,7 @@ async function pipeline() {
         const message = await prepareSlackNotification(`Previously failing ${workflow} workflow in ${repository} succeed.`, currentStatus);
         await sendSlackMessage(webhookUrl, message);
     }
-    else if (currentStatus === 'failure' &&
-        (lastStatus === 'completed/success' || lastStatus === '')) {
+    else if (currentStatus === 'failure' && lastStatus === 'completed/success') {
         const message = await prepareSlackNotification(`${workflow} workflow in ${repository} failed.`, currentStatus);
         await sendSlackMessage(webhookUrl, message);
     }
