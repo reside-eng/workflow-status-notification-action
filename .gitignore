@@ -17,3 +17,6 @@ coverage
 
 # Ignore built TS files
 lib
+
+# Test generated
+last-run-status

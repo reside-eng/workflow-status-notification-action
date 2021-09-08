@@ -3,6 +3,7 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as exec from '@actions/exec';
 import * as cache from '@actions/cache';
+import * as fs from 'fs';
 import fse from 'fs-extra';
 import {
   PayloadRepository,
@@ -33,6 +34,7 @@ let mock: MockObj;
 const autPath = join(process.cwd(), 'aut');
 const expectedSuccess = 'Tag "v0.0.0-pass" is available to use.';
 const mockCore = core as jest.Mocked<typeof core>;
+const mockExec = core as jest.Mocked<typeof exec>;
 
 describe('@reside-eng/workflow-status-slack-notification', () => {
   beforeEach(() => {
@@ -43,13 +45,13 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       inputs: {
         'current-status': 'success',
         'slack-channel': 'test-channel',
-        'slack-webhook': 'test-webhook',
-        'github-token': 'test-token',
+        'slack-webhook': 'https://hooks.slack.com/services/test/test',
+        'github-token': `${process.env.GITHUB_TOKEN}`,
       },
       repo: 'workflow-status-slack-notification',
-      workflow: 'Verify',
+      workflow: 'Publish Action',
       runId: 23456,
-      headRef: 'test-ci',
+      headRef: 'master',
       sha: 'af3ec70',
       ref: 'af3ec704b410630b7fb60b458a4c0aff261959b4',
       eventName: 'pull_request',
@@ -87,6 +89,11 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
 
   afterEach(async () => {
     delete process.env.GITHUB_WORKSPACE;
+    await fs.unlink('last-run-status', (err) => {
+      if (err) {
+        console.error(err)
+        return
+      };
   });
 
   it('should run with default action inputs', async () => {
