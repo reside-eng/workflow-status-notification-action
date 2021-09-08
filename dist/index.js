@@ -69409,7 +69409,7 @@ async function prepareSlackNotification(message, status) {
 async function sendSlackMessage(webhookURL, messageBody) {
     core.info(`Message body: ${messageBody}`);
     const { data } = await source_default().post(webhookURL, {
-        json: JSON.parse(messageBody)
+        json: messageBody
     }).json();
     core.info(`Slack response ${data}`);
 }

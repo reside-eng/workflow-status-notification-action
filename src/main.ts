@@ -97,7 +97,7 @@ async function getLastRunStatus() {
 async function prepareSlackNotification(
   message: string,
   status: string,
-): Promise<any> {
+): Promise<Record<string, any>> {
   const { sha } = context;
   const { ref } = context;
   const event = context.eventName;
@@ -156,11 +156,11 @@ async function prepareSlackNotification(
  * @param webhookURL
  * @param messageBody
  */
-async function sendSlackMessage(webhookURL: string, messageBody: string) {
+async function sendSlackMessage(webhookURL: string, messageBody: Record<string, any>) {
   core.info(`Message body: ${messageBody}`);
 
   const {data} = await got.post(webhookURL, {
-    json: JSON.parse(messageBody)
+    json: messageBody
   }).json();
 
   core.info(`Slack response ${data}`);
