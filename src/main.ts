@@ -159,9 +159,9 @@ async function prepareSlackNotification(
 async function sendSlackMessage(webhookURL: string, messageBody: Record<string, any>) {
   core.info(`Message body: ${JSON.stringify(messageBody)}`);
 
-  const {data} = await got.post(webhookURL, {
+  await got.post(webhookURL, {
     json: messageBody
-  }).json();
+  });
 
   //core.info(`Slack response ${data}`);
 }
