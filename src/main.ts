@@ -157,7 +157,7 @@ async function prepareSlackNotification(
  * @param messageBody
  */
 async function sendSlackMessage(webhookURL: string, messageBody: Record<string, any>) {
-  core.info(`Message body: ${messageBody}`);
+  core.info(`Message body: ${JSON.stringify(messageBody)}`);
 
   const {data} = await got.post(webhookURL, {
     json: messageBody
@@ -203,7 +203,7 @@ async function pipeline() {
       currentStatus,
     );
     await sendSlackMessage(webhookUrl, message);
-  } else if (currentStatus === 'failure' && lastStatus === 'completed/success') {
+  } else if (currentStatus === 'failure' && ( lastStatus === 'completed/success' || lastStatus === '' )) {
     const message = await prepareSlackNotification(
       `${workflow} workflow in ${repository} failed.`,
       currentStatus,
