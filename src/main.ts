@@ -82,7 +82,7 @@ async function getLastRunStatus() {
     core.info(`Cache Found status: ${lastStatus}`);
   }
 
-  return lastStatus;
+  return lastStatus.trim();
 }
 
 /**
@@ -208,11 +208,11 @@ async function pipeline() {
     }
   } else if (currentStatus === 'failure') {
     core.info(`currentStatus = failure`);
-    if (lastStatus == 'completed/failure') {
+    if (lastStatus === 'completed/failure') {
       core.info(`lastStatus = completed/failure`);
-    } else if (lastStatus == 'completed/success'){
+    } else if (lastStatus === 'completed/success'){
       core.info(`lastStatus = completed/success`);
-    } else if (lastStatus == ''){
+    } else if (lastStatus === ''){
       core.info(`lastStatus = r`);
     }
   }
