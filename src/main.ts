@@ -182,8 +182,6 @@ function handleError(err: Error): void {
 async function pipeline() {
   // eslint-disable-next-line camelcase
 
-  core.setFailed("fail");
-
   const lastStatus = await getLastRunStatus();
   const currentStatus = core.getInput(Inputs.CurrentStatus);
   const webhookUrl = core.getInput(Inputs.SlackWebhook);
