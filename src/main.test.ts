@@ -2,9 +2,9 @@ import { join } from 'path';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as exec from '@actions/exec';
-import * as cache from '@actions/cache';
 import * as fs from 'fs';
 import fse from 'fs-extra';
+import nock from 'nock';
 import {
   PayloadRepository,
   WebhookPayload,
@@ -12,13 +12,13 @@ import {
 import run from './main';
 
 jest.mock('@actions/core');
-jest.mock('@actions/github');
-jest.mock('@actions/exec');
-jest.mock('@actions/cache');
 
 interface MockObj {
   inputs: Record<string, string | undefined>;
-  repo: string;
+  repo: { 
+    owner: string,
+    repo: string,
+  };
   workflow: string;
   runId: number;
   headRef: string;
@@ -34,7 +34,13 @@ let mock: MockObj;
 const autPath = join(process.cwd(), 'aut');
 const expectedSuccess = 'Tag "v0.0.0-pass" is available to use.';
 const mockCore = core as jest.Mocked<typeof core>;
-const mockExec = core as jest.Mocked<typeof exec>;
+
+const slackUrl = 'https://hooks.slack.com';
+const slackPath = '/services/test/test';
+
+const scope = nock(slackUrl)
+  .get(slackPath)
+  .reply(200)
 
 describe('@reside-eng/workflow-status-slack-notification', () => {
   beforeEach(() => {
@@ -45,10 +51,13 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       inputs: {
         'current-status': 'success',
         'slack-channel': 'test-channel',
-        'slack-webhook': 'https://hooks.slack.com/services/test/test',
+        'slack-webhook': `${slackUrl}/${slackPath}`,
         'github-token': `${process.env.GITHUB_TOKEN}`,
       },
-      repo: 'workflow-status-slack-notification',
+      repo: {
+        owner: 'reside-eng',
+        repo: 'workflow-status-slack-notification',
+      },
       workflow: 'Publish Action',
       runId: 23456,
       headRef: 'master',
@@ -72,7 +81,6 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
     (github.context.payload.repository as Partial<PayloadRepository>) = {
       clone_url: mock.repo,
     };
-    (github.context.repo.repo as string) = mock.repo;
     (github.context.workflow as string) = mock.workflow;
     (github.context.runId as number) = mock.runId;
     (github.context.payload.pull_request as Partial<PayloadRepository>) = {
@@ -94,6 +102,7 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
         console.error(err)
         return
       };
+    });
   });
 
   it('should run with default action inputs', async () => {
@@ -102,82 +111,82 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
   });
 
-  it('should fail if the package.json file can not be found', async () => {
-    await run();
-    expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
-    expect(mockCore.setFailed.mock.calls[0][0]).toMatch(
-      'ENOENT: no such file or directory',
-    );
-  });
+  // it('should fail if the package.json file can not be found', async () => {
+  //   await run();
+  //   expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
+  //   expect(mockCore.setFailed.mock.calls[0][0]).toMatch(
+  //     'ENOENT: no such file or directory',
+  //   );
+  // });
 
-  it('should fail if no version is found in package.json', async () => {
-    await run();
-    expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
-    expect(mockCore.setFailed.mock.calls[0][0]).toMatch(/Missing "version"/);
-  });
+  // it('should fail if no version is found in package.json', async () => {
+  //   await run();
+  //   expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
+  //   expect(mockCore.setFailed.mock.calls[0][0]).toMatch(/Missing "version"/);
+  // });
 
-  it('should fail if a tag already exists', async () => {
-    await run();
-    expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
-    expect(mockCore.setFailed.mock.calls[0][0]).toMatch(
-      /Tag .* already exists/,
-    );
-  });
+  // it('should fail if a tag already exists', async () => {
+  //   await run();
+  //   expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
+  //   expect(mockCore.setFailed.mock.calls[0][0]).toMatch(
+  //     /Tag .* already exists/,
+  //   );
+  // });
 
-  describe('package-directory input', () => {
-    it('should support a path with no slashes in path', async () => {
-      mock.inputs['package-directory'] = 'nested';
+  // describe('package-directory input', () => {
+  //   it('should support a path with no slashes in path', async () => {
+  //     mock.inputs['package-directory'] = 'nested';
 
-      await run();
+  //     await run();
 
-      expect(mockCore.info).toHaveBeenCalledWith(expectedSuccess);
-      expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    });
+  //     expect(mockCore.info).toHaveBeenCalledWith(expectedSuccess);
+  //     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
+  //   });
 
-    it('should support a path with ./ prepended', async () => {
-      mock.inputs['package-directory'] = './nested';
+  //   it('should support a path with ./ prepended', async () => {
+  //     mock.inputs['package-directory'] = './nested';
 
-      await run();
+  //     await run();
 
-      expect(mockCore.info).toHaveBeenCalledWith(expectedSuccess);
-      expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    });
+  //     expect(mockCore.info).toHaveBeenCalledWith(expectedSuccess);
+  //     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
+  //   });
 
-    it('should support a trailing slash (/)', async () => {
-      mock.inputs['package-directory'] = 'nested/';
+  //   it('should support a trailing slash (/)', async () => {
+  //     mock.inputs['package-directory'] = 'nested/';
 
-      await run();
+  //     await run();
 
-      expect(mockCore.info).toHaveBeenCalledWith(expectedSuccess);
-      expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    });
-  });
+  //     expect(mockCore.info).toHaveBeenCalledWith(expectedSuccess);
+  //     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
+  //   });
+  // });
 
-  describe('tag-format input', () => {
-    it('should support a modified format', async () => {
-      mock.inputs['tag-format'] = 'ima-$version-custom';
-      // Purposely use the failing package.json to prove that the tag-format has
-      // changed
-      await fse.copy(join(autPath, 'package-fail.json'), packagePath);
+  // describe('tag-format input', () => {
+  //   it('should support a modified format', async () => {
+  //     mock.inputs['tag-format'] = 'ima-$version-custom';
+  //     // Purposely use the failing package.json to prove that the tag-format has
+  //     // changed
+  //     await fse.copy(join(autPath, 'package-fail.json'), packagePath);
 
-      await run();
+  //     await run();
 
-      expect(mockCore.info).toHaveBeenCalledWith(
-        `Tag "ima-0.0.0-integration-test-custom" is available to use.`,
-      );
-      expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    });
+  //     expect(mockCore.info).toHaveBeenCalledWith(
+  //       `Tag "ima-0.0.0-integration-test-custom" is available to use.`,
+  //     );
+  //     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
+  //   });
 
-    it('should fail if missing the REQUIRED_TAG_FORMAT minimal requirements', async () => {
-      mock.inputs['tag-format'] = 'missing';
-      await fse.copy(join(autPath, 'package-pass.json'), packagePath);
+  //   it('should fail if missing the REQUIRED_TAG_FORMAT minimal requirements', async () => {
+  //     mock.inputs['tag-format'] = 'missing';
+  //     await fse.copy(join(autPath, 'package-pass.json'), packagePath);
 
-      await run();
+  //     await run();
 
-      expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
-      expect(mockCore.setFailed.mock.calls[0][0]).toMatch(
-        /tag-format is missing required .* pattern/,
-      );
-    });
-  });
+  //     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
+  //     expect(mockCore.setFailed.mock.calls[0][0]).toMatch(
+  //       /tag-format is missing required .* pattern/,
+  //     );
+  //   });
+  // });
 });
