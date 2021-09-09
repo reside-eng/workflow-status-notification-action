@@ -13,7 +13,7 @@ import run from './main';
 
 jest.mock('@actions/core');
 
-jest.setTimeout(100000)
+jest.setTimeout(100000);
 
 interface MockObj {
   inputs: Record<string, string | undefined>;
