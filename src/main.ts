@@ -28,7 +28,7 @@ const cachePaths = ['last-run-status'];
  */
 async function getLastRunStatus() {
   let lastStatus = '';
-  
+
   const cacheKey = await cache.restoreCache(
     cachePaths,
     cachePrimaryKey,
@@ -156,14 +156,17 @@ async function prepareSlackNotification(
  * @param webhookURL
  * @param messageBody
  */
-async function sendSlackMessage(webhookURL: string, messageBody: Record<string, any>) {
+async function sendSlackMessage(
+  webhookURL: string,
+  messageBody: Record<string, any>,
+) {
   core.info(`Message body: ${JSON.stringify(messageBody)}`);
 
   await got.post(webhookURL, {
-    json: messageBody
+    json: messageBody,
   });
 
-  //core.info(`Slack response ${data}`);
+  // core.info(`Slack response ${data}`);
 }
 
 /**
@@ -189,11 +192,16 @@ async function pipeline() {
   core.info(`Last run status: ${lastStatus}`);
   core.info(`Current run status: ${currentStatus}`);
 
-  await fs.writeFile(cachePaths[0],`completed/${currentStatus}`, {
-    encoding: 'utf8'
-  }, function(error) {
-    if (error) throw error
-  });
+  await fs.writeFile(
+    cachePaths[0],
+    `completed/${currentStatus}`,
+    {
+      encoding: 'utf8',
+    },
+    function (error) {
+      if (error) throw error;
+    },
+  );
 
   await cache.saveCache(cachePaths, cachePrimaryKey);
 
@@ -203,7 +211,10 @@ async function pipeline() {
       currentStatus,
     );
     await sendSlackMessage(webhookUrl, message);
-  } else if (currentStatus === 'failure' && ( lastStatus === 'completed/success' || lastStatus === '' )) {
+  } else if (
+    currentStatus === 'failure' &&
+    (lastStatus === 'completed/success' || lastStatus === '')
+  ) {
     const message = await prepareSlackNotification(
       `${workflow} workflow in ${repository} failed.`,
       currentStatus,

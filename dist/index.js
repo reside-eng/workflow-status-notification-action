@@ -69409,9 +69409,9 @@ async function prepareSlackNotification(message, status) {
 async function sendSlackMessage(webhookURL, messageBody) {
     core.info(`Message body: ${JSON.stringify(messageBody)}`);
     await source_default().post(webhookURL, {
-        json: messageBody
+        json: messageBody,
     });
-    //core.info(`Slack response ${data}`);
+    // core.info(`Slack response ${data}`);
 }
 /**
  * Logs an error and fails the Github Action
@@ -69433,7 +69433,7 @@ async function pipeline() {
     core.info(`Last run status: ${lastStatus}`);
     core.info(`Current run status: ${currentStatus}`);
     await external_fs_.writeFile(cachePaths[0], `completed/${currentStatus}`, {
-        encoding: 'utf8'
+        encoding: 'utf8',
     }, function (error) {
         if (error)
             throw error;
@@ -69443,7 +69443,8 @@ async function pipeline() {
         const message = await prepareSlackNotification(`Previously failing ${workflow} workflow in ${repository} succeed.`, currentStatus);
         await sendSlackMessage(webhookUrl, message);
     }
-    else if (currentStatus === 'failure' && (lastStatus === 'completed/success' || lastStatus === '')) {
+    else if (currentStatus === 'failure' &&
+        (lastStatus === 'completed/success' || lastStatus === '')) {
         const message = await prepareSlackNotification(`${workflow} workflow in ${repository} failed.`, currentStatus);
         await sendSlackMessage(webhookUrl, message);
     }

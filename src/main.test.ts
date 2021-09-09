@@ -15,9 +15,9 @@ jest.mock('@actions/core');
 
 interface MockObj {
   inputs: Record<string, string | undefined>;
-  repo: { 
-    owner: string,
-    repo: string,
+  repo: {
+    owner: string;
+    repo: string;
   };
   workflow: string;
   runId: number;
@@ -38,9 +38,7 @@ const mockCore = core as jest.Mocked<typeof core>;
 const slackUrl = 'https://hooks.slack.com';
 const slackPath = '/services/test/test';
 
-const scope = nock(slackUrl)
-  .get(slackPath)
-  .reply(200)
+const scope = nock(slackUrl).get(slackPath).reply(200);
 
 describe('@reside-eng/workflow-status-slack-notification', () => {
   beforeEach(() => {
@@ -99,9 +97,8 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
     delete process.env.GITHUB_WORKSPACE;
     await fs.unlink('last-run-status', (err) => {
       if (err) {
-        console.error(err)
-        return
-      };
+        console.error(err);
+      }
     });
   });
 
