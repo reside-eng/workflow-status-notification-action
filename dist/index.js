@@ -69430,7 +69430,7 @@ async function pipeline() {
     const lastStatus = await getLastRunStatus();
     const currentStatus = core.getInput(Inputs.CurrentStatus);
     const webhookUrl = core.getInput(Inputs.SlackWebhook);
-    core.info(`Last run status: ${lastStatus}`);
+    core.info(String.raw `Last run status: ${lastStatus}`);
     core.info(`Current run status: ${currentStatus}`);
     await external_fs_.writeFile(cachePaths[0], `completed/${currentStatus}`, {
         encoding: 'utf8'

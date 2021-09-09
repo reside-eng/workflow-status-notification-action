@@ -186,7 +186,7 @@ async function pipeline() {
   const currentStatus = core.getInput(Inputs.CurrentStatus);
   const webhookUrl = core.getInput(Inputs.SlackWebhook);
 
-  core.info(`Last run status: ${lastStatus}`);
+  core.info(String.raw`Last run status: ${lastStatus}`);
   core.info(`Current run status: ${currentStatus}`);
 
   await fs.writeFile(cachePaths[0],`completed/${currentStatus}`, {
