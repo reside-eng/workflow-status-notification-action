@@ -69439,40 +69439,11 @@ async function pipeline() {
             throw error;
     });
     await cache.saveCache(cachePaths, cachePrimaryKey);
-    if (currentStatus === 'success') {
-        core.info(`currentStatus = success`);
-        if (lastStatus === 'completed/failure') {
-            core.info(`lastStatus = completed/failure`);
-        }
-        else if (lastStatus === 'completed/success') {
-            core.info(`lastStatus = completed/success`);
-        }
-        else if (lastStatus === '') {
-            core.info(`lastStatus = r`);
-        }
-    }
-    else if (currentStatus === 'failure') {
-        core.info(`currentStatus = failure`);
-        if (lastStatus === 'completed/failure') {
-            core.info(`lastStatus = completed/failure`);
-        }
-        else if (lastStatus === 'completed/success') {
-            core.info(`lastStatus = completed/success`);
-        }
-        else if (lastStatus === '') {
-            core.info(`lastStatus = r`);
-        }
-    }
     if (currentStatus === 'success' && lastStatus === 'completed/failure') {
         const message = await prepareSlackNotification(`Previously failing ${workflow} workflow in ${repository} succeed.`, currentStatus);
         await sendSlackMessage(webhookUrl, message);
     }
     else if (currentStatus === 'failure' && (lastStatus === 'completed/success' || lastStatus === '')) {
-        //
-        // !!!!!!!!
-        // TO-DO: Ensure this condition is working as expected !!!!!!!!
-        // !!!!!!!!
-        //
         const message = await prepareSlackNotification(`${workflow} workflow in ${repository} failed.`, currentStatus);
         await sendSlackMessage(webhookUrl, message);
     }
