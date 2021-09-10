@@ -206,6 +206,7 @@ async function pipeline() {
   await cache.saveCache(cachePaths, cachePrimaryKey);
 
   if (currentStatus === 'success' && lastStatus === 'completed/failure') {
+    core.info(`Success notification`);
     const message = await prepareSlackNotification(
       `Previously failing ${workflow} workflow in ${repository} succeed.`,
       currentStatus,
@@ -215,13 +216,14 @@ async function pipeline() {
     currentStatus === 'failure' &&
     (lastStatus === 'completed/success' || lastStatus === '')
   ) {
+    core.info(`Failure notification`);
     const message = await prepareSlackNotification(
       `${workflow} workflow in ${repository} failed.`,
       currentStatus,
     );
     await sendSlackMessage(webhookUrl, message);
   } else {
-    core.info(`No notification needed.`);
+    core.info(`No notification needed`);
   }
 }
 
