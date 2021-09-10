@@ -57,7 +57,7 @@ jobs:
         #TMP
         #run: yarn test --coverage --silent
 
-      - uses: codecov/codecov-action@v2.0.2
+      - uses: codecov/codecov-action@v2.0.3
         with:
           fail_ci_if_error: true
 
