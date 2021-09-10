@@ -69302,7 +69302,7 @@ const cachePaths = ['last-run-status'];
  */
 async function getLastRunStatus() {
     let lastStatus = '';
-    console.log("Get last run status");
+    console.log('Get last run status');
     const cacheKey = await cache.restoreCache(cachePaths, cachePrimaryKey, cacheRestoreKeys);
     if (!cacheKey || (cacheKey && !external_fs_.existsSync(cachePaths[0]))) {
         core.info('Cache not found, retrieve status from previous run.');
@@ -69432,7 +69432,7 @@ function handleError(err) {
  */
 async function pipeline() {
     // eslint-disable-next-line camelcase
-    console.log("begin");
+    console.log('begin');
     const lastStatus = await getLastRunStatus();
     const currentStatus = core.getInput(Inputs.CurrentStatus);
     const webhookUrl = core.getInput(Inputs.SlackWebhook);
