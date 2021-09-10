@@ -106,12 +106,12 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
 
   it('should run with default action inputs', async () => {
     await run();
+    expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
+    expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
+    expect(mockCore.info).toHaveBeenCalledWith('Success notification');
     expect(mockCore.info).toHaveBeenCalledWith(
       'Last run status: completed/failure',
     );
-    expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
-    expect(mockCore.info).toHaveBeenCalledWith('Success notification');
-    expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
   });
 
   // it('should fail if the package.json file can not be found', async () => {
