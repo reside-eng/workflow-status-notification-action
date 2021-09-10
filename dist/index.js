@@ -69327,7 +69327,7 @@ async function getLastRunStatus() {
         };
         await exec.exec('/bin/bash', [
             '-c',
-            `gh run list -w "${workflow}" | grep "${workflow}	${headRef}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}'`,
+            `gh run list -w "${context.workflow}" | grep "${context.workflow}	${headRef}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}'`,
         ], options);
         core.info(`GH Found status: ${lastStatus}`);
     }

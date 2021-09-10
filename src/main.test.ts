@@ -1,7 +1,7 @@
 import { join } from 'path';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import * as exec from '@actions/exec';
+import * as cache from '@actions/cache';
 import * as fs from 'fs';
 import fse from 'fs-extra';
 import nock from 'nock';
@@ -10,8 +10,10 @@ import {
   WebhookPayload,
 } from '@actions/github/lib/interfaces';
 import run from './main';
+import { DownloadOptions } from '@actions/cache/lib/options';
 
 jest.mock('@actions/core');
+jest.mock('@actions/cache');
 
 jest.setTimeout(100000);
 
@@ -36,11 +38,12 @@ let mock: MockObj;
 const autPath = join(process.cwd(), 'aut');
 const expectedSuccess = 'Tag "v0.0.0-pass" is available to use.';
 const mockCore = core as jest.Mocked<typeof core>;
+const mockCache = cache as jest.Mocked<typeof cache>;
 
 const slackUrl = 'https://hooks.slack.com';
 const slackPath = '/services/test/test';
 
-const scope = nock(slackUrl).get(slackPath).reply(200);
+const scope = nock(slackUrl).post(slackPath).reply(200);
 
 describe('@reside-eng/workflow-status-slack-notification', () => {
   beforeEach(() => {
@@ -51,7 +54,7 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       inputs: {
         'current-status': 'success',
         'slack-channel': 'test-channel',
-        'slack-webhook': `${slackUrl}/${slackPath}`,
+        'slack-webhook': `${slackUrl}${slackPath}`,
         'github-token': `${process.env.GITHUB_TOKEN}`,
       },
       repo: {
@@ -75,6 +78,14 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       (name: string): string =>
         // console.log('name:', name);
         mock.inputs[name] || '',
+    );
+
+    mockCache.restoreCache.mockImplementation(
+      (paths: string[], primaryKey: string, restoreKeys?: string[] | undefined, options?: DownloadOptions | undefined): Promise<string | undefined> =>
+        // console.log('name:', name);
+        new Promise((resolve) => {
+          resolve(undefined);
+      }),
     );
 
     // Setting to this Github repo by default
