@@ -53,14 +53,11 @@ jobs:
         run: yarn lint
 
       - name: Test
-        run: yarn test
         run: yarn test --coverage --silent
 
       - uses: codecov/codecov-action@v2.0.2
         with:
-        #TMP
-          #fail_ci_if_error: true
-          fail_ci_if_error: false
+          fail_ci_if_error: true
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
