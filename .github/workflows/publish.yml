@@ -54,8 +54,7 @@ jobs:
 
       - name: Test
         run: yarn test
-        #TMP
-        #run: yarn test --coverage --silent
+        run: yarn test --coverage --silent
 
       - uses: codecov/codecov-action@v2.0.2
         with:
