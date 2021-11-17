@@ -69424,6 +69424,8 @@ async function pipeline() {
     const lastStatus = await getLastRunStatus();
     const currentStatus = core.getInput(Inputs.CurrentStatus);
     const webhookUrl = core.getInput(Inputs.SlackWebhook);
+    console.log("Session: %j", github);
+    core.info(`Session: ${JSON.stringify(github)}`);
     core.info(`Last run status: ${lastStatus}`);
     core.info(`Current run status: ${currentStatus}`);
     external_fs_.writeFileSync(cachePaths[0], `completed/${currentStatus}`, {
