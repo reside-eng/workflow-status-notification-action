@@ -165,7 +165,7 @@ async function sendSlackMessage(
 ) {
   core.info(`Message body: ${JSON.stringify(messageBody)}`);
   console.log(`Message body: ${JSON.stringify(messageBody)}`);
-  
+
   await got.post(webhookURL, {
     json: messageBody,
   });
@@ -200,13 +200,9 @@ async function pipeline() {
   console.log(`Last run status: ${lastStatus}`);
   console.log(`Current run status: ${currentStatus}`);
 
-  fs.writeFileSync(
-    cachePaths[0],
-    `completed/${currentStatus}`,
-    {
-      encoding: 'utf8',
-    },
-  );
+  fs.writeFileSync(cachePaths[0], `completed/${currentStatus}`, {
+    encoding: 'utf8',
+  });
 
   await cache.saveCache(cachePaths, cachePrimaryKey);
 
