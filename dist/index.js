@@ -69344,16 +69344,7 @@ async function getLastRunStatus() {
  * @returns the Slack message body
  */
 async function prepareSlackNotification(message, status) {
-    // Retrieve current PR commit when triggered from PR
-    // Retrieve current merged commit when triggered on merge
-    // Retieve current commit when manually triggered
-    let sha;
-    if (context.payload.after !== undefined) {
-        sha = context.payload.after;
-    }
-    else {
-        sha = context.sha;
-    }
+    const { sha } = context;
     const { runId } = context;
     const { ref } = context;
     const event = context.eventName;
