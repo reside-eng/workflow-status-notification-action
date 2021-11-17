@@ -51,7 +51,6 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       // Default action inputs
       inputs: {
         'current-status': 'success',
-        'slack-channel': 'test-channel',
         'slack-webhook': `${slackUrl}${slackPath}`,
         'github-token': `${process.env.GITHUB_TOKEN}`,
       },
@@ -62,7 +61,7 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       workflow: 'Publish Action',
       runId: 23456,
       headRef: 'main',
-      ref: 'refs/pull/15/merge',
+      ref: 'main',
       eventName: 'pull_request',
       actor: 'workflowactor',
       serverUrl: 'https://github.com',
@@ -73,7 +72,6 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
 
     mockCore.getInput.mockImplementation(
       (name: string): string =>
-        // console.log('name:', name);
         mock.inputs[name] || '',
     );
 
@@ -84,7 +82,6 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
         restoreKeys?: string[] | undefined,
         options?: DownloadOptions | undefined,
       ): Promise<string | undefined> =>
-        // console.log('name:', name);
         new Promise((resolve) => {
           if (fs.existsSync('last-run-status')) {
             resolve('test');
@@ -177,4 +174,19 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       'Last run status: completed/failure',
     );
   });
+
+  it('not a pull_request: should send success notification if last run failed and current succeed', async () => {
+    github.context.payload.pull_request  = undefined;
+    await run();
+    expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
+    expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
+    expect(mockCore.info).toHaveBeenCalledWith('Success notification');
+    expect(mockCore.info).toHaveBeenCalledWith(
+      'Last run status: completed/failure',
+    );
+    expect(mockCore.info).toHaveBeenCalledWith(
+      'Message body: {"username":"workflow-status-slack-notification CI alert","icon_emoji":":bangbang:","attachments":[{"color":"good","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Branch","value":"main","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Publish Action>","short":true},{"title":"Publish Action workflow success","value":"Previously failing Publish Action workflow in workflow-status-slack-notification succeed.","short":false}]}]}',
+    );
+  });
 });
+

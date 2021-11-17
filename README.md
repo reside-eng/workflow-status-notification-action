@@ -17,9 +17,6 @@ According to current and previous runs status, it will send a notification to a 
     # Required: true
     current-status: ''
 
-    # Slack channel to send the notification to
-    slack-channel: ''
-
     # Webhook URL with token for notifications
     #
     # Required: true

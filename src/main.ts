@@ -7,7 +7,6 @@ import got from 'got';
 
 export enum Inputs {
   CurrentStatus = 'current-status',
-  SlackChannel = 'slack-channel',
   SlackWebhook = 'slack-webhook',
   GithubToken = 'github-token',
 }
@@ -93,7 +92,6 @@ async function prepareSlackNotification(
   status: string,
 ): Promise<Record<string, any>> {
   const { runId } = context;
-  const { ref } = context;
   const event = context.eventName;
   const { owner } = context.repo;
   const { workflow } = context;
@@ -183,9 +181,6 @@ async function pipeline() {
   const lastStatus = await getLastRunStatus();
   const currentStatus = core.getInput(Inputs.CurrentStatus);
   const webhookUrl = core.getInput(Inputs.SlackWebhook);
-
-  console.log('Session: %j', github);
-  core.info(`Session: ${JSON.stringify(github)}`);
 
   core.info(`Last run status: ${lastStatus}`);
   core.info(`Current run status: ${currentStatus}`);
