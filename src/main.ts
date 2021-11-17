@@ -10,6 +10,7 @@ export enum Inputs {
   SlackChannel = 'slack-channel',
   SlackWebhook = 'slack-webhook',
   GithubToken = 'github-token',
+  GithubSHA = 'github-sha',
 }
 
 const { context } = github;
@@ -92,7 +93,7 @@ async function prepareSlackNotification(
   message: string,
   status: string,
 ): Promise<Record<string, any>> {
-  const { sha } = context;
+  const sha = core.getInput(Inputs.GithubSHA);
   const { runId } = context;
   const { ref } = context;
   const event = context.eventName;

@@ -69286,6 +69286,7 @@ var Inputs;
     Inputs["SlackChannel"] = "slack-channel";
     Inputs["SlackWebhook"] = "slack-webhook";
     Inputs["GithubToken"] = "github-token";
+    Inputs["GithubSHA"] = "github-sha";
 })(Inputs || (Inputs = {}));
 const { context } = github;
 const repository = context.repo.repo;
@@ -69344,7 +69345,7 @@ async function getLastRunStatus() {
  * @returns the Slack message body
  */
 async function prepareSlackNotification(message, status) {
-    const { sha } = context;
+    const sha = core.getInput(Inputs.GithubSHA);
     const { runId } = context;
     const { ref } = context;
     const event = context.eventName;
