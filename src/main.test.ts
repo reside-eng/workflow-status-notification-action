@@ -26,6 +26,7 @@ interface MockObj {
   workflow: string;
   runId: number;
   headRef: string;
+  sha: string;
   ref: string;
   eventName: string;
   actor: string;
@@ -54,7 +55,6 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
         'slack-channel': 'test-channel',
         'slack-webhook': `${slackUrl}${slackPath}`,
         'github-token': `${process.env.GITHUB_TOKEN}`,
-        'github-sha': `af3ec704b410630b7fb60b458a4c0aff261959b4`,
       },
       repo: {
         owner: 'reside-eng',
@@ -63,6 +63,7 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       workflow: 'Publish Action',
       runId: 23456,
       headRef: 'master',
+      sha: 'af3ec704b410630b7fb60b458a4c0aff261959b4',
       ref: 'refs/pull/15/merge',
       eventName: 'pull_request',
       actor: 'workflowactor',
@@ -106,6 +107,7 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
         ref: mock.headRef,
       },
     };
+    (github.context.sha as string) = mock.sha;
     (github.context.ref as string) = mock.ref;
     (github.context.eventName as string) = mock.eventName;
     (github.context.actor as string) = mock.actor;

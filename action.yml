@@ -17,10 +17,6 @@ inputs:
     description: 'Status of the current run'
     required: true
     default: ''
-  github-sha:
-    description: 'Current commit sha'
-    required: true
-    default: ''
 runs:
   using: 'node12'
   main: 'dist/index.js'

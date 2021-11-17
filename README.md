@@ -29,11 +29,6 @@ According to current and previous runs status, it will send a notification to a 
     #
     # Required: true
     github-token: ''
-
-    # Current commit sha
-    #
-    # Required: true
-    github-sha: ''
 ```
 <!-- end usage -->
 
