@@ -71,8 +71,7 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
     process.env.GITHUB_WORKSPACE = join(process.cwd(), 'aut');
 
     mockCore.getInput.mockImplementation(
-      (name: string): string =>
-        mock.inputs[name] || '',
+      (name: string): string => mock.inputs[name] || '',
     );
 
     mockCache.restoreCache.mockImplementation(
@@ -176,7 +175,7 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
   });
 
   it('not a pull_request: should send success notification if last run failed and current succeed', async () => {
-    github.context.payload.pull_request  = undefined;
+    github.context.payload.pull_request = undefined;
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
@@ -189,4 +188,3 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
     );
   });
 });
-

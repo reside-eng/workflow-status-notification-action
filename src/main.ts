@@ -101,8 +101,7 @@ async function prepareSlackNotification(
 
   let headRef;
   if (context.payload.pull_request !== undefined) {
-    headRef = JSON.parse(JSON.stringify(context.payload.pull_request)).head
-      .ref;
+    headRef = JSON.parse(JSON.stringify(context.payload.pull_request)).head.ref;
   } else {
     headRef = context.ref.split('/').pop();
   }
