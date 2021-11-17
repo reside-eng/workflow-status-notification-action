@@ -69344,7 +69344,17 @@ async function getLastRunStatus() {
  * @returns the Slack message body
  */
 async function prepareSlackNotification(message, status) {
-    const sha = context.payload.after;
+    // Retrieve current PR commit when triggered from PR
+    // Retrieve current merged commit when triggered on merge
+    // Retieve current commit when manually triggered
+    let sha;
+    if (context.payload.after !== undefined) {
+        sha = context.payload.after;
+    }
+    else {
+        sha = context.sha;
+    }
+    const { runId } = context;
     const { ref } = context;
     const event = context.eventName;
     const { owner } = context.repo;
@@ -69376,7 +69386,7 @@ async function prepareSlackNotification(message, status) {
                     },
                     {
                         title: 'Action URL',
-                        value: `<${serverUrl}/${owner}/${repository}/commit/${sha}/checks|${workflow}>`,
+                        value: `<${serverUrl}/${owner}/${repository}/actions/runs/${runId}|${workflow}>`,
                         short: true,
                     },
                     {
@@ -69424,7 +69434,7 @@ async function pipeline() {
     const lastStatus = await getLastRunStatus();
     const currentStatus = core.getInput(Inputs.CurrentStatus);
     const webhookUrl = core.getInput(Inputs.SlackWebhook);
-    console.log("Session: %j", github);
+    console.log('Session: %j', github);
     core.info(`Session: ${JSON.stringify(github)}`);
     core.info(`Last run status: ${lastStatus}`);
     core.info(`Current run status: ${currentStatus}`);
