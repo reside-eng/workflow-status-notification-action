@@ -26,7 +26,6 @@ interface MockObj {
   workflow: string;
   runId: number;
   headRef: string;
-  sha: string;
   ref: string;
   eventName: string;
   actor: string;
@@ -62,8 +61,7 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       },
       workflow: 'Publish Action',
       runId: 23456,
-      headRef: 'master',
-      sha: 'af3ec704b410630b7fb60b458a4c0aff261959b4',
+      headRef: 'main',
       ref: 'refs/pull/15/merge',
       eventName: 'pull_request',
       actor: 'workflowactor',
@@ -107,7 +105,6 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
         ref: mock.headRef,
       },
     };
-    (github.context.sha as string) = mock.sha;
     (github.context.ref as string) = mock.ref;
     (github.context.eventName as string) = mock.eventName;
     (github.context.actor as string) = mock.actor;
@@ -138,7 +135,7 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       'Last run status: completed/failure',
     );
     expect(mockCore.info).toHaveBeenCalledWith(
-      'Message body: {"username":"workflow-status-slack-notification CI alert","icon_emoji":":bangbang:","attachments":[{"color":"good","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Ref","value":"refs/pull/15/merge","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Publish Action>","short":true},{"title":"Commit","value":"<https://github.com/reside-eng/workflow-status-slack-notification/commit/af3ec704b410630b7fb60b458a4c0aff261959b4|af3ec704b410630b7fb60b458a4c0aff261959b4>","short":true},{"title":"Publish Action workflow success","value":"Previously failing Publish Action workflow in workflow-status-slack-notification succeed.","short":false}]}]}',
+      'Message body: {"username":"workflow-status-slack-notification CI alert","icon_emoji":":bangbang:","attachments":[{"color":"good","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Branch","value":"main","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Publish Action>","short":true},{"title":"Publish Action workflow success","value":"Previously failing Publish Action workflow in workflow-status-slack-notification succeed.","short":false}]}]}',
     );
   });
 
@@ -164,7 +161,7 @@ describe('@reside-eng/workflow-status-slack-notification', () => {
       'Last run status: completed/success',
     );
     expect(mockCore.info).toHaveBeenCalledWith(
-      'Message body: {"username":"workflow-status-slack-notification CI alert","icon_emoji":":bangbang:","attachments":[{"color":"danger","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Ref","value":"refs/pull/15/merge","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Publish Action>","short":true},{"title":"Commit","value":"<https://github.com/reside-eng/workflow-status-slack-notification/commit/af3ec704b410630b7fb60b458a4c0aff261959b4|af3ec704b410630b7fb60b458a4c0aff261959b4>","short":true},{"title":"Publish Action workflow failure","value":"Publish Action workflow in workflow-status-slack-notification failed.","short":false}]}]}',
+      'Message body: {"username":"workflow-status-slack-notification CI alert","icon_emoji":":bangbang:","attachments":[{"color":"danger","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Branch","value":"main","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Publish Action>","short":true},{"title":"Publish Action workflow failure","value":"Publish Action workflow in workflow-status-slack-notification failed.","short":false}]}]}',
     );
   });
 

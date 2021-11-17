@@ -69344,7 +69344,6 @@ async function getLastRunStatus() {
  * @returns the Slack message body
  */
 async function prepareSlackNotification(message, status) {
-    const { sha } = context;
     const { runId } = context;
     const { ref } = context;
     const event = context.eventName;
@@ -69353,6 +69352,14 @@ async function prepareSlackNotification(message, status) {
     const { actor } = context;
     const { serverUrl } = context;
     const color = status === 'success' ? 'good' : 'danger';
+    let headRef;
+    if (context.payload.pull_request !== undefined) {
+        headRef = JSON.parse(JSON.stringify(context.payload.pull_request)).head
+            .ref;
+    }
+    else {
+        headRef = context.ref.split('/').pop();
+    }
     const messageBody = {
         username: `${repository} CI alert`,
         icon_emoji: ':bangbang:',
@@ -69366,8 +69373,8 @@ async function prepareSlackNotification(message, status) {
                 fields: [
                     // actual fields
                     {
-                        title: 'Ref',
-                        value: `${ref}`,
+                        title: 'Branch',
+                        value: `${headRef}`,
                         short: true,
                     },
                     {
@@ -69378,11 +69385,6 @@ async function prepareSlackNotification(message, status) {
                     {
                         title: 'Action URL',
                         value: `<${serverUrl}/${owner}/${repository}/actions/runs/${runId}|${workflow}>`,
-                        short: true,
-                    },
-                    {
-                        title: 'Commit',
-                        value: `<${serverUrl}/${owner}/${repository}/commit/${sha}|${sha}>`,
                         short: true,
                     },
                     {

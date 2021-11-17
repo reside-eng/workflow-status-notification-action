@@ -92,7 +92,6 @@ async function prepareSlackNotification(
   message: string,
   status: string,
 ): Promise<Record<string, any>> {
-  const { sha } = context;
   const { runId } = context;
   const { ref } = context;
   const event = context.eventName;
@@ -101,6 +100,14 @@ async function prepareSlackNotification(
   const { actor } = context;
   const { serverUrl } = context;
   const color = status === 'success' ? 'good' : 'danger';
+
+  let headRef;
+  if (context.payload.pull_request !== undefined) {
+    headRef = JSON.parse(JSON.stringify(context.payload.pull_request)).head
+      .ref;
+  } else {
+    headRef = context.ref.split('/').pop();
+  }
 
   const messageBody = {
     username: `${repository} CI alert`, // This will appear as user name who posts the message
@@ -115,8 +122,8 @@ async function prepareSlackNotification(
         fields: [
           // actual fields
           {
-            title: 'Ref',
-            value: `${ref}`,
+            title: 'Branch',
+            value: `${headRef}`,
             short: true,
           },
           {
@@ -127,11 +134,6 @@ async function prepareSlackNotification(
           {
             title: 'Action URL',
             value: `<${serverUrl}/${owner}/${repository}/actions/runs/${runId}|${workflow}>`,
-            short: true,
-          },
-          {
-            title: 'Commit',
-            value: `<${serverUrl}/${owner}/${repository}/commit/${sha}|${sha}>`,
             short: true,
           },
           {
