@@ -69344,8 +69344,8 @@ async function getLastRunStatus() {
  * @returns the Slack message body
  */
 async function prepareSlackNotification(message, status) {
-    const { sha } = context;
-    const { ref } = context.payload.after;
+    const sha = context.payload.after;
+    const { ref } = context;
     const event = context.eventName;
     const { owner } = context.repo;
     const { workflow } = context;

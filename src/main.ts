@@ -92,8 +92,8 @@ async function prepareSlackNotification(
   message: string,
   status: string,
 ): Promise<Record<string, any>> {
-  const { sha } = context;
-  const { ref } = context.payload.after;
+  const sha = context.payload.after;
+  const { ref } = context;
   const event = context.eventName;
   const { owner } = context.repo;
   const { workflow } = context;
