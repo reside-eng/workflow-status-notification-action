@@ -3,7 +3,7 @@ name: Publish Action
 on:
   push:
     branches:
-      - master
+      - main
       - next
       - alpha
       - beta
