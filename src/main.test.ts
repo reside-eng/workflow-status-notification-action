@@ -258,7 +258,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     delete process.env.GITHUB_WORKSPACE;
     fs.unlink('last-run-status', (err) => {
       if (err) {
-        console.error(err);
+        console.log("no cached status");
       }
     });
   });
