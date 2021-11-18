@@ -1,8 +1,25 @@
-# workflow-status-slack-notification
+# Workflow Status Slack Notification Action
 
-test
-Github action that keeps track and retrieves previous workflow runs status for the same workflow on the same branch.
-According to current and previous runs status, it will send a notification to a Slack channel using an Incoming webhook app.
+> Github action that keeps track and retrieves previous workflow runs status for the same workflow on the same branch.
+> According to current and previous runs status, it will send a notification to a Slack channel using an Incoming webhook app.
+
+## How it works
+
+At the end of a workflow, on success() and on failure(), call this action with the current status as a parameter (success/failure).
+This action will first check the previous workflow status and will send a Slack notification according to the current workflow status.
+Status is retrieved from cache if the current workflow has already run previously (from `re-run all jobs` button for example).
+If it's the first time this workflow runs, this action will retrieve previous workflow status on the same branch with `gh` cli using provided `github-token`.
+
+It'll compare last/current workflow status and will send a notification to Slack if:
+
+- Current status is `failure` and it's the first time this workflow runs for the current branch.
+- Current status is `failure` and previous run status was `success`.
+- Current status is `success` and previous run status was `failure`.
+
+## Notes
+
+You need to define this secret:
+YOUR_SLACK_WEBHOOK: Webhook URL from Slack Incoming Webhook application
 
 # Usage
 
@@ -29,20 +46,57 @@ According to current and previous runs status, it will send a notification to a 
 ```
 <!-- end usage -->
 
-# Local Development
+## Examples
 
-## Testing
+### Basic
 
-To run your tests in watch mode, open up one terminal and run:
+```yaml
+name: Build
 
-```sh
-yarn tsc --watch
-```
+on:
+  pull_request:
+    branches:
+      - main
 
-And in a second terminal, start up your tests in watch mode:
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-```sh
-yarn test --watch
+      # Your steps...
+
+  success-notification:
+    if: success()
+    name: success-notification
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.3.4
+
+      - uses: reside-eng/workflow-status-slack-notification@v1.0.7
+        with:
+          current-status: "success"
+          slack-webhook: "${{ secrets.YOUR_SLACK_WEBHOOK }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+  failure-notification:
+    if: failure()
+    name: failure-notification
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.3.4
+
+      - uses: reside-eng/workflow-status-slack-notification@v1.0.7
+        with:
+          current-status: "failure"
+          slack-webhook: "${{ secrets.YOUR_SLACK_WEBHOOK }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
 ```
 
 # License
