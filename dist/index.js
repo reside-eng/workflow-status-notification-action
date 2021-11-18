@@ -69409,7 +69409,6 @@ async function prepareSlackNotification(message, status) {
  */
 async function sendSlackMessage(webhookURL, messageBody) {
     core.info(`Message body: ${JSON.stringify(messageBody)}`);
-    console.log(`Message body: ${JSON.stringify(messageBody)}`);
     await source_default().post(webhookURL, {
         json: messageBody,
     });
@@ -69432,6 +69431,14 @@ async function pipeline() {
     const webhookUrl = core.getInput(Inputs.SlackWebhook);
     core.info(`Last run status: ${lastStatus}`);
     core.info(`Current run status: ${currentStatus}`);
+    if (currentStatus !== 'success' && currentStatus !== 'failure') {
+        core.setFailed('Wrong current status value');
+    }
+    const expressionUrl = /https:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
+    const regexUrl = new RegExp(expressionUrl);
+    if (!webhookUrl.match(regexUrl)) {
+        core.setFailed('Wrong Slack Webhook URL format');
+    }
     external_fs_.writeFileSync(cachePaths[0], `completed/${currentStatus}`, {
         encoding: 'utf8',
     });

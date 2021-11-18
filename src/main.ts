@@ -162,7 +162,6 @@ async function sendSlackMessage(
   messageBody: Record<string, any>,
 ) {
   core.info(`Message body: ${JSON.stringify(messageBody)}`);
-  console.log(`Message body: ${JSON.stringify(messageBody)}`);
 
   await got.post(webhookURL, {
     json: messageBody,
@@ -189,6 +188,18 @@ async function pipeline() {
 
   core.info(`Last run status: ${lastStatus}`);
   core.info(`Current run status: ${currentStatus}`);
+
+  if (currentStatus !== 'success' && currentStatus !== 'failure') {
+    core.setFailed('Wrong current status value');
+  }
+
+  const expressionUrl =
+    /https:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
+  const regexUrl = new RegExp(expressionUrl);
+
+  if (!webhookUrl.match(regexUrl)) {
+    core.setFailed('Wrong Slack Webhook URL format');
+  }
 
   fs.writeFileSync(cachePaths[0], `completed/${currentStatus}`, {
     encoding: 'utf8',
