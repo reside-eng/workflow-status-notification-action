@@ -69370,18 +69370,23 @@ async function prepareSlackNotification(message, status) {
                 fields: [
                     // actual fields
                     {
+                        title: 'Repository',
+                        value: `${repository}`,
+                        short: true,
+                    },
+                    {
                         title: 'Branch',
                         value: `${headRef}`,
                         short: true,
                     },
                     {
-                        title: 'Event',
-                        value: `${event}`,
+                        title: 'Action URL',
+                        value: `<${serverUrl}/${owner}/${repository}/actions/runs/${runId}|${workflow}>`,
                         short: true,
                     },
                     {
-                        title: 'Action URL',
-                        value: `<${serverUrl}/${owner}/${repository}/actions/runs/${runId}|${workflow}>`,
+                        title: 'Event',
+                        value: `${event}`,
                         short: true,
                     },
                     {
@@ -69404,6 +69409,7 @@ async function prepareSlackNotification(message, status) {
  */
 async function sendSlackMessage(webhookURL, messageBody) {
     core.info(`Message body: ${JSON.stringify(messageBody)}`);
+    console.log(`Message body: ${JSON.stringify(messageBody)}`);
     await source_default().post(webhookURL, {
         json: messageBody,
     });
