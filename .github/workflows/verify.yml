@@ -49,10 +49,7 @@ jobs:
         run: yarn lint
 
       - name: Test
-        uses: raulanatol/jest-coverage-comment-action@v1.1.2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          jest-command: yarn test --coverage --silent
+        run: yarn test --coverage --silent
 
       - name: Build
         run: yarn build
