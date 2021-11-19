@@ -37,6 +37,9 @@ jobs:
       - name: Lint
         run: yarn lint
 
+      - name: Check types
+        run: yarn types
+
       - name: Test
         run: yarn test --coverage --silent
         env:

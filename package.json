@@ -10,6 +10,7 @@
     "prepare": "husky install",
     "build": "rimraf dist && ncc build src/index.ts && ts-node bin/generate-docs.ts",
     "lint": "eslint . --ignore-pattern='!.eslintrc.js' --ext .ts,.js",
+    "types": "tsc --noEmit",
     "test": "export GITHUB_REPOSITORY='reside-eng/workflow-status-slack-notification' && yarn tsc && jest"
   },
   "repository": {
