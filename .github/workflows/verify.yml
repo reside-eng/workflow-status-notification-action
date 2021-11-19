@@ -23,12 +23,13 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
 
-      - name: Configure Package Manager
+      - name: Configure package manager
         run: |
           echo Configuring NPM_READ_TOKEN globally for .npmrc
-          npm config set '//registry.npmjs.org/:_authToken' ${{ secrets.NPM_READ_TOKEN }}
+          npm config set '//registry.npmjs.org/:_authToken' ${{ env.NPM_TOKEN }}
           npm whoami
-
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
