@@ -28,7 +28,7 @@ jobs:
 
       - name: Configure Package Manager
         run: |
-          echo Configuring NPM_READ_TOKEN globally for .npmrc
+          echo Configuring NPM_PUBLISH_TOKEN globally for .npmrc
           npm config set '//registry.npmjs.org/:_authToken' ${{ secrets.NPM_PUBLISH_TOKEN }}
           npm whoami
 
