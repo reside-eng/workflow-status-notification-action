@@ -63,7 +63,6 @@ jobs:
         id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Push updates to branch for major version
         # If a new version is published, i.e. v1.2.3 then this step will update
