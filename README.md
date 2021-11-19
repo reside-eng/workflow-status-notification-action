@@ -16,6 +16,12 @@ It'll compare last/current workflow status and will send a notification to Slack
 - Current status is `failure` and previous run status was `success`.
 - Current status is `success` and previous run status was `failure`.
 
+It'll not send a notification to Slack if:
+
+- Current status is `success` and previous run status was `success`.
+- Current status is `success` and it's the first run.
+- Current status is `failure` and previous run status was `failure`.
+
 ## Notes
 
 You need to define this secret:
