@@ -10,6 +10,9 @@ on:
       # N.x (maintenance release branches)
       - '[0-9]+.x'
 
+concurrency:
+  group: publish-${{ github.ref }}
+
 env:
   NODE_VERSION: 16.x
 
