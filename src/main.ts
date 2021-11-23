@@ -4,6 +4,7 @@ import * as github from '@actions/github';
 import * as exec from '@actions/exec';
 import * as cache from '@actions/cache';
 import got from 'got';
+import { ExecOptions } from '@actions/exec';
 
 export enum Inputs {
   CurrentStatus = 'current-status',
@@ -18,6 +19,21 @@ const cachePrimaryKey = `last-run-status-${context.runId}-${Math.random()
   .substr(2, 12)}`;
 const cacheRestoreKeys = [`last-run-status-${context.runId}-`];
 const cachePaths = ['last-run-status'];
+
+/**
+ * Gets headRef according to context
+ *
+ * @returns headRef
+ */
+async function getHeadRef() {
+  let headRef;
+  if (context.payload.pull_request !== undefined) {
+    headRef = context.payload.pull_request.head.ref;
+  } else {
+    headRef = context.ref.split('/').pop();
+  }
+  return headRef;
+}
 
 /**
  * Gets the last workflow run status
@@ -36,21 +52,14 @@ async function getLastRunStatus() {
   if (!cacheKey || (cacheKey && !fs.existsSync(cachePaths[0]))) {
     core.info('Cache not found, retrieve status from previous run.');
 
-    let headRef;
-
-    if (context.payload.pull_request !== undefined) {
-      headRef = JSON.parse(JSON.stringify(context.payload.pull_request)).head
-        .ref;
-    } else {
-      headRef = context.ref.split('/').pop();
-    }
+    const headRef = await getHeadRef();
 
     core.info(`Branch name: ${headRef}`);
 
     const githubToken = core.getInput(Inputs.GithubToken);
     core.exportVariable('GITHUB_TOKEN', `${githubToken}`);
 
-    const options: any = {};
+    const options: ExecOptions = {};
     options.listeners = {
       stdout: (data: Buffer) => {
         lastStatus += data.toString();
@@ -81,33 +90,27 @@ async function getLastRunStatus() {
 /**
  * Prepare slack notification
  *
- * @param webhookURL
- * @param messageBody
- * @param message
- * @param status
+ * @param message contained in the Slack notification
+ * @param status current status to notify
  * @returns the Slack message body
  */
 async function prepareSlackNotification(
   message: string,
   status: string,
 ): Promise<Record<string, any>> {
-  const { runId } = context;
-  const event = context.eventName;
-  const { owner } = context.repo;
-  const { workflow } = context;
-  const { actor } = context;
-  const { serverUrl } = context;
+  const {
+    runId,
+    workflow,
+    actor,
+    serverUrl,
+    eventName: event,
+    repo: { owner },
+  } = context;
   const color = status === 'success' ? 'good' : 'danger';
 
-  let headRef;
-  if (context.payload.pull_request !== undefined) {
-    headRef = JSON.parse(JSON.stringify(context.payload.pull_request)).head.ref;
-  } else {
-    headRef = context.ref.split('/').pop();
-  }
+  const headRef = await getHeadRef();
 
   const messageBody = {
-    username: `${repository} CI alert`, // This will appear as user name who posts the message
     icon_emoji: ':bangbang:', // User icon, you can also use custom icons here
     attachments: [
       {
@@ -154,8 +157,8 @@ async function prepareSlackNotification(
  * Handles the actual sending request.
  * We're turning the https.request into a promise here for convenience
  *
- * @param webhookURL
- * @param messageBody
+ * @param webhookURL URL of the Slack channel Webhook
+ * @param messageBody Payload to send to Slack
  */
 async function sendSlackMessage(
   webhookURL: string,

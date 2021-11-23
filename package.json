@@ -1,5 +1,5 @@
 {
-  "name": "workflow-status-slack-notification",
+  "name": "@side/workflow-status-slack-notification",
   "version": "0.0.0-development",
   "description": "Github Action workflow failure/success notification.",
   "main": "dist/index.js",
@@ -28,16 +28,17 @@
   "lint-staged": {
     "*.{json,md}": [
       "prettier --write"
+    ],
+    "*.{js,ts}": [
+      "eslint --fix"
     ]
   },
   "devDependencies": {
-    "@actions/exec": "1.1.0",
     "@commitlint/cli": "13.1.0",
     "@side/commitlint-config": "0.1.6",
     "@side/eslint-config-base": "0.11.6",
     "@side/eslint-config-jest": "0.3.8",
     "@tsconfig/node14": "1.0.1",
-    "@types/fs-extra": "9.0.12",
     "@types/jest": "27.0.1",
     "@types/js-yaml": "4.0.3",
     "@types/node": "16.6.2",
@@ -62,8 +63,6 @@
     "@actions/core": "1.5.0",
     "@actions/exec": "1.1.0",
     "@actions/github": "5.0.0",
-    "@types/node": "16.6.2",
-    "fs-extra": "^10.0.0",
     "got": "^11.8.2"
   }
 }

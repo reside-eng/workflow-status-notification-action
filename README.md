@@ -105,6 +105,18 @@ jobs:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
 ```
 
+# Local development
+
+Please install gh CLI:
+https://github.com/cli/cli#installation
+
+In order to run the jest tests, you'll need to specify a GITHUB_TOKEN env var.
+You can find/create your Github token here: https://github.com/settings/tokens
+
+```bash
+export GITHUB_TOKEN="{your_personal_access_token}"
+```
+
 # License
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE).
