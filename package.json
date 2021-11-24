@@ -63,7 +63,6 @@
     "@actions/core": "1.5.0",
     "@actions/exec": "1.1.0",
     "@actions/github": "5.0.0",
-    "got": "^11.8.2",
-    "fs/promises": "^11.8.2"
+    "got": "^11.8.2"
   }
 }
