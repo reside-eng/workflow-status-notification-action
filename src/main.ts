@@ -1,9 +1,8 @@
-import * as fs from 'fs';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as exec from '@actions/exec';
 import * as cache from '@actions/cache';
-import * as fsp from 'fs/promises';
+import { promises as fsp } from 'fs';
 import got from 'got';
 import { ExecOptions } from '@actions/exec';
 
@@ -37,6 +36,39 @@ async function getHeadRef() {
 }
 
 /**
+ * Gets last run status from GH CLI
+ *
+ * @returns status
+ */
+async function getStatusFromGithub() {
+  const headRef = await getHeadRef();
+
+  const githubToken = core.getInput(Inputs.GithubToken);
+  core.exportVariable('GITHUB_TOKEN', `${githubToken}`);
+
+  const options: ExecOptions = {};
+  let lastStatus = '';
+  options.listeners = {
+    stdout: (data: Buffer) => {
+      lastStatus += data.toString();
+    },
+  };
+
+  await exec.exec(
+    '/bin/bash',
+    [
+      '-c',
+      `gh run list -w "${context.workflow}" | grep "${context.workflow}	${headRef}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}'`,
+    ],
+    options,
+  );
+
+  core.info(`GH Found status: ${lastStatus}`);
+
+  return lastStatus;
+}
+
+/**
  * Gets the last workflow run status
  *
  * @returns last run status
@@ -50,39 +82,15 @@ async function getLastRunStatus() {
     cacheRestoreKeys,
   );
 
-  if (!cacheKey || (cacheKey && !fs.existsSync(cachePaths[0]))) {
-    core.info('Cache not found, retrieve status from previous run.');
-
-    const headRef = await getHeadRef();
-
-    core.info(`Branch name: ${headRef}`);
-
-    const githubToken = core.getInput(Inputs.GithubToken);
-    core.exportVariable('GITHUB_TOKEN', `${githubToken}`);
-
-    const options: ExecOptions = {};
-    options.listeners = {
-      stdout: (data: Buffer) => {
-        lastStatus += data.toString();
-      },
-    };
-
-    await exec.exec(
-      '/bin/bash',
-      [
-        '-c',
-        `gh run list -w "${context.workflow}" | grep "${context.workflow}	${headRef}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}'`,
-      ],
-      options,
-    );
-
-    core.info(`GH Found status: ${lastStatus}`);
+  if (cacheKey) {
+    try {
+      lastStatus = await fsp.readFile(cachePaths[0], 'utf8');
+      core.info(`Cache Found status: ${lastStatus}`);
+    } catch (err) {
+      lastStatus = await getStatusFromGithub();
+    }
   } else {
-    core.info('Cache found, retrieve status from same run.');
-
-    lastStatus = await fsp.readFile(cachePaths[0], 'utf8');
-
-    core.info(`Cache Found status: ${lastStatus}`);
+    lastStatus = await getStatusFromGithub();
   }
 
   return lastStatus.trim();

@@ -1,10 +1,8 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as cache from '@actions/cache';
-import * as fs from 'fs';
-import * as fsp from 'fs/promises';
+import { promises as fsp } from 'fs';
 import nock from 'nock';
-import { PayloadRepository } from '@actions/github/lib/interfaces';
 import run from './main';
 
 jest.mock('@actions/core');
@@ -68,14 +66,18 @@ function setupMock() {
   );
 
   mockCache.restoreCache.mockImplementation(
-    (): Promise<string | undefined> =>
-      new Promise((resolve) => {
-        if (fs.existsSync('last-run-status')) {
+    async (): Promise<string | undefined> => {
+      try {
+        await fsp.readFile('last-run-status', 'utf8');
+        return new Promise((resolve) => {
           resolve('test');
-        } else {
+        });
+      } catch (err) {
+        return new Promise((resolve) => {
           resolve(undefined);
-        }
-      }),
+        });
+      }
+    },
   );
 
   // Setting to this Github repo by default

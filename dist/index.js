@@ -69260,8 +69260,6 @@ var __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __nccwpck_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: external "fs"
-var external_fs_ = __nccwpck_require__(5747);
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2186);
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
@@ -69270,13 +69268,12 @@ var github = __nccwpck_require__(5438);
 var exec = __nccwpck_require__(1514);
 // EXTERNAL MODULE: ./node_modules/@actions/cache/lib/cache.js
 var cache = __nccwpck_require__(7799);
-;// CONCATENATED MODULE: external "fs/promises"
-const promises_namespaceObject = require("fs/promises");
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __nccwpck_require__(5747);
 // EXTERNAL MODULE: ./node_modules/got/dist/source/index.js
 var source = __nccwpck_require__(3061);
 var source_default = /*#__PURE__*/__nccwpck_require__.n(source);
 ;// CONCATENATED MODULE: ./src/main.ts
-
 
 
 
@@ -69312,6 +69309,29 @@ async function getHeadRef() {
     return headRef;
 }
 /**
+ * Gets last run status from GH CLI
+ *
+ * @returns status
+ */
+async function getStatusFromGithub() {
+    const headRef = await getHeadRef();
+    const githubToken = core.getInput(Inputs.GithubToken);
+    core.exportVariable('GITHUB_TOKEN', `${githubToken}`);
+    const options = {};
+    let lastStatus = '';
+    options.listeners = {
+        stdout: (data) => {
+            lastStatus += data.toString();
+        },
+    };
+    await exec.exec('/bin/bash', [
+        '-c',
+        `gh run list -w "${context.workflow}" | grep "${context.workflow}	${headRef}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}'`,
+    ], options);
+    core.info(`GH Found status: ${lastStatus}`);
+    return lastStatus;
+}
+/**
  * Gets the last workflow run status
  *
  * @returns last run status
@@ -69319,28 +69339,17 @@ async function getHeadRef() {
 async function getLastRunStatus() {
     let lastStatus = '';
     const cacheKey = await cache.restoreCache(cachePaths, cachePrimaryKey, cacheRestoreKeys);
-    if (!cacheKey || (cacheKey && !external_fs_.existsSync(cachePaths[0]))) {
-        core.info('Cache not found, retrieve status from previous run.');
-        const headRef = await getHeadRef();
-        core.info(`Branch name: ${headRef}`);
-        const githubToken = core.getInput(Inputs.GithubToken);
-        core.exportVariable('GITHUB_TOKEN', `${githubToken}`);
-        const options = {};
-        options.listeners = {
-            stdout: (data) => {
-                lastStatus += data.toString();
-            },
-        };
-        await exec.exec('/bin/bash', [
-            '-c',
-            `gh run list -w "${context.workflow}" | grep "${context.workflow}	${headRef}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}'`,
-        ], options);
-        core.info(`GH Found status: ${lastStatus}`);
+    if (cacheKey) {
+        try {
+            lastStatus = await external_fs_.promises.readFile(cachePaths[0], 'utf8');
+            core.info(`Cache Found status: ${lastStatus}`);
+        }
+        catch (err) {
+            lastStatus = await getStatusFromGithub();
+        }
     }
     else {
-        core.info('Cache found, retrieve status from same run.');
-        lastStatus = await promises_namespaceObject.readFile(cachePaths[0], 'utf8');
-        core.info(`Cache Found status: ${lastStatus}`);
+        lastStatus = await getStatusFromGithub();
     }
     return lastStatus.trim();
 }
@@ -69436,7 +69445,7 @@ async function pipeline() {
     if (!webhookUrl.match(regexUrl)) {
         core.setFailed('Wrong Slack Webhook URL format');
     }
-    await promises_namespaceObject.writeFile(cachePaths[0], `completed/${currentStatus}`, {
+    await external_fs_.promises.writeFile(cachePaths[0], `completed/${currentStatus}`, {
         encoding: 'utf8',
     });
     await cache.saveCache(cachePaths, cachePrimaryKey);
