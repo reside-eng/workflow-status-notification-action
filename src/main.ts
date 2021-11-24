@@ -1,10 +1,9 @@
 import * as core from '@actions/core';
-import * as github from '@actions/github';
-import * as exec from '@actions/exec';
+import { context } from '@actions/github';
 import * as cache from '@actions/cache';
 import { promises as fsp } from 'fs';
 import got from 'got';
-import { ExecOptions } from '@actions/exec';
+import { exec, ExecOptions } from '@actions/exec';
 import { URL } from 'url';
 
 export enum Inputs {
@@ -13,7 +12,6 @@ export enum Inputs {
   GithubToken = 'github-token',
 }
 
-const { context } = github;
 const repository = context.repo.repo;
 const cachePrimaryKey = `last-run-status-${context.runId}-${Math.random()
   .toString(36)
@@ -26,14 +24,11 @@ const cachePaths = ['last-run-status'];
  *
  * @returns headRef
  */
-async function getHeadRef() {
-  let headRef;
+function getHeadRef() {
   if (context.payload.pull_request !== undefined) {
-    headRef = context.payload.pull_request.head.ref;
-  } else {
-    headRef = context.ref.split('/').pop();
+    return context.payload.pull_request.head.ref;
   }
-  return headRef;
+  return context.ref.split('/').pop();
 }
 
 /**
@@ -42,7 +37,7 @@ async function getHeadRef() {
  * @returns status
  */
 async function getStatusFromGithub() {
-  const headRef = await getHeadRef();
+  const headRef = getHeadRef();
 
   const githubToken = core.getInput(Inputs.GithubToken);
   core.exportVariable('GITHUB_TOKEN', `${githubToken}`);
@@ -55,7 +50,7 @@ async function getStatusFromGithub() {
     },
   };
 
-  await exec.exec(
+  await exec(
     '/bin/bash',
     [
       '-c',
@@ -104,7 +99,10 @@ async function getLastRunStatus() {
  * @param status current status to notify
  * @returns the Slack message body
  */
-async function prepareSlackNotification(message: string, status: string) {
+export async function prepareSlackNotification(
+  message: string,
+  status: string,
+): Promise<Record<string, string | number | boolean | unknown>> {
   const {
     runId,
     workflow,
@@ -169,7 +167,7 @@ async function prepareSlackNotification(message: string, status: string) {
  */
 async function sendSlackMessage(
   webhookURL: string,
-  messageBody: Record<string, any>,
+  messageBody: Record<string, string | number | boolean | unknown>,
 ) {
   core.info(`Message body: ${JSON.stringify(messageBody)}`);
 
@@ -204,15 +202,15 @@ async function pipeline() {
     return;
   }
 
-  let URLTest;
+  let url;
   try {
-    URLTest = new URL(webhookUrl);
+    url = new URL(webhookUrl);
   } catch (err) {
     core.setFailed('Wrong Slack Webhook URL format');
     return;
   }
 
-  if (URLTest.protocol !== 'https:') {
+  if (url.protocol !== 'https:') {
     core.setFailed('Wrong Slack Webhook URL format');
     return;
   }
@@ -226,7 +224,7 @@ async function pipeline() {
   if (currentStatus === 'success' && lastStatus === 'completed/failure') {
     core.info(`Success notification`);
     const message = await prepareSlackNotification(
-      `Previously failing ${context.workflow} workflow in ${repository} succeed.`,
+      `Previously failing ${context.workflow} workflow in ${repository} succeeded.`,
       currentStatus,
     );
     await sendSlackMessage(webhookUrl, message);

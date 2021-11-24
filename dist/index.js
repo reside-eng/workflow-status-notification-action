@@ -69264,8 +69264,6 @@ __nccwpck_require__.r(__webpack_exports__);
 var core = __nccwpck_require__(2186);
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
 var github = __nccwpck_require__(5438);
-// EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
-var exec = __nccwpck_require__(1514);
 // EXTERNAL MODULE: ./node_modules/@actions/cache/lib/cache.js
 var cache = __nccwpck_require__(7799);
 // EXTERNAL MODULE: external "fs"
@@ -69273,6 +69271,8 @@ var external_fs_ = __nccwpck_require__(5747);
 // EXTERNAL MODULE: ./node_modules/got/dist/source/index.js
 var source = __nccwpck_require__(3061);
 var source_default = /*#__PURE__*/__nccwpck_require__.n(source);
+// EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
+var exec = __nccwpck_require__(1514);
 // EXTERNAL MODULE: external "url"
 var external_url_ = __nccwpck_require__(8835);
 ;// CONCATENATED MODULE: ./src/main.ts
@@ -69289,27 +69289,22 @@ var Inputs;
     Inputs["SlackWebhook"] = "slack-webhook";
     Inputs["GithubToken"] = "github-token";
 })(Inputs || (Inputs = {}));
-const { context } = github;
-const repository = context.repo.repo;
-const cachePrimaryKey = `last-run-status-${context.runId}-${Math.random()
+const repository = github.context.repo.repo;
+const cachePrimaryKey = `last-run-status-${github.context.runId}-${Math.random()
     .toString(36)
     .substr(2, 12)}`;
-const cacheRestoreKeys = [`last-run-status-${context.runId}-`];
+const cacheRestoreKeys = [`last-run-status-${github.context.runId}-`];
 const cachePaths = ['last-run-status'];
 /**
  * Gets headRef according to context
  *
  * @returns headRef
  */
-async function getHeadRef() {
-    let headRef;
-    if (context.payload.pull_request !== undefined) {
-        headRef = context.payload.pull_request.head.ref;
+function getHeadRef() {
+    if (github.context.payload.pull_request !== undefined) {
+        return github.context.payload.pull_request.head.ref;
     }
-    else {
-        headRef = context.ref.split('/').pop();
-    }
-    return headRef;
+    return github.context.ref.split('/').pop();
 }
 /**
  * Gets last run status from GH CLI
@@ -69317,7 +69312,7 @@ async function getHeadRef() {
  * @returns status
  */
 async function getStatusFromGithub() {
-    const headRef = await getHeadRef();
+    const headRef = getHeadRef();
     const githubToken = core.getInput(Inputs.GithubToken);
     core.exportVariable('GITHUB_TOKEN', `${githubToken}`);
     const options = {};
@@ -69327,9 +69322,9 @@ async function getStatusFromGithub() {
             lastStatus += data.toString();
         },
     };
-    await exec.exec('/bin/bash', [
+    await (0,exec.exec)('/bin/bash', [
         '-c',
-        `gh run list -w "${context.workflow}" | grep "${context.workflow}	${headRef}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}'`,
+        `gh run list -w "${github.context.workflow}" | grep "${github.context.workflow}	${headRef}" | grep -v "completed	cancelled" | grep -v "in_progress" | head -n 1 | awk -F" " '{print $1"/"$2}'`,
     ], options);
     core.info(`GH Found status: ${lastStatus}`);
     return lastStatus;
@@ -69364,7 +69359,7 @@ async function getLastRunStatus() {
  * @returns the Slack message body
  */
 async function prepareSlackNotification(message, status) {
-    const { runId, workflow, actor, serverUrl, eventName: event, repo: { owner }, } = context;
+    const { runId, workflow, actor, serverUrl, eventName: event, repo: { owner }, } = github.context;
     const color = status === 'success' ? 'good' : 'danger';
     const headRef = await getHeadRef();
     const messageBody = {
@@ -69444,15 +69439,15 @@ async function pipeline() {
         core.setFailed('Wrong current status value');
         return;
     }
-    let URLTest;
+    let url;
     try {
-        URLTest = new external_url_.URL(webhookUrl);
+        url = new external_url_.URL(webhookUrl);
     }
     catch (err) {
         core.setFailed('Wrong Slack Webhook URL format');
         return;
     }
-    if (URLTest.protocol !== 'https:') {
+    if (url.protocol !== 'https:') {
         core.setFailed('Wrong Slack Webhook URL format');
         return;
     }
@@ -69462,13 +69457,13 @@ async function pipeline() {
     await cache.saveCache(cachePaths, cachePrimaryKey);
     if (currentStatus === 'success' && lastStatus === 'completed/failure') {
         core.info(`Success notification`);
-        const message = await prepareSlackNotification(`Previously failing ${context.workflow} workflow in ${repository} succeed.`, currentStatus);
+        const message = await prepareSlackNotification(`Previously failing ${github.context.workflow} workflow in ${repository} succeeded.`, currentStatus);
         await sendSlackMessage(webhookUrl, message);
     }
     else if (currentStatus === 'failure' &&
         (lastStatus === 'completed/success' || lastStatus === '')) {
         core.info(`Failure notification`);
-        const message = await prepareSlackNotification(`${context.workflow} workflow in ${repository} failed.`, currentStatus);
+        const message = await prepareSlackNotification(`${github.context.workflow} workflow in ${repository} failed.`, currentStatus);
         await sendSlackMessage(webhookUrl, message);
     }
     else {

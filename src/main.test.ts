@@ -1,9 +1,11 @@
 import * as core from '@actions/core';
-import * as github from '@actions/github';
+import { context } from '@actions/github';
 import * as cache from '@actions/cache';
 import { promises as fsp } from 'fs';
+import { mocked } from 'ts-jest/utils';
+import got from 'got';
 import nock from 'nock';
-import run from './main';
+import run, { prepareSlackNotification } from './main';
 
 jest.mock('@actions/core');
 jest.mock('@actions/cache');
@@ -28,6 +30,8 @@ let mock: MockObj;
 
 const mockCore = core as jest.Mocked<typeof core>;
 const mockCache = cache as jest.Mocked<typeof cache>;
+jest.mock('got');
+const mockGot = mocked(got);
 
 const slackUrl = 'https://hooks.slack.com';
 const slackPath = '/services/test/test';
@@ -69,44 +73,40 @@ function setupMock() {
     async (): Promise<string | undefined> => {
       try {
         await fsp.readFile('last-run-status', 'utf8');
-        return new Promise((resolve) => {
-          resolve('test');
-        });
+        return 'test';
       } catch (err) {
-        return new Promise((resolve) => {
-          resolve(undefined);
-        });
+        return undefined;
       }
     },
   );
 
   // Setting to this Github repo by default
-  github.context.payload.repository = {
+  context.payload.repository = {
     name: mock.repo.repo,
     owner: {
       login: mock.actor,
     },
     clone_url: mock.repo,
   };
-  github.context.workflow = mock.workflow;
-  github.context.runId = mock.runId;
-  github.context.payload.pull_request = {
+  context.workflow = mock.workflow;
+  context.runId = mock.runId;
+  context.payload.pull_request = {
     number: mock.prNumber,
     head: {
       ref: mock.headRef,
     },
   };
-  github.context.ref = mock.ref;
-  github.context.eventName = mock.eventName;
-  github.context.actor = mock.actor;
-  github.context.serverUrl = mock.serverUrl;
+  context.ref = mock.ref;
+  context.eventName = mock.eventName;
+  context.actor = mock.actor;
+  context.serverUrl = mock.serverUrl;
 }
 
 /**
  *
  */
 async function writeStatusToCache() {
-  await fsp.writeFile('last-run-status', `completed/failure`, {
+  fsp.writeFile('last-run-status', `completed/failure`, {
     encoding: 'utf8',
   });
 }
@@ -134,9 +134,20 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockCore.info).toHaveBeenCalledWith(
       'Last run status: completed/failure',
     );
-    expect(mockCore.info).toHaveBeenCalledWith(
-      'Message body: {"icon_emoji":":bangbang:","attachments":[{"color":"good","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Repository","value":"workflow-status-slack-notification","short":true},{"title":"Branch","value":"main","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Failure workflow (for test purpose only) workflow success","value":"Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeed.","short":false}]}]}',
+    expect(mockGot.post).toHaveBeenCalledTimes(1);
+    // WIP
+    const messageBody = await prepareSlackNotification(
+      'Failure workflow (for test purpose only) workflow success',
+      'success',
     );
+    expect(messageBody).toMatchInlineSnapshot();
+    // WIP
+    // expect(mockGot.post).toHaveBeenCalledWith(
+    //   mock.inputs['slack-webhook'],
+    //   {
+    //     json: 'Message body: {"icon_emoji":":bangbang:","attachments":[{"color":"good","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Repository","value":"workflow-status-slack-notification","short":true},{"title":"Branch","value":"main","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Failure workflow (for test purpose only) workflow success","value":"Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeeded.","short":false}]}]}',
+    //   }
+    // );
   });
 
   it('should not send notification if last run succeeded and current succeeded', async () => {
@@ -147,6 +158,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockCore.info).toHaveBeenCalledWith(
       'Last run status: completed/success',
     );
+    expect(mockGot.post).toHaveBeenCalledTimes(0);
   });
 
   it('should send failure notification if last run succeeded and current fails', async () => {
@@ -160,6 +172,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockCore.info).toHaveBeenCalledWith(
       'Last run status: completed/success',
     );
+    expect(mockGot.post).toHaveBeenCalledTimes(1);
     expect(mockCore.info).toHaveBeenCalledWith(
       'Message body: {"icon_emoji":":bangbang:","attachments":[{"color":"danger","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Repository","value":"workflow-status-slack-notification","short":true},{"title":"Branch","value":"main","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Failure workflow (for test purpose only) workflow failure","value":"Failure workflow (for test purpose only) workflow in workflow-status-slack-notification failed.","short":false}]}]}',
     );
@@ -176,10 +189,11 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockCore.info).toHaveBeenCalledWith(
       'Last run status: completed/failure',
     );
+    expect(mockGot.post).toHaveBeenCalledTimes(0);
   });
 
   it('not a pull_request: should send success notification if last run failed and current succeeded', async () => {
-    github.context.payload.pull_request = undefined;
+    context.payload.pull_request = undefined;
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
@@ -187,8 +201,9 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockCore.info).toHaveBeenCalledWith(
       'Last run status: completed/failure',
     );
+    expect(mockGot.post).toHaveBeenCalledTimes(1);
     expect(mockCore.info).toHaveBeenCalledWith(
-      'Message body: {"icon_emoji":":bangbang:","attachments":[{"color":"good","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Repository","value":"workflow-status-slack-notification","short":true},{"title":"Branch","value":"main","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Failure workflow (for test purpose only) workflow success","value":"Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeed.","short":false}]}]}',
+      'Message body: {"icon_emoji":":bangbang:","attachments":[{"color":"good","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Repository","value":"workflow-status-slack-notification","short":true},{"title":"Branch","value":"main","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Failure workflow (for test purpose only) workflow success","value":"Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeeded.","short":false}]}]}',
     );
   });
 });
@@ -207,13 +222,14 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     expect(mockCore.info).toHaveBeenCalledWith(
       'Last run status: completed/failure',
     );
+    expect(mockGot.post).toHaveBeenCalledTimes(1);
     expect(mockCore.info).toHaveBeenCalledWith(
-      'Message body: {"icon_emoji":":bangbang:","attachments":[{"color":"good","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Repository","value":"workflow-status-slack-notification","short":true},{"title":"Branch","value":"main","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Failure workflow (for test purpose only) workflow success","value":"Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeed.","short":false}]}]}',
+      'Message body: {"icon_emoji":":bangbang:","attachments":[{"color":"good","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Repository","value":"workflow-status-slack-notification","short":true},{"title":"Branch","value":"main","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Failure workflow (for test purpose only) workflow success","value":"Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeeded.","short":false}]}]}',
     );
   });
 
   it('should not send notification if last run succeeded and current succeeded', async () => {
-    github.context.workflow = 'Success workflow (for test purpose only)';
+    context.workflow = 'Success workflow (for test purpose only)';
 
     await run();
 
@@ -223,10 +239,11 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     expect(mockCore.info).toHaveBeenCalledWith(
       'Last run status: completed/success',
     );
+    expect(mockGot.post).toHaveBeenCalledTimes(0);
   });
 
   it('should send failure notification if last run succeeded and current fails', async () => {
-    github.context.workflow = 'Success workflow (for test purpose only)';
+    context.workflow = 'Success workflow (for test purpose only)';
     mock.inputs['current-status'] = 'failure';
 
     await run();
@@ -237,6 +254,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     expect(mockCore.info).toHaveBeenCalledWith(
       'Last run status: completed/success',
     );
+    expect(mockGot.post).toHaveBeenCalledTimes(1);
     expect(mockCore.info).toHaveBeenCalledWith(
       'Message body: {"icon_emoji":":bangbang:","attachments":[{"color":"danger","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Repository","value":"workflow-status-slack-notification","short":true},{"title":"Branch","value":"main","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Success workflow (for test purpose only)>","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Success workflow (for test purpose only) workflow failure","value":"Success workflow (for test purpose only) workflow in workflow-status-slack-notification failed.","short":false}]}]}',
     );
@@ -253,10 +271,11 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     expect(mockCore.info).toHaveBeenCalledWith(
       'Last run status: completed/failure',
     );
+    expect(mockGot.post).toHaveBeenCalledTimes(0);
   });
 
   it('not a pull_request: should send success notification if last run failed and current succeeded', async () => {
-    github.context.payload.pull_request = undefined;
+    context.payload.pull_request = undefined;
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
@@ -264,8 +283,9 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     expect(mockCore.info).toHaveBeenCalledWith(
       'Last run status: completed/failure',
     );
+    expect(mockGot.post).toHaveBeenCalledTimes(1);
     expect(mockCore.info).toHaveBeenCalledWith(
-      'Message body: {"icon_emoji":":bangbang:","attachments":[{"color":"good","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Repository","value":"workflow-status-slack-notification","short":true},{"title":"Branch","value":"main","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Failure workflow (for test purpose only) workflow success","value":"Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeed.","short":false}]}]}',
+      'Message body: {"icon_emoji":":bangbang:","attachments":[{"color":"good","author_name":"workflowactor","author_link":"https://github.com/workflowactor","author_icon":"https://github.com/workflowactor.png?size=32","fields":[{"title":"Repository","value":"workflow-status-slack-notification","short":true},{"title":"Branch","value":"main","short":true},{"title":"Action URL","value":"<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>","short":true},{"title":"Event","value":"pull_request","short":true},{"title":"Failure workflow (for test purpose only) workflow success","value":"Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeeded.","short":false}]}]}',
     );
   });
 });
@@ -282,6 +302,7 @@ describe('inputs format', () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockCore.info).toHaveBeenCalledWith('Success notification');
+    expect(mockGot.post).toHaveBeenCalledTimes(1);
   });
 
   it('should fail with wrong current status value', async () => {
@@ -289,6 +310,7 @@ describe('inputs format', () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
     expect(mockCore.info).not.toHaveBeenCalledWith('No notification needed');
+    expect(mockGot.post).toHaveBeenCalledTimes(0);
   });
 
   it('should fail with wrong slack webhook format', async () => {
@@ -296,5 +318,6 @@ describe('inputs format', () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
     expect(mockCore.info).not.toHaveBeenCalledWith('No notification needed');
+    expect(mockGot.post).toHaveBeenCalledTimes(0);
   });
 });
