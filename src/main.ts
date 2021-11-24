@@ -3,6 +3,7 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as exec from '@actions/exec';
 import * as cache from '@actions/cache';
+import * as fsp from 'fs/promises';
 import got from 'got';
 import { ExecOptions } from '@actions/exec';
 
@@ -79,7 +80,7 @@ async function getLastRunStatus() {
   } else {
     core.info('Cache found, retrieve status from same run.');
 
-    lastStatus = fs.readFileSync(cachePaths[0], 'utf8');
+    lastStatus = await fsp.readFile(cachePaths[0], 'utf8');
 
     core.info(`Cache Found status: ${lastStatus}`);
   }
@@ -204,7 +205,7 @@ async function pipeline() {
     core.setFailed('Wrong Slack Webhook URL format');
   }
 
-  fs.writeFileSync(cachePaths[0], `completed/${currentStatus}`, {
+  await fsp.writeFile(cachePaths[0], `completed/${currentStatus}`, {
     encoding: 'utf8',
   });
 
@@ -238,4 +239,6 @@ async function pipeline() {
 export default async function run(): Promise<void> {
   process.on('unhandledRejection', handleError);
   await pipeline().catch(handleError);
+  // ensures listener is removed after the run
+  process.removeListener('unhandledRejection', handleError);
 }

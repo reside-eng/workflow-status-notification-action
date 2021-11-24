@@ -69270,10 +69270,13 @@ var github = __nccwpck_require__(5438);
 var exec = __nccwpck_require__(1514);
 // EXTERNAL MODULE: ./node_modules/@actions/cache/lib/cache.js
 var cache = __nccwpck_require__(7799);
+;// CONCATENATED MODULE: external "fs/promises"
+const promises_namespaceObject = require("fs/promises");
 // EXTERNAL MODULE: ./node_modules/got/dist/source/index.js
 var source = __nccwpck_require__(3061);
 var source_default = /*#__PURE__*/__nccwpck_require__.n(source);
 ;// CONCATENATED MODULE: ./src/main.ts
+
 
 
 
@@ -69336,7 +69339,7 @@ async function getLastRunStatus() {
     }
     else {
         core.info('Cache found, retrieve status from same run.');
-        lastStatus = external_fs_.readFileSync(cachePaths[0], 'utf8');
+        lastStatus = await promises_namespaceObject.readFile(cachePaths[0], 'utf8');
         core.info(`Cache Found status: ${lastStatus}`);
     }
     return lastStatus.trim();
@@ -69433,7 +69436,7 @@ async function pipeline() {
     if (!webhookUrl.match(regexUrl)) {
         core.setFailed('Wrong Slack Webhook URL format');
     }
-    external_fs_.writeFileSync(cachePaths[0], `completed/${currentStatus}`, {
+    await promises_namespaceObject.writeFile(cachePaths[0], `completed/${currentStatus}`, {
         encoding: 'utf8',
     });
     await cache.saveCache(cachePaths, cachePrimaryKey);
@@ -69458,6 +69461,8 @@ async function pipeline() {
 async function run() {
     process.on('unhandledRejection', handleError);
     await pipeline().catch(handleError);
+    // ensures listener is removed after the run
+    process.removeListener('unhandledRejection', handleError);
 }
 
 ;// CONCATENATED MODULE: ./src/index.ts

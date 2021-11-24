@@ -110,12 +110,17 @@ jobs:
 Please install gh CLI:
 https://github.com/cli/cli#installation
 
-In order to run the jest tests, you'll need to specify a GITHUB_TOKEN env var.
-You can find/create your Github token here: https://github.com/settings/tokens
+In order to run the jest tests, you'll need to configure authentication using your gh CLI:
 
 ```bash
-export GITHUB_TOKEN="{your_personal_access_token}"
+gh auth refresh
 ```
+
+You'll be prompted with a one-time code, copy this one.
+Then click on enter, a web page will open in your browser.
+Paste the code previously copied.
+Click on `Authorize github`
+You're all set !
 
 # License
 

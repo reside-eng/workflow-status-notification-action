@@ -2,17 +2,13 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as cache from '@actions/cache';
 import * as fs from 'fs';
+import * as fsp from 'fs/promises';
 import nock from 'nock';
 import { PayloadRepository } from '@actions/github/lib/interfaces';
 import run from './main';
 
 jest.mock('@actions/core');
 jest.mock('@actions/cache');
-
-// interface MockObj {
-//   inputs: Record<string, string | undefined>;
-//   context: Context;
-// }
 
 interface MockObj {
   inputs: Record<string, string | undefined>;
@@ -21,6 +17,7 @@ interface MockObj {
     repo: string;
   };
   workflow: string;
+  prNumber: number;
   runId: number;
   headRef: string;
   ref: string;
@@ -38,78 +35,6 @@ const slackUrl = 'https://hooks.slack.com';
 const slackPath = '/services/test/test';
 
 nock(slackUrl).persist().post(slackPath).reply(200);
-
-// function setupMock () {
-//   jest.clearAllMocks();
-
-//   mock = {
-//     // Default action inputs
-//     inputs: {
-//       'current-status': 'success',
-//       'slack-webhook': `${slackUrl}${slackPath}`,
-//       'github-token': `${process.env.GITHUB_TOKEN}`,
-//     },
-//     context: {
-//       workflow: 'Failure workflow (for test purpose only)',
-//       runId: 23456,
-//       payload: {
-//         repository: {
-//           name: 'test',
-//           owner: {
-//             login: 'login'
-//           },
-//           clone_url: {
-//             owner: 'reside-eng',
-//             repo: 'workflow-status-slack-notification',
-//           },
-//         },
-//         pull_request: {
-//           number: 4,
-//           head: {
-//             ref: 'main',
-//           },
-//         },
-//       },
-//       ref: 'main',
-//       eventName: 'pull_request',
-//       actor: 'workflowactor',
-//       serverUrl: 'https://github.com',
-//       sha: 'bcbe896219b8390df78b7d43c00a7e679d7da429',
-//       action: 'Failure workflow (for test purpose only)',
-//       job: 'build',
-//       runNumber: 12,
-//       apiUrl: 'https://api.github.com',
-//       graphqlUrl: 'https://api.github.com/graphql',
-//       issue: {
-//         owner: 'workflowactor',
-//         repo: 'workflow-status-slack-notification',
-//         number: 1,
-//       },
-//       repo: {
-//         owner: 'reside-eng',
-//         repo: 'workflow-status-slack-notification',
-//       },
-//     }
-//   };
-
-//   mockCore.getInput.mockImplementation(
-//     (name: string): string => mock.inputs[name] || '',
-//   );
-
-//   mockCache.restoreCache.mockImplementation(
-//     (): Promise<string | undefined> =>
-//       new Promise((resolve) => {
-//         if (fs.existsSync('last-run-status')) {
-//           resolve('test');
-//         } else {
-//           resolve(undefined);
-//         }
-//       }),
-//   );
-
-//   // Setting to this Github repo by default
-//   (github.context as Context) = mock.context;
-// }
 
 /**
  *
@@ -129,6 +54,7 @@ function setupMock() {
       repo: 'workflow-status-slack-notification',
     },
     workflow: 'Failure workflow (for test purpose only)',
+    prNumber: 4,
     runId: 23456,
     headRef: 'main',
     ref: 'main',
@@ -153,12 +79,17 @@ function setupMock() {
   );
 
   // Setting to this Github repo by default
-  (github.context.payload.repository as Partial<PayloadRepository>) = {
+  github.context.payload.repository = {
+    name: mock.repo.repo,
+    owner: {
+      login: mock.actor,
+    },
     clone_url: mock.repo,
   };
   github.context.workflow = mock.workflow;
   github.context.runId = mock.runId;
-  (github.context.payload.pull_request as Partial<PayloadRepository>) = {
+  github.context.payload.pull_request = {
+    number: mock.prNumber,
     head: {
       ref: mock.headRef,
     },
@@ -169,24 +100,29 @@ function setupMock() {
   github.context.serverUrl = mock.serverUrl;
 }
 
+/**
+ *
+ */
+async function writeStatusToCache() {
+  await fsp.writeFile('last-run-status', `completed/failure`, {
+    encoding: 'utf8',
+  });
+}
+
+/**
+ *
+ */
+async function cleanCache() {
+  fsp.unlink('last-run-status');
+}
+
 // Test using cache only to retrieve previous status (re-run workflow behavior)
 describe('last run status retrieved from cache (re-run workflow behavior)', () => {
   beforeEach(() => setupMock());
 
-  beforeAll(() => {
-    fs.writeFileSync('last-run-status', `completed/failure`, {
-      encoding: 'utf8',
-    });
-  });
+  beforeAll(() => writeStatusToCache());
 
-  afterAll(() => {
-    delete process.env.GITHUB_WORKSPACE;
-    fs.unlink('last-run-status', (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
-  });
+  afterAll(() => cleanCache());
 
   it('should send success notification if last run failed and current succeeded', async () => {
     await run();
@@ -259,14 +195,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
 describe('last run status retrieved from GH CLI (new commit workflow behavior)', () => {
   beforeEach(() => setupMock());
 
-  afterEach(() => {
-    delete process.env.GITHUB_WORKSPACE;
-    fs.unlink('last-run-status', (err) => {
-      if (err) {
-        console.log('no cached status');
-      }
-    });
-  });
+  afterEach(() => cleanCache());
 
   it('should send success notification if last run failed and current succeeded', async () => {
     await run();
@@ -343,20 +272,9 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
 describe('inputs format', () => {
   beforeEach(() => setupMock());
 
-  beforeAll(() => {
-    fs.writeFileSync('last-run-status', `completed/failure`, {
-      encoding: 'utf8',
-    });
-  });
+  beforeAll(() => writeStatusToCache());
 
-  afterAll(() => {
-    delete process.env.GITHUB_WORKSPACE;
-    fs.unlink('last-run-status', (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
-  });
+  afterAll(() => cleanCache());
 
   it('should not fail with expected inputs format', async () => {
     await run();
