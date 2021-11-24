@@ -5,6 +5,7 @@ import * as cache from '@actions/cache';
 import { promises as fsp } from 'fs';
 import got from 'got';
 import { ExecOptions } from '@actions/exec';
+import { URL } from 'url';
 
 export enum Inputs {
   CurrentStatus = 'current-status',
@@ -103,10 +104,7 @@ async function getLastRunStatus() {
  * @param status current status to notify
  * @returns the Slack message body
  */
-async function prepareSlackNotification(
-  message: string,
-  status: string,
-): Promise<Record<string, any>> {
+async function prepareSlackNotification(message: string, status: string) {
   const {
     runId,
     workflow,
@@ -203,14 +201,20 @@ async function pipeline() {
 
   if (currentStatus !== 'success' && currentStatus !== 'failure') {
     core.setFailed('Wrong current status value');
+    return;
   }
 
-  const expressionUrl =
-    /https:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
-  const regexUrl = new RegExp(expressionUrl);
-
-  if (!webhookUrl.match(regexUrl)) {
+  let URLTest;
+  try {
+    URLTest = new URL(webhookUrl);
+  } catch (err) {
     core.setFailed('Wrong Slack Webhook URL format');
+    return;
+  }
+
+  if (URLTest.protocol !== 'https:') {
+    core.setFailed('Wrong Slack Webhook URL format');
+    return;
   }
 
   await fsp.writeFile(cachePaths[0], `completed/${currentStatus}`, {

@@ -69273,7 +69273,10 @@ var external_fs_ = __nccwpck_require__(5747);
 // EXTERNAL MODULE: ./node_modules/got/dist/source/index.js
 var source = __nccwpck_require__(3061);
 var source_default = /*#__PURE__*/__nccwpck_require__.n(source);
+// EXTERNAL MODULE: external "url"
+var external_url_ = __nccwpck_require__(8835);
 ;// CONCATENATED MODULE: ./src/main.ts
+
 
 
 
@@ -69439,11 +69442,19 @@ async function pipeline() {
     core.info(`Current run status: ${currentStatus}`);
     if (currentStatus !== 'success' && currentStatus !== 'failure') {
         core.setFailed('Wrong current status value');
+        return;
     }
-    const expressionUrl = /https:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
-    const regexUrl = new RegExp(expressionUrl);
-    if (!webhookUrl.match(regexUrl)) {
+    let URLTest;
+    try {
+        URLTest = new external_url_.URL(webhookUrl);
+    }
+    catch (err) {
         core.setFailed('Wrong Slack Webhook URL format');
+        return;
+    }
+    if (URLTest.protocol !== 'https:') {
+        core.setFailed('Wrong Slack Webhook URL format');
+        return;
     }
     await external_fs_.promises.writeFile(cachePaths[0], `completed/${currentStatus}`, {
         encoding: 'utf8',

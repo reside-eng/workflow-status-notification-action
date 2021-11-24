@@ -281,17 +281,20 @@ describe('inputs format', () => {
   it('should not fail with expected inputs format', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-  });
-
-  it('should fail with wrong slack webhook format', async () => {
-    mock.inputs['slack-webhook'] = 'htt:/hooks.slack.com/services/test/test';
-    await run();
-    expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
+    expect(mockCore.info).toHaveBeenCalledWith('Success notification');
   });
 
   it('should fail with wrong current status value', async () => {
     mock.inputs['current-status'] = 'notgood';
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
+    expect(mockCore.info).not.toHaveBeenCalledWith('No notification needed');
+  });
+
+  it('should fail with wrong slack webhook format', async () => {
+    mock.inputs['slack-webhook'] = 'htp:/hooks.slack.com/services/test/test';
+    await run();
+    expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
+    expect(mockCore.info).not.toHaveBeenCalledWith('No notification needed');
   });
 });
