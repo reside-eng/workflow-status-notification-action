@@ -99,7 +99,7 @@ async function getLastRunStatus() {
  * @param status current status to notify
  * @returns the Slack message body
  */
-export async function prepareSlackNotification(
+async function prepareSlackNotification(
   message: string,
   status: string,
 ): Promise<Record<string, string | number | boolean | unknown>> {
