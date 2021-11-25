@@ -54,3 +54,33 @@ jobs:
 
       - name: Build
         run: yarn build
+
+  success-notification:
+    if: success() && github.actor != 'dependabot[bot]'
+    name: success-notification
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.3.4
+
+      - uses: reside-eng/workflow-status-slack-notification@v1.0.0
+        with:
+          current-status: 'success'
+          slack-webhook: '${{ secrets.SLACK_WEBHOOK_PLATFORM_PROD }}'
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+
+  failure-notification:
+    if: failure() && github.actor != 'dependabot[bot]'
+    name: failure-notification
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.3.4
+
+      - uses: reside-eng/workflow-status-slack-notification@v1.0.0
+        with:
+          current-status: 'failure'
+          slack-webhook: '${{ secrets.SLACK_WEBHOOK_PLATFORM_PROD }}'
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
