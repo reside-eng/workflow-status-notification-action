@@ -131,7 +131,8 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
   it('should send success notification if last run failed and current succeeded', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn.mock.calls.length).toBe(1);
+    expect(mockFn).toBeCalledTimes(1);
+    expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
         "json": Object {
@@ -179,7 +180,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
   it('should not send notification if last run succeeded and current succeeded', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn.mock.calls.length).toBe(0);
+    expect(mockFn).toBeCalledTimes(0);
   });
 
   it('should send failure notification if last run succeeded and current fails', async () => {
@@ -188,7 +189,8 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn.mock.calls.length).toBe(1);
+    expect(mockFn).toBeCalledTimes(1);
+    expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
         "json": Object {
@@ -239,14 +241,17 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn.mock.calls.length).toBe(0);
+    expect(mockFn).toBeCalledTimes(0);
   });
 
   it('not a pull_request: should send success notification if last run failed and current succeeded', async () => {
     context.payload.pull_request = undefined;
+    context.eventName = 'workflow_dispatch';
+
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn.mock.calls.length).toBe(1);
+    expect(mockFn).toBeCalledTimes(1);
+    expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
         "json": Object {
@@ -275,7 +280,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
                 Object {
                   "short": true,
                   "title": "Event",
-                  "value": "pull_request",
+                  "value": "workflow_dispatch",
                 },
                 Object {
                   "short": false,
@@ -301,7 +306,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
   it('should send success notification if last run failed and current succeeded', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn.mock.calls.length).toBe(1);
+    expect(mockFn).toBeCalledTimes(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
         "json": Object {
@@ -352,7 +357,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn.mock.calls.length).toBe(0);
+    expect(mockFn).toBeCalledTimes(0);
   });
 
   it('should send failure notification if last run succeeded and current fails', async () => {
@@ -362,7 +367,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn.mock.calls.length).toBe(1);
+    expect(mockFn).toBeCalledTimes(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
         "json": Object {
@@ -413,14 +418,16 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn.mock.calls.length).toBe(0);
+    expect(mockFn).toBeCalledTimes(0);
   });
 
   it('not a pull_request: should send success notification if last run failed and current succeeded', async () => {
     context.payload.pull_request = undefined;
+    context.eventName = 'workflow_dispatch';
+
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn.mock.calls.length).toBe(1);
+    expect(mockFn.mock.calls.length).toStrictEqual(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
         "json": Object {
@@ -449,7 +456,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
                 Object {
                   "short": true,
                   "title": "Event",
-                  "value": "pull_request",
+                  "value": "workflow_dispatch",
                 },
                 Object {
                   "short": false,
@@ -477,62 +484,23 @@ describe('inputs format', () => {
   it('should not fail with expected inputs format', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn.mock.calls.length).toBe(1);
-    expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      Object {
-        "json": Object {
-          "attachments": Array [
-            Object {
-              "author_icon": "https://github.com/workflowactor.png?size=32",
-              "author_link": "https://github.com/workflowactor",
-              "author_name": "workflowactor",
-              "color": "good",
-              "fields": Array [
-                Object {
-                  "short": true,
-                  "title": "Repository",
-                  "value": "workflow-status-slack-notification",
-                },
-                Object {
-                  "short": true,
-                  "title": "Branch",
-                  "value": "main",
-                },
-                Object {
-                  "short": true,
-                  "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>",
-                },
-                Object {
-                  "short": true,
-                  "title": "Event",
-                  "value": "pull_request",
-                },
-                Object {
-                  "short": false,
-                  "title": "Failure workflow (for test purpose only) workflow success",
-                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeeded.",
-                },
-              ],
-            },
-          ],
-          "icon_emoji": ":bangbang:",
-        },
-      }
-    `);
+    expect(mockFn).toBeCalledTimes(1);
   });
 
   it('should fail with wrong current status value', async () => {
     mock.inputs['current-status'] = 'notgood';
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
-    expect(mockFn.mock.calls.length).toBe(0);
+    expect(mockFn).toBeCalledTimes(0);
   });
 
   it('should fail with wrong slack webhook format', async () => {
     mock.inputs['slack-webhook'] = 'htp:/hooks.slack.com/services/test/test';
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
-    expect(mockFn.mock.calls.length).toBe(0);
+    expect(mockCore.setFailed.mock.calls[0][0]).toMatchInlineSnapshot(
+      `"Wrong Slack Webhook URL format"`,
+    );
+    expect(mockFn).toBeCalledTimes(0);
   });
 });
