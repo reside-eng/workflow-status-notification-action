@@ -1,0 +1,22 @@
+node_modules
+package-lock.json
+.npmrc
+coverage
+.DS_Store
+.cache
+*.log
+*.swp
+
+# IDE generated
+.idea/
+.project
+*.iml
+.tern-project
+*.orig
+.vscode
+
+# Ignore built TS files
+lib
+
+# Test generated
+last-run-status

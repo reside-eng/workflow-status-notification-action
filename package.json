@@ -1,0 +1,68 @@
+{
+  "name": "@side/workflow-status-slack-notification",
+  "version": "0.0.0-development",
+  "description": "Github Action workflow failure/success notification.",
+  "main": "dist/index.js",
+  "engines": {
+    "node": "^16"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "build": "rimraf dist && ncc build src/index.ts && ts-node bin/generate-docs.ts",
+    "lint": "eslint . --ignore-pattern='!.eslintrc.js' --ext .ts,.js",
+    "types": "tsc --noEmit",
+    "test": "export GITHUB_REPOSITORY='reside-eng/workflow-status-slack-notification' && yarn tsc && jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reside-eng/workflow-status-slack-notification"
+  },
+  "keywords": [
+    "actions",
+    "workflow",
+    "slack notification"
+  ],
+  "author": "Side",
+  "license": "MIT",
+  "private": false,
+  "lint-staged": {
+    "*.{json,md}": [
+      "prettier --write"
+    ],
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "13.1.0",
+    "@side/commitlint-config": "0.1.6",
+    "@side/eslint-config-base": "0.11.6",
+    "@side/eslint-config-jest": "0.3.8",
+    "@tsconfig/node16": "1.0.1",
+    "@types/jest": "27.0.1",
+    "@types/js-yaml": "4.0.3",
+    "@types/node": "16.6.2",
+    "@typescript-eslint/eslint-plugin": "4.29.2",
+    "@typescript-eslint/parser": "4.29.2",
+    "@vercel/ncc": "0.29.2",
+    "eslint": "7.32.0",
+    "eslint-plugin-jsdoc": "36.0.7",
+    "husky": "7.0.1",
+    "jest": "27.0.6",
+    "js-yaml": "4.1.0",
+    "lint-staged": "11.1.2",
+    "nock": "^13.1.3",
+    "prettier": "2.3.2",
+    "rimraf": "3.0.2",
+    "ts-jest": "27.0.5",
+    "ts-node": "10.2.1",
+    "typescript": "4.3.5"
+  },
+  "dependencies": {
+    "@actions/cache": "1.0.7",
+    "@actions/core": "1.5.0",
+    "@actions/exec": "1.1.0",
+    "@actions/github": "5.0.0",
+    "got": "^11.8.2"
+  }
+}
