@@ -131,11 +131,6 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
   it('should send success notification if last run failed and current succeeded', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
-    expect(mockCore.info).toHaveBeenCalledWith('Success notification');
-    expect(mockCore.info).toHaveBeenCalledWith(
-      'Last run status: completed/failure',
-    );
     expect(mockFn.mock.calls.length).toBe(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
@@ -184,11 +179,6 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
   it('should not send notification if last run succeeded and current succeeded', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
-    expect(mockCore.info).toHaveBeenCalledWith('No notification needed');
-    expect(mockCore.info).toHaveBeenCalledWith(
-      'Last run status: completed/success',
-    );
     expect(mockFn.mock.calls.length).toBe(0);
   });
 
@@ -198,11 +188,6 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockCore.info).toHaveBeenCalledWith('Current run status: failure');
-    expect(mockCore.info).toHaveBeenCalledWith('Failure notification');
-    expect(mockCore.info).toHaveBeenCalledWith(
-      'Last run status: completed/success',
-    );
     expect(mockFn.mock.calls.length).toBe(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
@@ -254,11 +239,6 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockCore.info).toHaveBeenCalledWith('Current run status: failure');
-    expect(mockCore.info).toHaveBeenCalledWith('No notification needed');
-    expect(mockCore.info).toHaveBeenCalledWith(
-      'Last run status: completed/failure',
-    );
     expect(mockFn.mock.calls.length).toBe(0);
   });
 
@@ -266,11 +246,6 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     context.payload.pull_request = undefined;
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
-    expect(mockCore.info).toHaveBeenCalledWith('Success notification');
-    expect(mockCore.info).toHaveBeenCalledWith(
-      'Last run status: completed/failure',
-    );
     expect(mockFn.mock.calls.length).toBe(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
@@ -326,11 +301,6 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
   it('should send success notification if last run failed and current succeeded', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
-    expect(mockCore.info).toHaveBeenCalledWith('Success notification');
-    expect(mockCore.info).toHaveBeenCalledWith(
-      'Last run status: completed/failure',
-    );
     expect(mockFn.mock.calls.length).toBe(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
@@ -382,11 +352,6 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
-    expect(mockCore.info).toHaveBeenCalledWith('No notification needed');
-    expect(mockCore.info).toHaveBeenCalledWith(
-      'Last run status: completed/success',
-    );
     expect(mockFn.mock.calls.length).toBe(0);
   });
 
@@ -397,11 +362,6 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockCore.info).toHaveBeenCalledWith('Current run status: failure');
-    expect(mockCore.info).toHaveBeenCalledWith('Failure notification');
-    expect(mockCore.info).toHaveBeenCalledWith(
-      'Last run status: completed/success',
-    );
     expect(mockFn.mock.calls.length).toBe(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
@@ -453,11 +413,6 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockCore.info).toHaveBeenCalledWith('Current run status: failure');
-    expect(mockCore.info).toHaveBeenCalledWith('No notification needed');
-    expect(mockCore.info).toHaveBeenCalledWith(
-      'Last run status: completed/failure',
-    );
     expect(mockFn.mock.calls.length).toBe(0);
   });
 
@@ -465,11 +420,6 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     context.payload.pull_request = undefined;
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockCore.info).toHaveBeenCalledWith('Current run status: success');
-    expect(mockCore.info).toHaveBeenCalledWith('Success notification');
-    expect(mockCore.info).toHaveBeenCalledWith(
-      'Last run status: completed/failure',
-    );
     expect(mockFn.mock.calls.length).toBe(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
@@ -527,7 +477,6 @@ describe('inputs format', () => {
   it('should not fail with expected inputs format', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockCore.info).toHaveBeenCalledWith('Success notification');
     expect(mockFn.mock.calls.length).toBe(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
@@ -577,7 +526,6 @@ describe('inputs format', () => {
     mock.inputs['current-status'] = 'notgood';
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
-    expect(mockCore.info).not.toHaveBeenCalledWith('No notification needed');
     expect(mockFn.mock.calls.length).toBe(0);
   });
 
@@ -585,7 +533,6 @@ describe('inputs format', () => {
     mock.inputs['slack-webhook'] = 'htp:/hooks.slack.com/services/test/test';
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
-    expect(mockCore.info).not.toHaveBeenCalledWith('No notification needed');
     expect(mockFn.mock.calls.length).toBe(0);
   });
 });
