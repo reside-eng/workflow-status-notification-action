@@ -51,5 +51,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Comment test coverage
+        uses: raulanatol/jest-coverage-comment-action@v1.1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          use-existing-reports: true
+
       - name: Build
         run: yarn build
