@@ -50,6 +50,8 @@ jobs:
 
       - name: Test
         run: yarn test --coverage --silent
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #TODO: Add support for code coverage result report
 
       - name: Semantic Release
