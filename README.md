@@ -34,11 +34,11 @@ YOUR_SLACK_WEBHOOK: Webhook URL from Slack Incoming Webhook application
 ```yaml
 - uses: reside-eng/workflow-status-slack-notification@v1
   with:
-    # Status of the current run
+    # Workflow success
     #
-    # Default: failure
+    # Default: false
     # Required: true
-    current-status: ''
+    success: ''
 
     # Webhook URL with token for notifications
     #
@@ -74,9 +74,9 @@ jobs:
 
       # Your steps...
 
-  success-notification:
-    if: success()
-    name: success-notification
+  status-notification:
+    if: always()
+    name: status-notification
     needs: [build]
     runs-on: ubuntu-latest
     steps:
@@ -85,24 +85,9 @@ jobs:
 
       - uses: reside-eng/workflow-status-slack-notification@v1.0.7
         with:
-          current-status: "success"
-          slack-webhook: "${{ secrets.YOUR_SLACK_WEBHOOK }}"
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-
-  failure-notification:
-    if: failure()
-    name: failure-notification
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2.3.4
-
-      - uses: reside-eng/workflow-status-slack-notification@v1.0.7
-        with:
-          current-status: "failure"
-          slack-webhook: "${{ secrets.YOUR_SLACK_WEBHOOK }}"
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          success: ${{ success() }}
+          slack-webhook: ${{ secrets.YOUR_SLACK_WEBHOOK }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 # Local development

@@ -1,10 +1,10 @@
 name: 'Workflow Status Slack Notification'
 description: 'Notify uppon workflow failure/success'
 inputs:
-  current-status:
-    description: 'Status of the current run'
+  success:
+    description: 'Workflow success'
     required: true
-    default: 'failure'
+    default: 'false'
   slack-webhook:
     description: 'Webhook URL with token for notifications'
     required: true

@@ -7,7 +7,7 @@ import { exec, ExecOptions } from '@actions/exec';
 import { URL } from 'url';
 
 export enum Inputs {
-  CurrentStatus = 'current-status',
+  Success = 'success',
   SlackWebhook = 'slack-webhook',
   GithubToken = 'github-token',
 }
@@ -191,16 +191,18 @@ function handleError(err: Error): void {
  */
 async function pipeline() {
   const lastStatus = await getLastRunStatus();
-  const currentStatus = core.getInput(Inputs.CurrentStatus);
+  const success = core.getInput(Inputs.Success);
   const webhookUrl = core.getInput(Inputs.SlackWebhook);
+
+  if (success !== 'true' && success !== 'false') {
+    core.setFailed('Wrong success value');
+    return;
+  }
+
+  const currentStatus = success === 'true' ? 'success' : 'failure';
 
   core.info(`Last run status: ${lastStatus}`);
   core.info(`Current run status: ${currentStatus}`);
-
-  if (currentStatus !== 'success' && currentStatus !== 'failure') {
-    core.setFailed('Wrong current status value');
-    return;
-  }
 
   let url;
   try {

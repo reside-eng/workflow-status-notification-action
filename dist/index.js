@@ -69288,7 +69288,7 @@ var external_url_ = __nccwpck_require__(8835);
 
 var Inputs;
 (function (Inputs) {
-    Inputs["CurrentStatus"] = "current-status";
+    Inputs["Success"] = "success";
     Inputs["SlackWebhook"] = "slack-webhook";
     Inputs["GithubToken"] = "github-token";
 })(Inputs || (Inputs = {}));
@@ -69434,14 +69434,15 @@ function handleError(err) {
  */
 async function pipeline() {
     const lastStatus = await getLastRunStatus();
-    const currentStatus = core.getInput(Inputs.CurrentStatus);
+    const success = core.getInput(Inputs.Success);
     const webhookUrl = core.getInput(Inputs.SlackWebhook);
-    core.info(`Last run status: ${lastStatus}`);
-    core.info(`Current run status: ${currentStatus}`);
-    if (currentStatus !== 'success' && currentStatus !== 'failure') {
-        core.setFailed('Wrong current status value');
+    if (success !== 'true' && success !== 'false') {
+        core.setFailed('Wrong success value');
         return;
     }
+    const currentStatus = success === 'true' ? 'success' : 'failure';
+    core.info(`Last run status: ${lastStatus}`);
+    core.info(`Current run status: ${currentStatus}`);
     let url;
     try {
         url = new external_url_.URL(webhookUrl);

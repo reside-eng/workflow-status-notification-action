@@ -49,7 +49,7 @@ function setupMock() {
   mock = {
     // Default action inputs
     inputs: {
-      'current-status': 'success',
+      success: 'true',
       'slack-webhook': `${slackUrl}${slackPath}`,
       'github-token': `${process.env.GITHUB_TOKEN}`,
     },
@@ -184,7 +184,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
   });
 
   it('should send failure notification if last run succeeded and current fails', async () => {
-    mock.inputs['current-status'] = 'failure';
+    mock.inputs.success = 'false';
 
     await run();
 
@@ -236,7 +236,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
   });
 
   it('should not send notification if last run failed and current fails', async () => {
-    mock.inputs['current-status'] = 'failure';
+    mock.inputs.success = 'false';
 
     await run();
 
@@ -362,7 +362,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
 
   it('should send failure notification if last run succeeded and current fails', async () => {
     context.workflow = 'Success workflow (for test purpose only)';
-    mock.inputs['current-status'] = 'failure';
+    mock.inputs.success = 'false';
 
     await run();
 
@@ -413,7 +413,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
   });
 
   it('should not send notification if last run failed and current fails', async () => {
-    mock.inputs['current-status'] = 'failure';
+    mock.inputs.success = 'false';
 
     await run();
 
@@ -488,7 +488,7 @@ describe('inputs format', () => {
   });
 
   it('should fail with wrong current status value', async () => {
-    mock.inputs['current-status'] = 'notgood';
+    mock.inputs.success = 'notgood';
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
     expect(mockFn).toBeCalledTimes(0);
