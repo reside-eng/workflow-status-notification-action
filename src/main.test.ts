@@ -55,7 +55,7 @@ function setupMock() {
     },
     repo: {
       owner: 'reside-eng',
-      repo: 'workflow-status-slack-notification',
+      repo: 'workflow-status-notification-action',
     },
     workflow: 'Failure workflow (for test purpose only)',
     prNumber: 4,
@@ -146,7 +146,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
                 Object {
                   "short": true,
                   "title": "Repository",
-                  "value": "workflow-status-slack-notification",
+                  "value": "workflow-status-notification-action",
                 },
                 Object {
                   "short": true,
@@ -156,7 +156,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
                 Object {
                   "short": true,
                   "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>",
+                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
                 },
                 Object {
                   "short": true,
@@ -166,7 +166,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
                 Object {
                   "short": false,
                   "title": "Failure workflow (for test purpose only) workflow success",
-                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeeded.",
+                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
                 },
               ],
             },
@@ -204,7 +204,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
                 Object {
                   "short": true,
                   "title": "Repository",
-                  "value": "workflow-status-slack-notification",
+                  "value": "workflow-status-notification-action",
                 },
                 Object {
                   "short": true,
@@ -214,7 +214,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
                 Object {
                   "short": true,
                   "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>",
+                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
                 },
                 Object {
                   "short": true,
@@ -224,7 +224,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
                 Object {
                   "short": false,
                   "title": "Failure workflow (for test purpose only) workflow failure",
-                  "value": "Failure workflow (for test purpose only) workflow in workflow-status-slack-notification failed.",
+                  "value": "Failure workflow (for test purpose only) workflow in workflow-status-notification-action failed.",
                 },
               ],
             },
@@ -265,7 +265,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
                 Object {
                   "short": true,
                   "title": "Repository",
-                  "value": "workflow-status-slack-notification",
+                  "value": "workflow-status-notification-action",
                 },
                 Object {
                   "short": true,
@@ -275,7 +275,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
                 Object {
                   "short": true,
                   "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>",
+                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
                 },
                 Object {
                   "short": true,
@@ -285,7 +285,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
                 Object {
                   "short": false,
                   "title": "Failure workflow (for test purpose only) workflow success",
-                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeeded.",
+                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
                 },
               ],
             },
@@ -320,7 +320,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
                 Object {
                   "short": true,
                   "title": "Repository",
-                  "value": "workflow-status-slack-notification",
+                  "value": "workflow-status-notification-action",
                 },
                 Object {
                   "short": true,
@@ -330,7 +330,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
                 Object {
                   "short": true,
                   "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>",
+                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
                 },
                 Object {
                   "short": true,
@@ -340,7 +340,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
                 Object {
                   "short": false,
                   "title": "Failure workflow (for test purpose only) workflow success",
-                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeeded.",
+                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
                 },
               ],
             },
@@ -381,7 +381,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
                 Object {
                   "short": true,
                   "title": "Repository",
-                  "value": "workflow-status-slack-notification",
+                  "value": "workflow-status-notification-action",
                 },
                 Object {
                   "short": true,
@@ -391,7 +391,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
                 Object {
                   "short": true,
                   "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Success workflow (for test purpose only)>",
+                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Success workflow (for test purpose only)>",
                 },
                 Object {
                   "short": true,
@@ -401,7 +401,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
                 Object {
                   "short": false,
                   "title": "Success workflow (for test purpose only) workflow failure",
-                  "value": "Success workflow (for test purpose only) workflow in workflow-status-slack-notification failed.",
+                  "value": "Success workflow (for test purpose only) workflow in workflow-status-notification-action failed.",
                 },
               ],
             },
@@ -441,7 +441,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
                 Object {
                   "short": true,
                   "title": "Repository",
-                  "value": "workflow-status-slack-notification",
+                  "value": "workflow-status-notification-action",
                 },
                 Object {
                   "short": true,
@@ -451,7 +451,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
                 Object {
                   "short": true,
                   "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-slack-notification/actions/runs/23456|Failure workflow (for test purpose only)>",
+                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
                 },
                 Object {
                   "short": true,
@@ -461,7 +461,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
                 Object {
                   "short": false,
                   "title": "Failure workflow (for test purpose only) workflow success",
-                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-slack-notification succeeded.",
+                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
                 },
               ],
             },

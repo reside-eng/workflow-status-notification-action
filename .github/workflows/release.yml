@@ -73,7 +73,7 @@ jobs:
       - name: Push updates to branch for major version
         # If a new version is published, i.e. v1.2.3 then this step will update
         # branch "v1" to this commit.
-        # https://github.com/reside-eng/workflow-status-slack-notification/branches
+        # https://github.com/reside-eng/workflow-status-notification-action/branches
         if: steps.semantic.outputs.new_release_published == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
