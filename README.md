@@ -83,7 +83,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2.3.4
 
-      - uses: reside-eng/workflow-status-notification-action@v1.0.7
+      - uses: reside-eng/workflow-status-notification-action@v1.0.0
         with:
           current-status: "success"
           slack-webhook: "${{ secrets.YOUR_SLACK_WEBHOOK }}"
@@ -98,7 +98,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2.3.4
 
-      - uses: reside-eng/workflow-status-notification-action@v1.0.7
+      - uses: reside-eng/workflow-status-notification-action@v1.0.0
         with:
           current-status: "failure"
           slack-webhook: "${{ secrets.YOUR_SLACK_WEBHOOK }}"
