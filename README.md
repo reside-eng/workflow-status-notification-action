@@ -32,7 +32,7 @@ YOUR_SLACK_WEBHOOK: Webhook URL from Slack Incoming Webhook application
 <!-- start usage -->
 <!-- Warning: Content between these comments is auto-generated. Do NOT manually edit. -->
 ```yaml
-- uses: reside-eng/workflow-status-slack-notification@v1
+- uses: reside-eng/workflow-status-notification-action@v1
   with:
     # Status of the current run
     #
@@ -85,7 +85,7 @@ jobs:
 
       - uses: technote-space/workflow-conclusion-action@v2.0.1
 
-      - uses: reside-eng/workflow-status-slack-notification@v1.0.0
+      - uses: reside-eng/workflow-status-slack-notification@v1.0.7
         with:
           current-status: ${{ env.WORKFLOW_CONCLUSION }}
           slack-webhook: ${{ secrets.YOUR_SLACK_WEBHOOK }}

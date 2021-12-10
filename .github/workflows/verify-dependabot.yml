@@ -59,3 +59,20 @@ jobs:
 
       - name: Build
         run: yarn build
+
+  notification:
+    if: always() && github.actor == 'dependabot[bot]'
+    name: notification
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.3.4
+
+      - uses: technote-space/workflow-conclusion-action@v2.0.1
+      
+      - uses: reside-eng/workflow-status-notification-action@v1.0.0
+        with:
+          current-status: ${{ env.WORKFLOW_CONCLUSION }}
+          slack-webhook: ${{ secrets.SLACK_WEBHOOK_PLATFORM_PROD }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}

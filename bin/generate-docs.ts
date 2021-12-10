@@ -144,4 +144,4 @@ function updateUsage(
   fs.writeFileSync(readmePath, newReadme.join(os.EOL));
 }
 
-updateUsage('reside-eng/workflow-status-slack-notification@v1');
+updateUsage('reside-eng/workflow-status-notification-action@v1');

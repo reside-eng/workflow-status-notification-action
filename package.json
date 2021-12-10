@@ -1,5 +1,5 @@
 {
-  "name": "@side/workflow-status-slack-notification",
+  "name": "@side/workflow-status-notification-action",
   "version": "0.0.0-development",
   "description": "Github Action workflow failure/success notification.",
   "main": "dist/index.js",
@@ -11,11 +11,11 @@
     "build": "rimraf dist && ncc build src/index.ts && ts-node bin/generate-docs.ts",
     "lint": "eslint . --ignore-pattern='!.eslintrc.js' --ext .ts,.js",
     "types": "tsc --noEmit",
-    "test": "export GITHUB_REPOSITORY='reside-eng/workflow-status-slack-notification' && yarn tsc && jest"
+    "test": "export GITHUB_REPOSITORY='reside-eng/workflow-status-notification-action' && yarn tsc && jest"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/reside-eng/workflow-status-slack-notification"
+    "url": "https://github.com/reside-eng/workflow-status-notification-action"
   },
   "keywords": [
     "actions",
