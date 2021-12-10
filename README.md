@@ -74,35 +74,22 @@ jobs:
 
       # Your steps...
 
-  success-notification:
-    if: success()
-    name: success-notification
+  notification:
+    if: always()
+    name: notification
     needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2.3.4
 
-      - uses: reside-eng/workflow-status-notification-action@v1.0.7
-        with:
-          current-status: "success"
-          slack-webhook: "${{ secrets.YOUR_SLACK_WEBHOOK }}"
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - uses: technote-space/workflow-conclusion-action@v2.0.1
 
-  failure-notification:
-    if: failure()
-    name: failure-notification
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2.3.4
-
-      - uses: reside-eng/workflow-status-notification-action@v1.0.7
+      - uses: reside-eng/workflow-status-slack-notification@v1.0.7
         with:
-          current-status: "failure"
-          slack-webhook: "${{ secrets.YOUR_SLACK_WEBHOOK }}"
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          current-status: ${{ env.WORKFLOW_CONCLUSION }}
+          slack-webhook: ${{ secrets.YOUR_SLACK_WEBHOOK }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 # Local development
