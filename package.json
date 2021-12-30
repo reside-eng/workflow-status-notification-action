@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "13.1.0",
-    "@side/commitlint-config": "0.1.6",
+    "@side/commitlint-config": "0.1.10",
     "@side/eslint-config-base": "0.11.6",
     "@side/eslint-config-jest": "0.3.8",
     "@tsconfig/node16": "1.0.1",
