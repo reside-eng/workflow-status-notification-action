@@ -59,7 +59,7 @@
     "typescript": "4.5.5"
   },
   "dependencies": {
-    "@actions/cache": "1.0.7",
+    "@actions/cache": "1.0.9",
     "@actions/core": "1.5.0",
     "@actions/exec": "1.1.0",
     "@actions/github": "5.0.0",
