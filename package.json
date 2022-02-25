@@ -8,7 +8,8 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "build": "rimraf dist && ncc build src/index.ts && ts-node bin/generate-docs.ts",
+    "build:docs": "ts-node bin/generate-docs.ts && prettier --write README.md",
+    "build": "rimraf dist && ncc build src/index.ts && yarn build:docs",
     "lint": "eslint . --ignore-pattern='!.eslintrc.js' --ext .ts,.js",
     "types": "tsc --noEmit",
     "test": "export GITHUB_REPOSITORY='reside-eng/workflow-status-notification-action' && yarn tsc && jest"

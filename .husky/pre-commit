@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn lint-staged && yarn build && git add dist && git add README.md
+yarn lint-staged && yarn build:docs && git add README.md
