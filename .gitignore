@@ -20,3 +20,6 @@ lib
 
 # Test generated
 last-run-status
+
+# Ignore built files (added using force before push to major version branch)
+dist
