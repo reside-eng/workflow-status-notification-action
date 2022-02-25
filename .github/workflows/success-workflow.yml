@@ -1,0 +1,15 @@
+
+   
+name: Success workflow (for test purpose only)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  success:
+    name: success
+    runs-on: ubuntu-latest
+    steps:
+      - name: Success
+        run: |
+          exit 0
