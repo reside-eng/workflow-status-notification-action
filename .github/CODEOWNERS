@@ -1,2 +1,6 @@
 # Platform (DevOps & Engineering) team
 * @reside-eng/platform
+
+# Skip assigning dep updates (handled by Renovate)
+package.json
+yarn.lock
