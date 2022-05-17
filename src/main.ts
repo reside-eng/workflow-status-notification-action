@@ -8,6 +8,8 @@ import { URL } from 'url';
 
 export enum Inputs {
   CurrentStatus = 'current-status',
+  SuccessMessage = 'success-message',
+  ErrorMessage = 'error-message',
   SlackWebhook = 'slack-webhook',
   GithubToken = 'github-token',
 }
@@ -222,9 +224,12 @@ async function pipeline() {
   await cache.saveCache(cachePaths, cachePrimaryKey);
 
   if (currentStatus === 'success' && lastStatus === 'completed/failure') {
+    const successMessage =
+      core.getInput(Inputs.SuccessMessage) ||
+      `Previously failing ${context.workflow} workflow in ${repository} succeeded.`;
     core.info(`Success notification`);
     const message = await prepareSlackNotification(
-      `Previously failing ${context.workflow} workflow in ${repository} succeeded.`,
+      successMessage,
       currentStatus,
     );
     await sendSlackMessage(webhookUrl, message);
@@ -233,10 +238,10 @@ async function pipeline() {
     (lastStatus === 'completed/success' || lastStatus === '')
   ) {
     core.info(`Failure notification`);
-    const message = await prepareSlackNotification(
-      `${context.workflow} workflow in ${repository} failed.`,
-      currentStatus,
-    );
+    const errorMessage =
+      core.getInput(Inputs.ErrorMessage) ||
+      `${context.workflow} workflow in ${repository} failed.`;
+    const message = await prepareSlackNotification(errorMessage, currentStatus);
     await sendSlackMessage(webhookUrl, message);
   } else {
     core.info(`No notification needed`);

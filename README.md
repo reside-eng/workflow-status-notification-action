@@ -31,6 +31,7 @@ YOUR_SLACK_WEBHOOK: Webhook URL from Slack Incoming Webhook application
 
 <!-- start usage -->
 <!-- Warning: Content between these comments is auto-generated. Do NOT manually edit. -->
+
 ```yaml
 - uses: reside-eng/workflow-status-notification-action@v1
   with:
@@ -38,18 +39,29 @@ YOUR_SLACK_WEBHOOK: Webhook URL from Slack Incoming Webhook application
     #
     # Default: failure
     # Required: true
-    current-status: ''
+    current-status: ""
+
+    # Message for successful runs
+    #
+    # Required: true
+    success-message: ""
+
+    # Message for runs with errors
+    #
+    # Required: true
+    error-message: ""
 
     # Webhook URL with token for notifications
     #
     # Required: true
-    slack-webhook: ''
+    slack-webhook: ""
 
     # Status of the current run
     #
     # Required: true
-    github-token: ''
+    github-token: ""
 ```
+
 <!-- end usage -->
 
 ## Examples
