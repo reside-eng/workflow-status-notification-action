@@ -61,9 +61,9 @@
   },
   "dependencies": {
     "@actions/cache": "1.0.11",
-    "@actions/core": "1.7.0",
+    "@actions/core": "1.8.2",
     "@actions/exec": "1.1.1",
-    "@actions/github": "5.0.1",
+    "@actions/github": "5.0.3",
     "got": "^11.8.2"
   }
 }
