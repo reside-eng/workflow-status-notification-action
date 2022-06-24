@@ -5,6 +5,12 @@ inputs:
     description: 'Status of the current run'
     required: true
     default: 'failure'
+  success-message:
+    description: 'Message for successful runs'
+    required: true
+  error-message:
+    description: 'Message for runs with errors'
+    required: true
   slack-webhook:
     description: 'Webhook URL with token for notifications'
     required: true
