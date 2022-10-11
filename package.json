@@ -14,6 +14,41 @@
     "types": "tsc --noEmit",
     "test": "export GITHUB_REPOSITORY='reside-eng/workflow-status-notification-action' && yarn tsc && jest"
   },
+  "dependencies": {
+    "@actions/cache": "1.0.11",
+    "@actions/core": "1.7.0",
+    "@actions/exec": "1.1.1",
+    "@actions/github": "5.0.1",
+    "got": "^11.8.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "16.3.0",
+    "@side/commitlint-config": "0.1.10",
+    "@side/eslint-config-base": "0.16.0",
+    "@side/eslint-config-jest": "0.3.16",
+    "@side/prettier-config": "0.0.0",
+    "@tsconfig/node16": "1.0.2",
+    "@types/jest": "27.5.1",
+    "@types/js-yaml": "4.0.5",
+    "@types/node": "16.11.36",
+    "@typescript-eslint/eslint-plugin": "4.33.0",
+    "@typescript-eslint/parser": "4.33.0",
+    "@vercel/ncc": "0.33.4",
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-jsdoc": "38.1.6",
+    "husky": "7.0.4",
+    "jest": "27.5.1",
+    "js-yaml": "4.1.0",
+    "lint-staged": "12.4.1",
+    "nock": "13.2.4",
+    "prettier": "2.6.2",
+    "rimraf": "3.0.2",
+    "ts-jest": "27.1.4",
+    "ts-node": "10.7.0",
+    "typescript": "4.6.4"
+  },
+  "prettier": "@side/prettier-config",
   "repository": {
     "type": "git",
     "url": "https://github.com/reside-eng/workflow-status-notification-action"
@@ -33,37 +68,5 @@
     "*.{js,ts}": [
       "eslint --fix"
     ]
-  },
-  "devDependencies": {
-    "@commitlint/cli": "16.3.0",
-    "@side/commitlint-config": "0.1.10",
-    "@side/eslint-config-base": "0.11.6",
-    "@side/eslint-config-jest": "0.3.16",
-    "@tsconfig/node16": "1.0.2",
-    "@types/jest": "27.5.1",
-    "@types/js-yaml": "4.0.5",
-    "@types/node": "16.11.36",
-    "@typescript-eslint/eslint-plugin": "4.33.0",
-    "@typescript-eslint/parser": "4.33.0",
-    "@vercel/ncc": "0.33.4",
-    "eslint": "7.32.0",
-    "eslint-plugin-jsdoc": "38.1.6",
-    "husky": "7.0.4",
-    "jest": "27.5.1",
-    "js-yaml": "4.1.0",
-    "lint-staged": "12.4.1",
-    "nock": "13.2.4",
-    "prettier": "2.6.2",
-    "rimraf": "3.0.2",
-    "ts-jest": "27.1.4",
-    "ts-node": "10.7.0",
-    "typescript": "4.6.4"
-  },
-  "dependencies": {
-    "@actions/cache": "1.0.11",
-    "@actions/core": "1.7.0",
-    "@actions/exec": "1.1.1",
-    "@actions/github": "5.0.1",
-    "got": "^11.8.2"
   }
 }

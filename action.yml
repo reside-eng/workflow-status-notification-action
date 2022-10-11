@@ -1,5 +1,5 @@
 name: 'Workflow Status Slack Notification'
-description: 'Notify uppon workflow failure/success'
+description: 'Notify upon workflow failure/success'
 inputs:
   current-status:
     description: 'Status of the current run'
@@ -9,6 +9,10 @@ inputs:
     description: 'Webhook URL with token for notifications'
     required: true
     default: ''
+  is-release:
+    description: 'Whether build is a release build (merge-main or select-for-release workflows)'
+    required: true
+    default: 'false'
   github-token:
     description: 'Status of the current run'
     required: true

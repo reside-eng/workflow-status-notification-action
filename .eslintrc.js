@@ -1,9 +1,9 @@
 module.exports = {
   extends: [
     '@side/base',
-    '@side/prettier',
     'plugin:@typescript-eslint/recommended',
     'plugin:jsdoc/recommended',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   // TODO: Move settings to lint-config base
