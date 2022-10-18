@@ -42,7 +42,7 @@
     "@tsconfig/node16": "1.0.3",
     "@types/jest": "27.5.2",
     "@types/js-yaml": "4.0.5",
-    "@types/node": "16.11.66",
+    "@types/node": "16.11.67",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
     "@vercel/ncc": "0.34.0",
