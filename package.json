@@ -35,7 +35,7 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "17.1.2",
+    "@commitlint/cli": "17.2.0",
     "@side/commitlint-config": "0.1.10",
     "@side/eslint-config-base": "0.11.6",
     "@side/eslint-config-jest": "0.3.16",
