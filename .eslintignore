@@ -1,8 +1,4 @@
 node_modules
 coverage
 
-# Build from ncc
-dist
-
-# Build from Typescript
-lib
+# NOTE: dist is intentionally included
