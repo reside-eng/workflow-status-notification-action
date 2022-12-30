@@ -1093,6 +1093,11 @@
   optionalDependencies:
     eslint-plugin-testing-library ">=5.3.0"
 
+"@side/lint-staged-config@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@side/lint-staged-config/-/lint-staged-config-0.1.0.tgz#d15e772ed3d524ed5b33215c9837a37e29824997"
+  integrity sha512-771xmxMXq7YWyZqyew4K7bPLoiGbq136gFlFVunHbo6OSUWBOcb9jduEab7y87awnV8YXRgdyd9KX5frFgMw0w==
+
 "@side/prettier-config@0.0.0":
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/@side/prettier-config/-/prettier-config-0.0.0.tgz#8a28e3202bc5b4038afce5c9f59c30d05e78b69d"
