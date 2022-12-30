@@ -31,6 +31,7 @@ YOUR_SLACK_WEBHOOK: Webhook URL from Slack Incoming Webhook application
 
 <!-- start usage -->
 <!-- Warning: Content between these comments is auto-generated. Do NOT manually edit. -->
+
 ```yaml
 - uses: reside-eng/workflow-status-notification-action@v1
   with:
@@ -45,11 +46,18 @@ YOUR_SLACK_WEBHOOK: Webhook URL from Slack Incoming Webhook application
     # Required: true
     slack-webhook: ''
 
+    # Whether build is a release build (merge-main or select-for-release workflows)
+    #
+    # Default: false
+    # Required: true
+    is-release: ''
+
     # Status of the current run
     #
     # Required: true
     github-token: ''
 ```
+
 <!-- end usage -->
 
 ## Examples
@@ -70,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Your steps...
 
@@ -81,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
 
       - uses: technote-space/workflow-conclusion-action@v2.0.1
 
@@ -112,3 +120,9 @@ You're all set !
 # License
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE).
+
+# FAQ
+
+1. Why Node 16?
+
+This is the maximum version runtime supported by Github Actions
