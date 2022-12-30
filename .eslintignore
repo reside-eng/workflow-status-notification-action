@@ -3,6 +3,3 @@ coverage
 
 # Build from ncc
 dist
-
-# Build from Typescript
-lib
