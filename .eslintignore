@@ -1,4 +1,5 @@
 node_modules
 coverage
 
-# NOTE: dist is intentionally included
+# Build from ncc
+dist
