@@ -6,6 +6,9 @@
   "engines": {
     "node": "^16"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prepare": "husky install",
     "build:docs": "ts-node bin/generate-docs.ts && prettier --write README.md",
