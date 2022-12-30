@@ -109,3 +109,4 @@ jobs:
           current-status: ${{ env.WORKFLOW_CONCLUSION }}
           slack-webhook: ${{ secrets.SLACK_WEBHOOK_PLATFORM_PROD }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          is-release: true
