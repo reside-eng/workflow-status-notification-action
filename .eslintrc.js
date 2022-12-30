@@ -36,4 +36,12 @@ module.exports = {
       },
     ],
   },
+  overrides: [
+    {
+      files: ['./src/main.ts'],
+      rules: {
+        'import/prefer-default-export': 0,
+      },
+    },
+  ],
 };

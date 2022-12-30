@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Your steps...
 
@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
 
       - uses: technote-space/workflow-conclusion-action@v2.0.1
 
@@ -120,3 +120,9 @@ You're all set !
 # License
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE).
+
+# FAQ
+
+1. Why Node 16?
+
+This is the maximum version runtime supported by Github Actions

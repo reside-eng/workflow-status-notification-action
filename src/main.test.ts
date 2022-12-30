@@ -2,10 +2,9 @@ import * as core from '@actions/core';
 import { context } from '@actions/github';
 import * as cache from '@actions/cache';
 import { promises as fsp } from 'fs';
-import { mocked } from 'ts-jest/utils';
 import got from 'got';
 import nock from 'nock';
-import run from './main';
+import { run } from './main';
 
 jest.mock('@actions/core');
 jest.mock('@actions/cache');
@@ -31,7 +30,7 @@ let mock: MockObj;
 const mockCore = core as jest.Mocked<typeof core>;
 const mockCache = cache as jest.Mocked<typeof cache>;
 jest.mock('got');
-const mockGot = mocked(got);
+const mockGot = got;
 const mockFn = jest.fn();
 mockGot.post = mockFn.bind({});
 
@@ -134,36 +133,36 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockFn).toBeCalledTimes(1);
     expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      Object {
-        "json": Object {
-          "attachments": Array [
-            Object {
+      {
+        "json": {
+          "attachments": [
+            {
               "author_icon": "https://github.com/workflowactor.png?size=32",
               "author_link": "https://github.com/workflowactor",
               "author_name": "workflowactor",
               "color": "good",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "short": true,
                   "title": "Repository",
                   "value": "workflow-status-notification-action",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Branch",
                   "value": "main",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Action URL",
                   "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Event",
                   "value": "pull_request",
                 },
-                Object {
+                {
                   "short": false,
                   "title": "Failure workflow (for test purpose only) workflow success",
                   "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
@@ -192,36 +191,36 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockFn).toBeCalledTimes(1);
     expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      Object {
-        "json": Object {
-          "attachments": Array [
-            Object {
+      {
+        "json": {
+          "attachments": [
+            {
               "author_icon": "https://github.com/workflowactor.png?size=32",
               "author_link": "https://github.com/workflowactor",
               "author_name": "workflowactor",
               "color": "danger",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "short": true,
                   "title": "Repository",
                   "value": "workflow-status-notification-action",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Branch",
                   "value": "main",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Action URL",
                   "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Event",
                   "value": "pull_request",
                 },
-                Object {
+                {
                   "short": false,
                   "title": "Failure workflow (for test purpose only) workflow failure",
                   "value": "Failure workflow (for test purpose only) workflow in workflow-status-notification-action failed.",
@@ -253,36 +252,36 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockFn).toBeCalledTimes(1);
     expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      Object {
-        "json": Object {
-          "attachments": Array [
-            Object {
+      {
+        "json": {
+          "attachments": [
+            {
               "author_icon": "https://github.com/workflowactor.png?size=32",
               "author_link": "https://github.com/workflowactor",
               "author_name": "workflowactor",
               "color": "good",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "short": true,
                   "title": "Repository",
                   "value": "workflow-status-notification-action",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Branch",
                   "value": "main",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Action URL",
                   "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Event",
                   "value": "workflow_dispatch",
                 },
-                Object {
+                {
                   "short": false,
                   "title": "Failure workflow (for test purpose only) workflow success",
                   "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
@@ -308,36 +307,36 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toBeCalledTimes(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      Object {
-        "json": Object {
-          "attachments": Array [
-            Object {
+      {
+        "json": {
+          "attachments": [
+            {
               "author_icon": "https://github.com/workflowactor.png?size=32",
               "author_link": "https://github.com/workflowactor",
               "author_name": "workflowactor",
               "color": "good",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "short": true,
                   "title": "Repository",
                   "value": "workflow-status-notification-action",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Branch",
                   "value": "main",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Action URL",
                   "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Event",
                   "value": "pull_request",
                 },
-                Object {
+                {
                   "short": false,
                   "title": "Failure workflow (for test purpose only) workflow success",
                   "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
@@ -369,36 +368,36 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toBeCalledTimes(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      Object {
-        "json": Object {
-          "attachments": Array [
-            Object {
+      {
+        "json": {
+          "attachments": [
+            {
               "author_icon": "https://github.com/workflowactor.png?size=32",
               "author_link": "https://github.com/workflowactor",
               "author_name": "workflowactor",
               "color": "danger",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "short": true,
                   "title": "Repository",
                   "value": "workflow-status-notification-action",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Branch",
                   "value": "main",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Action URL",
                   "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Success workflow (for test purpose only)>",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Event",
                   "value": "pull_request",
                 },
-                Object {
+                {
                   "short": false,
                   "title": "Success workflow (for test purpose only) workflow failure",
                   "value": "Success workflow (for test purpose only) workflow in workflow-status-notification-action failed.",
@@ -429,36 +428,36 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn.mock.calls.length).toStrictEqual(1);
     expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      Object {
-        "json": Object {
-          "attachments": Array [
-            Object {
+      {
+        "json": {
+          "attachments": [
+            {
               "author_icon": "https://github.com/workflowactor.png?size=32",
               "author_link": "https://github.com/workflowactor",
               "author_name": "workflowactor",
               "color": "good",
-              "fields": Array [
-                Object {
+              "fields": [
+                {
                   "short": true,
                   "title": "Repository",
                   "value": "workflow-status-notification-action",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Branch",
                   "value": "main",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Action URL",
                   "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
                 },
-                Object {
+                {
                   "short": true,
                   "title": "Event",
                   "value": "workflow_dispatch",
                 },
-                Object {
+                {
                   "short": false,
                   "title": "Failure workflow (for test purpose only) workflow success",
                   "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
