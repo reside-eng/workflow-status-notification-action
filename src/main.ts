@@ -36,11 +36,15 @@ async function pipeline(): Promise<void> {
 
   // Release messaging
   if (notifyType === 'release') {
-    // TODO: Leverage context.workflow to determine env (graph-api is different)
+    const releaseAction = ['select-for-release.yml', 'merge-main.yml'].includes(
+      context.workflow,
+    )
+      ? 'deploy'
+      : 'releas';
     const message = await prepareSlackNotification(
       currentStatus === 'success'
-        ? `${repository} successfully deployed`
-        : `error deploying ${repository}`,
+        ? `${repository} successfully ${releaseAction}ed`
+        : `error ${releaseAction}ing ${repository}`,
       currentStatus,
     );
     await sendSlackMessage(webhookUrl, message);
