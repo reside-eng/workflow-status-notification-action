@@ -12,7 +12,7 @@ async function pipeline(): Promise<void> {
   const lastStatus = await getLastRunStatus();
   const currentStatus = core.getInput(Inputs.CurrentStatus);
   const webhookUrl = core.getInput(Inputs.SlackWebhook);
-  const isRelease = core.getBooleanInput(Inputs.IsRelease);
+  const notifyType = core.getInput(Inputs.NotifyType);
   core.info(`Current run status: ${currentStatus}`);
 
   if (currentStatus !== 'success' && currentStatus !== 'failure') {
@@ -35,7 +35,7 @@ async function pipeline(): Promise<void> {
   const repository = context.repo.repo;
 
   // Release messaging
-  if (isRelease) {
+  if (notifyType === 'release') {
     // TODO: Leverage context.workflow to determine env (graph-api is different)
     const message = await prepareSlackNotification(
       currentStatus === 'success'

@@ -46,11 +46,11 @@ YOUR_SLACK_WEBHOOK: Webhook URL from Slack Incoming Webhook application
     # Required: true
     slack-webhook: ''
 
-    # Whether build is a release build (merge-main or select-for-release workflows)
+    # Type of notification (on-state-change, release)
     #
-    # Default: false
+    # Default: on-state-change
     # Required: true
-    is-release: ''
+    notify-type: ''
 
     # Status of the current run
     #
