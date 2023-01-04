@@ -11,7 +11,7 @@ inputs:
     default: ''
   notify-type:
     description: 'Type of notification (on-state-change, release)'
-    required: true
+    required: false
     default: 'on-state-change'
   github-token:
     description: 'Status of the current run'

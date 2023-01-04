@@ -49,7 +49,6 @@ YOUR_SLACK_WEBHOOK: Webhook URL from Slack Incoming Webhook application
     # Type of notification (on-state-change, release)
     #
     # Default: on-state-change
-    # Required: true
     notify-type: ''
 
     # Status of the current run
