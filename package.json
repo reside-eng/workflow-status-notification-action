@@ -25,7 +25,7 @@
     "got": "11.8.6"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.4.1",
+    "@commitlint/cli": "17.4.2",
     "@side/commitlint-config": "0.1.12",
     "@side/eslint-config-base": "0.16.0",
     "@side/eslint-config-jest": "0.6.0",
