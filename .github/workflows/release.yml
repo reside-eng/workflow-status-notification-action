@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload coverage to Coveralls
-        uses: coverallsapp/github-action@v1.2.0
+        uses: coverallsapp/github-action@v1.2.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
