@@ -1085,26 +1085,26 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@side/commitlint-config@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@side/commitlint-config/-/commitlint-config-0.2.0.tgz#72445364a710b3e6be9a0c6bc1e62faa42fff454"
-  integrity sha512-mMUFz9FZMBqnSS4bK1q+LSjZWUYHUHu3pjYbH/cfl1x8aFXm5mBumyiCMM+/rrvHzy3OE0NjMyhlxYrDXIb2dA==
+"@side/commitlint-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@side/commitlint-config/-/commitlint-config-1.0.0.tgz#04c14575565afd60f785e40e8686918e211cd5fc"
+  integrity sha512-mNP7948k26l2NVsMUi4GkKJAmk13qUZ94vS9o1/Pqx+SV+gL1UtbwqZcj5SFfISlXHbGUHj39HG8Q7boNNxN2w==
   dependencies:
     "@commitlint/config-conventional" "^17.0.0"
 
-"@side/eslint-config-base@0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@side/eslint-config-base/-/eslint-config-base-0.17.0.tgz#fd54ba4bf7467ae68cc16864910d913766a670f7"
-  integrity sha512-3Tn+7JAKCko3XjrBfrDe8eRc8KMbryIzVZL4vdxWctb3ymk28b3Yw4gA9d8xVai9FxNZtYcSRn4MILNdSTOhKA==
+"@side/eslint-config-base@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@side/eslint-config-base/-/eslint-config-base-1.0.0.tgz#4c4d5339abf215ae8d127f6031f3f32e54e7dd94"
+  integrity sha512-zKG3oP1jNZp6UF3ynHYIDWMGc6i7qsLWTmsFQAq1mV9rQxHiR0f184BB/s3pNa+NOy7rDn13XdClumq13MnNIg==
   dependencies:
     eslint-config-airbnb-base "^15.0.0"
     eslint-plugin-import "^2.25.2"
     glob "^8.0.0"
 
-"@side/eslint-config-jest@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@side/eslint-config-jest/-/eslint-config-jest-0.7.0.tgz#5a2e17190efcbfd30baee28edce764a93b7703b6"
-  integrity sha512-D8G/t9yokJMUqZBSUKENmnLSwKS4PAApHmxVfMgEiMDDctg6A0GJm5wwxZ5WX+QvYXLdnAjquihmfDmLB1FV8A==
+"@side/eslint-config-jest@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@side/eslint-config-jest/-/eslint-config-jest-1.0.0.tgz#ddbca21869b2bcfdea1e06044a2b0c24c6a5243c"
+  integrity sha512-QLbMbTtP1vJDUFpVBHbWgk/j21OfqcfX/e7NlHcdKQEeEE0uLEDd2gQgeaWKbtrl98GVx1C/RqrPKH3OfzzA+A==
   dependencies:
     eslint-plugin-filenames "1.3.2"
     eslint-plugin-jest "^27.0.0"
@@ -1112,15 +1112,15 @@
   optionalDependencies:
     eslint-plugin-testing-library ">=5.3.0"
 
-"@side/lint-staged-config@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@side/lint-staged-config/-/lint-staged-config-0.2.0.tgz#510b8643a61365034e64f36fd3884cc9ee642daf"
-  integrity sha512-Y1/adovyIrhFXr8Euggr5uPDF9yiIMpY/x0Ml/F+1byA2C46TmQOATnPnokCGoYhdQyU5Gj/vrAE9XPEvIPKRA==
+"@side/lint-staged-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@side/lint-staged-config/-/lint-staged-config-1.0.0.tgz#49b9c91a1d27695521390c42f063add2de54a449"
+  integrity sha512-FJrqavSMLWQo3IfKo2Viym+w62XNN+OtPOjc7RRU2jKn7oEdX1u0Z86ipOrYoIrjpSvKybELXHRMero4vdQTtg==
 
-"@side/prettier-config@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@side/prettier-config/-/prettier-config-0.1.0.tgz#545cd65e96ef3c68b90e90dca2740f3215a52195"
-  integrity sha512-TaROfR+Sb+uqB9g4CCTzfSdrr2GDZUkQsXsKEH8Qcf4i/doAkfTwPLuqB9JGguPUrHUlLhX54LOw9jWuvQmv0w==
+"@side/prettier-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@side/prettier-config/-/prettier-config-1.0.0.tgz#c3833f3d2468defd094ecc5c626abcf7e49a41ec"
+  integrity sha512-vvV2mJFqBrh4iSvfkdiwug9LghR9bCaiB5phVcWLB8LAJQXuUZSV1jvWCPMMD27OBucGMpNlZc59HCB25kKN8A==
 
 "@sinclair/typebox@^0.25.16":
   version "0.25.24"
