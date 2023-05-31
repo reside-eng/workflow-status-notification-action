@@ -40,7 +40,7 @@ async function pipeline(): Promise<void> {
       context.workflow,
     )
       ? 'deploy'
-      : 'release';
+      : 'releas';
     const message = await prepareSlackNotification(
       currentStatus === 'success'
         ? `${repository} successfully ${releaseAction}ed`

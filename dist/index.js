@@ -73687,7 +73687,7 @@ async function pipeline() {
     if (notifyType === 'release') {
         const releaseAction = ['select-for-release.yml', 'merge-main.yml'].includes(github_1.context.workflow)
             ? 'deploy'
-            : 'release';
+            : 'releas';
         const message = await (0, slack_1.prepareSlackNotification)(currentStatus === 'success'
             ? `${repository} successfully ${releaseAction}ed`
             : `error ${releaseAction}ing ${repository}`, currentStatus);
