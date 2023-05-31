@@ -43,6 +43,7 @@ export async function prepareSlackNotification(
   const color = status === 'success' ? 'good' : 'danger';
   const repository = context.repo.repo;
   const headRef = getHeadRef();
+  const authorName = event === 'schedule' ? 'reside-camacho' : `${actor}`;
 
   const messageBody = {
     icon_emoji: ':bangbang:', // User icon, you can also use custom icons here
@@ -50,9 +51,9 @@ export async function prepareSlackNotification(
       {
         // this defines the attachment block, allows for better layout usage
         color: `${color}`, // color of the attachments sidebar.
-        author_name: `${actor}`,
-        author_link: `${serverUrl}/${actor}`,
-        author_icon: `${serverUrl}/${actor}.png?size=32`,
+        author_name: authorName,
+        author_link: `${serverUrl}/${authorName}`,
+        author_icon: `${serverUrl}/${authorName}.png?size=32`,
         fields: [
           // actual fields
           {

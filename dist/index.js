@@ -73687,7 +73687,7 @@ async function pipeline() {
     if (notifyType === 'release') {
         const releaseAction = ['select-for-release.yml', 'merge-main.yml'].includes(github_1.context.workflow)
             ? 'deploy'
-            : 'releas';
+            : 'release';
         const message = await (0, slack_1.prepareSlackNotification)(currentStatus === 'success'
             ? `${repository} successfully ${releaseAction}ed`
             : `error ${releaseAction}ing ${repository}`, currentStatus);
@@ -73912,15 +73912,16 @@ async function prepareSlackNotification(message, status) {
     const color = status === 'success' ? 'good' : 'danger';
     const repository = github_1.context.repo.repo;
     const headRef = (0, github_2.getHeadRef)();
+    const authorName = event === 'schedule' ? 'reside-camacho' : `${actor}`;
     const messageBody = {
         icon_emoji: ':bangbang:',
         attachments: [
             {
                 // this defines the attachment block, allows for better layout usage
                 color: `${color}`,
-                author_name: `${actor}`,
-                author_link: `${serverUrl}/${actor}`,
-                author_icon: `${serverUrl}/${actor}.png?size=32`,
+                author_name: authorName,
+                author_link: `${serverUrl}/${authorName}`,
+                author_icon: `${serverUrl}/${authorName}.png?size=32`,
                 fields: [
                     // actual fields
                     {
