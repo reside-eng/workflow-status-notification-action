@@ -63,6 +63,10 @@ jobs:
         uses: cycjimmy/semantic-release-action@v2
         id: semantic
         with:
+          # TMP: We're fixing @semantic-release/github version because 8.0.9 is causing an unexpected issue: https://github.com/semantic-release/github/issues/642
+          extra_plugins: |
+            @semantic-release/github@8.0.8
+          semantic_version: ^18
           branches: |
             [
               '+([0-9])?(.{+([0-9]),x}).x',
