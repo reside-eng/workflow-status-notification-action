@@ -22,23 +22,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3
 
       - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
 
       - name: Configure package manager
         run: |
-          npm config set '//registry.npmjs.org/:_authToken' ${{ env.NPM_TOKEN }}
-          npm whoami
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          yarn config set npmAuthToken ${{ secrets.NPM_PUBLISH_TOKEN }}
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Lint
         run: yarn lint
@@ -58,6 +55,10 @@ jobs:
 
       - name: Build
         run: yarn build
+
+      - name: Cleanup .yarnrc.yml changes before publish
+        run: |
+          git restore .yarnrc.yml
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
@@ -104,7 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3
 
       - uses: technote-space/workflow-conclusion-action@v3.0.3
 
