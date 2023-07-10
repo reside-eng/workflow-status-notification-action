@@ -51,7 +51,7 @@
     "prettier": "3.0.0",
     "rimraf": "5.0.1",
     "ts-node": "10.9.1",
-    "typescript": "5.1.5"
+    "typescript": "5.1.6"
   },
   "prettier": "@side/prettier-config",
   "repository": {
