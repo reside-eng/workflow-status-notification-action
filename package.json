@@ -35,7 +35,7 @@
     "@swc/jest": "0.2.27",
     "@tsconfig/node16": "16.1.0",
     "@types/jest": "29.5.3",
-    "@types/js-yaml": "4.0.5",
+    "@types/js-yaml": "4.0.9",
     "@types/node": "16.18.39",
     "@typescript-eslint/eslint-plugin": "5.61.0",
     "@typescript-eslint/parser": "5.61.0",
