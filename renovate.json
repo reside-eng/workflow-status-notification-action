@@ -9,11 +9,6 @@
       "description": "Prevent upgrade of got to v12 which is ESM",
       "matchPackageNames": ["got"],
       "allowedVersions": "^11"
-    },
-    {
-      "description": "Prevent upgrade of Node past 16 (until functions runtime supports)",
-      "matchPackageNames": ["node", "@types/node"],
-      "allowedVersions": "^16"
     }
   ]
 }

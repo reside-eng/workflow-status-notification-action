@@ -96926,11 +96926,11 @@ async function prepareSlackNotification(message, status) {
     const headRef = (0, github_2.getHeadRef)();
     const authorName = event === 'schedule' ? 'reside-camacho' : `${actor}`;
     const messageBody = {
-        icon_emoji: ':bangbang:',
+        icon_emoji: ':bangbang:', // User icon, you can also use custom icons here
         attachments: [
             {
                 // this defines the attachment block, allows for better layout usage
-                color: `${color}`,
+                color: `${color}`, // color of the attachments sidebar.
                 author_name: authorName,
                 author_link: `${serverUrl}/${authorName}`,
                 author_icon: `${serverUrl}/${authorName}.png?size=32`,
@@ -96958,7 +96958,7 @@ async function prepareSlackNotification(message, status) {
                     },
                     {
                         title: `${workflow} workflow ${status}`,
-                        value: `${message}`,
+                        value: `${message}`, // Custom value
                         short: false, // long fields will be full width
                     },
                 ],
