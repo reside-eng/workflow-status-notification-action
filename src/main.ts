@@ -80,7 +80,6 @@ async function pipeline(): Promise<void> {
 
 /**
  * Logs an error and fails the Github Action
- *
  * @param err Any possible errors
  */
 function handleError(err: Error): void {
