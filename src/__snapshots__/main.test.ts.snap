@@ -1,0 +1,259 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`last run status retrieved from GH CLI (new commit workflow behavior) not a pull_request: should send success notification if last run failed and current succeeded 1`] = `
+{
+  "json": {
+    "attachments": [
+      {
+        "author_icon": "https://github.com/workflowactor.png?size=32",
+        "author_link": "https://github.com/workflowactor",
+        "author_name": "workflowactor",
+        "color": "good",
+        "fields": [
+          {
+            "short": true,
+            "title": "Repository",
+            "value": "workflow-status-notification-action",
+          },
+          {
+            "short": true,
+            "title": "Branch",
+            "value": "main",
+          },
+          {
+            "short": true,
+            "title": "Action URL",
+            "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
+          },
+          {
+            "short": true,
+            "title": "Event",
+            "value": "workflow_dispatch",
+          },
+          {
+            "short": false,
+            "title": "Failure workflow (for test purpose only) workflow success",
+            "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
+          },
+        ],
+      },
+    ],
+    "icon_emoji": ":bangbang:",
+  },
+}
+`;
+
+exports[`last run status retrieved from GH CLI (new commit workflow behavior) should send failure notification if last run succeeded and current fails 1`] = `
+{
+  "json": {
+    "attachments": [
+      {
+        "author_icon": "https://github.com/workflowactor.png?size=32",
+        "author_link": "https://github.com/workflowactor",
+        "author_name": "workflowactor",
+        "color": "danger",
+        "fields": [
+          {
+            "short": true,
+            "title": "Repository",
+            "value": "workflow-status-notification-action",
+          },
+          {
+            "short": true,
+            "title": "Branch",
+            "value": "main",
+          },
+          {
+            "short": true,
+            "title": "Action URL",
+            "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Success workflow (for test purpose only)>",
+          },
+          {
+            "short": true,
+            "title": "Event",
+            "value": "pull_request",
+          },
+          {
+            "short": false,
+            "title": "Success workflow (for test purpose only) workflow failure",
+            "value": "Success workflow (for test purpose only) workflow in workflow-status-notification-action failed.",
+          },
+        ],
+      },
+    ],
+    "icon_emoji": ":bangbang:",
+  },
+}
+`;
+
+exports[`last run status retrieved from GH CLI (new commit workflow behavior) should send success notification if last run failed and current succeeded 1`] = `
+{
+  "json": {
+    "attachments": [
+      {
+        "author_icon": "https://github.com/workflowactor.png?size=32",
+        "author_link": "https://github.com/workflowactor",
+        "author_name": "workflowactor",
+        "color": "good",
+        "fields": [
+          {
+            "short": true,
+            "title": "Repository",
+            "value": "workflow-status-notification-action",
+          },
+          {
+            "short": true,
+            "title": "Branch",
+            "value": "main",
+          },
+          {
+            "short": true,
+            "title": "Action URL",
+            "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
+          },
+          {
+            "short": true,
+            "title": "Event",
+            "value": "pull_request",
+          },
+          {
+            "short": false,
+            "title": "Failure workflow (for test purpose only) workflow success",
+            "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
+          },
+        ],
+      },
+    ],
+    "icon_emoji": ":bangbang:",
+  },
+}
+`;
+
+exports[`last run status retrieved from cache (re-run workflow behavior) not a pull_request: should send success notification if last run failed and current succeeded 1`] = `
+{
+  "json": {
+    "attachments": [
+      {
+        "author_icon": "https://github.com/workflowactor.png?size=32",
+        "author_link": "https://github.com/workflowactor",
+        "author_name": "workflowactor",
+        "color": "good",
+        "fields": [
+          {
+            "short": true,
+            "title": "Repository",
+            "value": "workflow-status-notification-action",
+          },
+          {
+            "short": true,
+            "title": "Branch",
+            "value": "main",
+          },
+          {
+            "short": true,
+            "title": "Action URL",
+            "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
+          },
+          {
+            "short": true,
+            "title": "Event",
+            "value": "workflow_dispatch",
+          },
+          {
+            "short": false,
+            "title": "Failure workflow (for test purpose only) workflow success",
+            "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
+          },
+        ],
+      },
+    ],
+    "icon_emoji": ":bangbang:",
+  },
+}
+`;
+
+exports[`last run status retrieved from cache (re-run workflow behavior) should send failure notification if last run succeeded and current fails 1`] = `
+{
+  "json": {
+    "attachments": [
+      {
+        "author_icon": "https://github.com/workflowactor.png?size=32",
+        "author_link": "https://github.com/workflowactor",
+        "author_name": "workflowactor",
+        "color": "danger",
+        "fields": [
+          {
+            "short": true,
+            "title": "Repository",
+            "value": "workflow-status-notification-action",
+          },
+          {
+            "short": true,
+            "title": "Branch",
+            "value": "main",
+          },
+          {
+            "short": true,
+            "title": "Action URL",
+            "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
+          },
+          {
+            "short": true,
+            "title": "Event",
+            "value": "pull_request",
+          },
+          {
+            "short": false,
+            "title": "Failure workflow (for test purpose only) workflow failure",
+            "value": "Failure workflow (for test purpose only) workflow in workflow-status-notification-action failed.",
+          },
+        ],
+      },
+    ],
+    "icon_emoji": ":bangbang:",
+  },
+}
+`;
+
+exports[`last run status retrieved from cache (re-run workflow behavior) should send success notification if last run failed and current succeeded 1`] = `
+{
+  "json": {
+    "attachments": [
+      {
+        "author_icon": "https://github.com/workflowactor.png?size=32",
+        "author_link": "https://github.com/workflowactor",
+        "author_name": "workflowactor",
+        "color": "good",
+        "fields": [
+          {
+            "short": true,
+            "title": "Repository",
+            "value": "workflow-status-notification-action",
+          },
+          {
+            "short": true,
+            "title": "Branch",
+            "value": "main",
+          },
+          {
+            "short": true,
+            "title": "Action URL",
+            "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
+          },
+          {
+            "short": true,
+            "title": "Event",
+            "value": "pull_request",
+          },
+          {
+            "short": false,
+            "title": "Failure workflow (for test purpose only) workflow success",
+            "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
+          },
+        ],
+      },
+    ],
+    "icon_emoji": ":bangbang:",
+  },
+}
+`;
