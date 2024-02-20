@@ -109,7 +109,7 @@ exports[`last run status retrieved from GH CLI (new commit workflow behavior) sh
           {
             "short": true,
             "title": "Action URL",
-            "value": "<https://github.com/workflowactor/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
+            "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
           },
           {
             "short": true,
