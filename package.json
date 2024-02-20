@@ -15,7 +15,7 @@
     "build": "rimraf dist && ncc build src/index.ts && yarn build:docs",
     "lint": "eslint . --ignore-pattern='!.eslintrc.js' --ext .ts,.js",
     "types": "tsc --noEmit",
-    "test": "export GITHUB_REPOSITORY='reside-eng/workflow-status-notification-action' && yarn tsc && jest"
+    "test": "GITHUB_REPOSITORY='reside-eng/workflow-status-notification-action' yarn tsc && jest"
   },
   "dependencies": {
     "@actions/cache": "3.2.1",
@@ -65,5 +65,5 @@
   ],
   "author": "Side",
   "license": "MIT",
-  "packageManager": "yarn@3.6.0"
+  "packageManager": "yarn@4.1.0"
 }

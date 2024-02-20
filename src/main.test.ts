@@ -30,9 +30,7 @@ let mock: MockObj;
 const mockCore = core as jest.Mocked<typeof core>;
 const mockCache = cache as jest.Mocked<typeof cache>;
 jest.mock('got');
-const mockGot = got;
 const mockFn = jest.fn();
-mockGot.post = mockFn.bind({});
 
 const slackUrl = 'https://hooks.slack.com';
 const slackPath = '/services/test/test';
@@ -65,6 +63,8 @@ function setupMock() {
     actor: 'workflowactor',
     serverUrl: 'https://github.com',
   };
+
+  jest.spyOn(got, 'post').mockImplementation(mockFn);
 
   mockCore.getInput.mockImplementation(
     (name: string): string => mock.inputs[name] || '',
@@ -132,48 +132,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toBeCalledTimes(1);
     expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
-    expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      {
-        "json": {
-          "attachments": [
-            {
-              "author_icon": "https://github.com/workflowactor.png?size=32",
-              "author_link": "https://github.com/workflowactor",
-              "author_name": "workflowactor",
-              "color": "good",
-              "fields": [
-                {
-                  "short": true,
-                  "title": "Repository",
-                  "value": "workflow-status-notification-action",
-                },
-                {
-                  "short": true,
-                  "title": "Branch",
-                  "value": "main",
-                },
-                {
-                  "short": true,
-                  "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
-                },
-                {
-                  "short": true,
-                  "title": "Event",
-                  "value": "pull_request",
-                },
-                {
-                  "short": false,
-                  "title": "Failure workflow (for test purpose only) workflow success",
-                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
-                },
-              ],
-            },
-          ],
-          "icon_emoji": ":bangbang:",
-        },
-      }
-    `);
+    expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
 
   it('should not send notification if last run succeeded and current succeeded', async () => {
@@ -190,48 +149,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toBeCalledTimes(1);
     expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
-    expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      {
-        "json": {
-          "attachments": [
-            {
-              "author_icon": "https://github.com/workflowactor.png?size=32",
-              "author_link": "https://github.com/workflowactor",
-              "author_name": "workflowactor",
-              "color": "danger",
-              "fields": [
-                {
-                  "short": true,
-                  "title": "Repository",
-                  "value": "workflow-status-notification-action",
-                },
-                {
-                  "short": true,
-                  "title": "Branch",
-                  "value": "main",
-                },
-                {
-                  "short": true,
-                  "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
-                },
-                {
-                  "short": true,
-                  "title": "Event",
-                  "value": "pull_request",
-                },
-                {
-                  "short": false,
-                  "title": "Failure workflow (for test purpose only) workflow failure",
-                  "value": "Failure workflow (for test purpose only) workflow in workflow-status-notification-action failed.",
-                },
-              ],
-            },
-          ],
-          "icon_emoji": ":bangbang:",
-        },
-      }
-    `);
+    expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
 
   it('should not send notification if last run failed and current fails', async () => {
@@ -251,106 +169,30 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toBeCalledTimes(1);
     expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
-    expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      {
-        "json": {
-          "attachments": [
-            {
-              "author_icon": "https://github.com/workflowactor.png?size=32",
-              "author_link": "https://github.com/workflowactor",
-              "author_name": "workflowactor",
-              "color": "good",
-              "fields": [
-                {
-                  "short": true,
-                  "title": "Repository",
-                  "value": "workflow-status-notification-action",
-                },
-                {
-                  "short": true,
-                  "title": "Branch",
-                  "value": "main",
-                },
-                {
-                  "short": true,
-                  "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
-                },
-                {
-                  "short": true,
-                  "title": "Event",
-                  "value": "workflow_dispatch",
-                },
-                {
-                  "short": false,
-                  "title": "Failure workflow (for test purpose only) workflow success",
-                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
-                },
-              ],
-            },
-          ],
-          "icon_emoji": ":bangbang:",
-        },
-      }
-    `);
+    expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
 });
 
 // Test using GH CLI to retrieve previous status (new commit workflow behavior)
 describe('last run status retrieved from GH CLI (new commit workflow behavior)', () => {
-  beforeEach(() => setupMock());
+  beforeEach(async () => {
+    setupMock();
+    await writeStatusToCache();
+  });
 
-  afterEach(() => cleanCache());
+  afterEach(async () => {
+    await cleanCache();
+  });
 
   it('should send success notification if last run failed and current succeeded', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toBeCalledTimes(1);
-    expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      {
-        "json": {
-          "attachments": [
-            {
-              "author_icon": "https://github.com/workflowactor.png?size=32",
-              "author_link": "https://github.com/workflowactor",
-              "author_name": "workflowactor",
-              "color": "good",
-              "fields": [
-                {
-                  "short": true,
-                  "title": "Repository",
-                  "value": "workflow-status-notification-action",
-                },
-                {
-                  "short": true,
-                  "title": "Branch",
-                  "value": "main",
-                },
-                {
-                  "short": true,
-                  "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
-                },
-                {
-                  "short": true,
-                  "title": "Event",
-                  "value": "pull_request",
-                },
-                {
-                  "short": false,
-                  "title": "Failure workflow (for test purpose only) workflow success",
-                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
-                },
-              ],
-            },
-          ],
-          "icon_emoji": ":bangbang:",
-        },
-      }
-    `);
+    expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
 
   it('should not send notification if last run succeeded and current succeeded', async () => {
+    await cleanCache();
     context.workflow = 'Success workflow (for test purpose only)';
 
     await run();
@@ -360,6 +202,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
   });
 
   it('should send failure notification if last run succeeded and current fails', async () => {
+    await cleanCache();
     context.workflow = 'Success workflow (for test purpose only)';
     mock.inputs['current-status'] = 'failure';
 
@@ -367,48 +210,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toBeCalledTimes(1);
-    expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      {
-        "json": {
-          "attachments": [
-            {
-              "author_icon": "https://github.com/workflowactor.png?size=32",
-              "author_link": "https://github.com/workflowactor",
-              "author_name": "workflowactor",
-              "color": "danger",
-              "fields": [
-                {
-                  "short": true,
-                  "title": "Repository",
-                  "value": "workflow-status-notification-action",
-                },
-                {
-                  "short": true,
-                  "title": "Branch",
-                  "value": "main",
-                },
-                {
-                  "short": true,
-                  "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Success workflow (for test purpose only)>",
-                },
-                {
-                  "short": true,
-                  "title": "Event",
-                  "value": "pull_request",
-                },
-                {
-                  "short": false,
-                  "title": "Success workflow (for test purpose only) workflow failure",
-                  "value": "Success workflow (for test purpose only) workflow in workflow-status-notification-action failed.",
-                },
-              ],
-            },
-          ],
-          "icon_emoji": ":bangbang:",
-        },
-      }
-    `);
+    expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
 
   it('should not send notification if last run failed and current fails', async () => {
@@ -427,48 +229,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn.mock.calls.length).toStrictEqual(1);
-    expect(mockFn.mock.calls[0][1]).toMatchInlineSnapshot(`
-      {
-        "json": {
-          "attachments": [
-            {
-              "author_icon": "https://github.com/workflowactor.png?size=32",
-              "author_link": "https://github.com/workflowactor",
-              "author_name": "workflowactor",
-              "color": "good",
-              "fields": [
-                {
-                  "short": true,
-                  "title": "Repository",
-                  "value": "workflow-status-notification-action",
-                },
-                {
-                  "short": true,
-                  "title": "Branch",
-                  "value": "main",
-                },
-                {
-                  "short": true,
-                  "title": "Action URL",
-                  "value": "<https://github.com/reside-eng/workflow-status-notification-action/actions/runs/23456|Failure workflow (for test purpose only)>",
-                },
-                {
-                  "short": true,
-                  "title": "Event",
-                  "value": "workflow_dispatch",
-                },
-                {
-                  "short": false,
-                  "title": "Failure workflow (for test purpose only) workflow success",
-                  "value": "Previously failing Failure workflow (for test purpose only) workflow in workflow-status-notification-action succeeded.",
-                },
-              ],
-            },
-          ],
-          "icon_emoji": ":bangbang:",
-        },
-      }
-    `);
+    expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
 });
 
@@ -497,8 +258,8 @@ describe('inputs format', () => {
     mock.inputs['slack-webhook'] = 'htp:/hooks.slack.com/services/test/test';
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
-    expect(mockCore.setFailed.mock.calls[0][0]).toMatchInlineSnapshot(
-      `"Wrong Slack Webhook URL format"`,
+    expect(mockCore.setFailed.mock.calls[0][0]).toMatch(
+      `Wrong Slack Webhook URL format`,
     );
     expect(mockFn).toBeCalledTimes(0);
   });
