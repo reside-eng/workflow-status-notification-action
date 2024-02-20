@@ -6,7 +6,6 @@ import { getHeadRef } from './github';
 /**
  * Handles the actual sending request.
  * We're turning the https.request into a promise here for convenience
- *
  * @param webhookURL URL of the Slack channel Webhook
  * @param messageBody Payload to send to Slack
  */
@@ -23,7 +22,6 @@ export async function sendSlackMessage(
 
 /**
  * Prepare slack notification
- *
  * @param message contained in the Slack notification
  * @param status current status to notify
  * @returns the Slack message body

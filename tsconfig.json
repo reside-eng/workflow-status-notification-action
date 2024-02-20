@@ -1,10 +1,17 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
+    "lib": ["es2023"],
+    "module": "node16",
+    "target": "es2022",
+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node16",
     "outDir": "./dist",
     "rootDir": "./src",
-    "noImplicitAny": true,
-    "moduleResolution": "node"
+    "noImplicitAny": true
   },
   "exclude": ["node_modules", "**/*.test.ts"],
   "include": ["src"]
