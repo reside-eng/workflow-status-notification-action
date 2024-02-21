@@ -19,7 +19,6 @@ interface ActionsConfig {
 
 /**
  * Rebuilds the usage section in the README.md so it's consistent with the action.yml.
- *
  * @param actionReference - Full name of the action as to how it will be used
  * @param actionYamlPath - Path to the action.yml file
  * @param readmePath - Path to the README.md file

@@ -13,7 +13,6 @@ const cachePaths = ['last-run-status'];
 
 /**
  * Gets headRef according to context
- *
  * @returns headRef
  */
 export function getHeadRef(): string | undefined {
@@ -25,7 +24,6 @@ export function getHeadRef(): string | undefined {
 
 /**
  * Gets last run status from GH CLI
- *
  * @returns status
  */
 async function getStatusFromGithub() {
@@ -58,7 +56,6 @@ async function getStatusFromGithub() {
 
 /**
  * Gets the last workflow run status
- *
  * @returns last run status
  */
 export async function getLastRunStatus(): Promise<string> {
