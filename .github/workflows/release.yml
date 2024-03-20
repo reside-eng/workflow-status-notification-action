@@ -31,11 +31,7 @@ jobs:
           cache: yarn
 
       - name: Configure package manager
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
-        run: |
-          npm config set '//registry.npmjs.org/:_authToken' ${{ env.NPM_TOKEN }}
-          yarn config set npmAuthToken ${{ env.NPM_TOKEN }}
+        run: yarn config set npmAuthToken ${{ secrets.NPM_READ_TOKEN }}
 
       - name: Install dependencies
         run: yarn install --immutable
