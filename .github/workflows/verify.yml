@@ -63,5 +63,5 @@ jobs:
       - uses: reside-eng/workflow-status-notification-action@v1
         with:
           current-status: ${{ env.WORKFLOW_CONCLUSION }}
-          slack-webhook: ${{ secrets.SLACK_WEBHOOK_PLATFORM_PROD }}
+          slack-webhook: ${{ secrets.SLACK_WEBHOOK_PLATFORM_NONPROD }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
