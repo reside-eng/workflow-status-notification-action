@@ -641,13 +641,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^18.0.0":
-  version: 18.6.3
-  resolution: "@commitlint/config-conventional@npm:18.6.3"
+"@commitlint/config-conventional@npm:^19.0.0":
+  version: 19.2.2
+  resolution: "@commitlint/config-conventional@npm:19.2.2"
   dependencies:
-    "@commitlint/types": "npm:^18.6.1"
+    "@commitlint/types": "npm:^19.0.3"
     conventional-changelog-conventionalcommits: "npm:^7.0.2"
-  checksum: 10/888c016c37b82b7b277eac3c6b04e8da7c41aa779b755424288130fdb9e5a433cb77df7bb0ab0d2414b90e8e33359f9e1f24cf27cd7ad7aa352f2b98d4be2131
+  checksum: 10/9ee17ba00f9182fda544c247bc1d130f65d1bb0d4d9953d5c3d1e4fd36211386c1e849a28e823574546a8bc3df3d0c269122258e21a55d3c12b3e64c00ab50b6
   languageName: node
   linkType: hard
 
@@ -803,15 +803,6 @@ __metadata:
   dependencies:
     find-up: "npm:^7.0.0"
   checksum: 10/47b0994d03f26caf2812110ead535bd10157beed6b3dff9cbb4eea165de9245673ba7d31829cd54af5855f7b075ebbf812b1f79586248be3932797888efeadf5
-  languageName: node
-  linkType: hard
-
-"@commitlint/types@npm:^18.6.1":
-  version: 18.6.1
-  resolution: "@commitlint/types@npm:18.6.1"
-  dependencies:
-    chalk: "npm:^4.1.0"
-  checksum: 10/fb37bdefd25e05e353eb568b26a7dd5aff488f1e3fbfc42080bde49ae6834ffde996acac4b7767df650b38e03692889b636b8290465823cd27276662d3b471cf
   languageName: node
   linkType: hard
 
@@ -1553,14 +1544,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@side/commitlint-config@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@side/commitlint-config@npm:1.0.1"
+"@side/commitlint-config@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@side/commitlint-config@npm:1.0.2"
   dependencies:
-    "@commitlint/config-conventional": "npm:^18.0.0"
+    "@commitlint/config-conventional": "npm:^19.0.0"
   peerDependencies:
     "@commitlint/cli": ">=13.0.0"
-  checksum: 10/0b50245b943a7540016070e0ebb37d270af4a1fc2db15216ca844978f813d677ce3d03e3883257e42e67b9193dbb2a72b5860be81f07e8cad4540622e19eff53
+  checksum: 10/3f249cbc950f689590a8334bdad103928ac7f48f23cfeb5cc8cefa93fa67ddec1f7e8d1821b36aba35433035ca45e0a2dbc5ce3e8683395c052383653fc57d70
   languageName: node
   linkType: hard
 
@@ -1622,7 +1613,7 @@ __metadata:
     "@actions/exec": "npm:1.1.1"
     "@actions/github": "npm:6.0.0"
     "@commitlint/cli": "npm:19.2.2"
-    "@side/commitlint-config": "npm:1.0.1"
+    "@side/commitlint-config": "npm:1.0.2"
     "@side/eslint-config-base": "npm:2.1.0"
     "@side/eslint-config-jest": "npm:1.0.0"
     "@side/lint-staged-config": "npm:1.0.0"
@@ -2821,7 +2812,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4.0.0, chalk@npm:^4.1.0":
+"chalk@npm:^4.0.0":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
   dependencies:
