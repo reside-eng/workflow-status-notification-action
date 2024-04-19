@@ -1586,14 +1586,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@side/lint-staged-config@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@side/lint-staged-config@npm:1.0.0"
+"@side/lint-staged-config@npm:1.0.1":
+  version: 1.0.1
+  resolution: "@side/lint-staged-config@npm:1.0.1"
   peerDependencies:
     eslint: ">=7.14.0"
     lint-staged: ">=13.0.0"
     prettier: ">=2.7.0"
-  checksum: 10/3d263aa78e69e523d91862af5a42f9e61851ddd82256530bf196a89f4e27d4c90a2c23e947783ae113d913a8ca7c648f0c3c4389487775ad3408cca76f677e08
+  checksum: 10/64e6b5aa47b19ec19a96d3c1eef8ba3d74f50e0e01a0717d0f6fd916f02da988a523cae744a9cd9df9cf10c047591ba056c1626db0b9c4879cebb334c11a72a1
   languageName: node
   linkType: hard
 
@@ -1616,7 +1616,7 @@ __metadata:
     "@side/commitlint-config": "npm:1.0.2"
     "@side/eslint-config-base": "npm:2.1.0"
     "@side/eslint-config-jest": "npm:1.0.0"
-    "@side/lint-staged-config": "npm:1.0.0"
+    "@side/lint-staged-config": "npm:1.0.1"
     "@side/prettier-config": "npm:1.0.0"
     "@swc/core": "npm:1.4.8"
     "@swc/jest": "npm:0.2.36"
