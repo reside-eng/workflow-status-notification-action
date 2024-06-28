@@ -49,7 +49,7 @@
     "nock": "13.5.4",
     "prettier": "3.3.2",
     "rimraf": "5.0.7",
-    "tsx": "4.15.7",
+    "tsx": "4.15.8",
     "typescript": "5.5.2"
   },
   "prettier": "@side/prettier-config",
