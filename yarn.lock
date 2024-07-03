@@ -1680,7 +1680,7 @@ __metadata:
     nock: "npm:13.5.4"
     prettier: "npm:3.3.2"
     rimraf: "npm:5.0.7"
-    tsx: "npm:4.16.0"
+    tsx: "npm:4.16.1"
     typescript: "npm:5.5.2"
   languageName: unknown
   linkType: soft
@@ -7308,9 +7308,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:4.16.0":
-  version: 4.16.0
-  resolution: "tsx@npm:4.16.0"
+"tsx@npm:4.16.1":
+  version: 4.16.1
+  resolution: "tsx@npm:4.16.1"
   dependencies:
     esbuild: "npm:~0.21.5"
     fsevents: "npm:~2.3.3"
@@ -7320,7 +7320,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 10/6a81423bd63d80185079d4ac390325066ddc5e7d057a810ba6c7071e8b7535fa6a6bb0fd2494da68e6f61480ec0fb9f1f204f8655f0cfe40480896992748c46d
+  checksum: 10/6b7296329cfbd3fe2bce1e5ad346c0140e83eb44a5075221d190ae9cf94c1b2e4de574b3e1861cc65f4583cbd8aa2673982cd0a673cf25b11ef48a2ebcaca15a
   languageName: node
   linkType: hard
 
