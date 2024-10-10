@@ -71,7 +71,7 @@ export async function getLastRunStatus(): Promise<string> {
     try {
       lastStatus = await fsp.readFile(cachePaths[0], 'utf8');
       core.info(`Cache Found status: ${lastStatus}`);
-    } catch (err) {
+    } catch {
       lastStatus = await getStatusFromGithub();
     }
   } else {

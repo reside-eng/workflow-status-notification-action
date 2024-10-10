@@ -23,7 +23,7 @@ async function pipeline(): Promise<void> {
   let url;
   try {
     url = new URL(webhookUrl);
-  } catch (err) {
+  } catch {
     core.setFailed('Wrong Slack Webhook URL format');
     return;
   }
