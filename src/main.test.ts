@@ -75,7 +75,7 @@ function setupMock() {
       try {
         await fsp.readFile('last-run-status', 'utf8');
         return 'test';
-      } catch (err) {
+      } catch {
         return undefined;
       }
     },
