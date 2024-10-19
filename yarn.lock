@@ -1619,16 +1619,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@side/eslint-config-base@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@side/eslint-config-base@npm:2.2.0"
+"@side/eslint-config-base@npm:2.3.0":
+  version: 2.3.0
+  resolution: "@side/eslint-config-base@npm:2.3.0"
   dependencies:
     eslint-config-airbnb-base: "npm:^15.0.0"
     eslint-plugin-import: "npm:^2.25.2"
     glob: "npm:^10.4.1"
   peerDependencies:
     eslint: ">=7.14.0"
-  checksum: 10/acf2231627f97f168a5b67017a61529912adf2d95e03d1020256bec1c96842e91c18331ca185430a878d04266814b7c34fbeaee1642a0f6f87411732f2f2e1ef
+  checksum: 10/4451e5bc4d87a275e2bf0ca1b40b94a03d0c064fa52159c24daebb60178f4dbbec3b4836d14e603ba8ee64e8eef2aebd19e4f5e4d06b1c25a9ef38807b5b9a84
   languageName: node
   linkType: hard
 
@@ -1678,7 +1678,7 @@ __metadata:
     "@actions/github": "npm:6.0.0"
     "@commitlint/cli": "npm:19.5.0"
     "@side/commitlint-config": "npm:1.1.0"
-    "@side/eslint-config-base": "npm:2.2.0"
+    "@side/eslint-config-base": "npm:2.3.0"
     "@side/eslint-config-jest": "npm:1.1.1"
     "@side/lint-staged-config": "npm:1.1.0"
     "@side/prettier-config": "npm:1.1.0"
