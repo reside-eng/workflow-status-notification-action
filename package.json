@@ -32,7 +32,7 @@
     "@side/lint-staged-config": "1.1.0",
     "@side/prettier-config": "1.1.0",
     "@swc/core": "1.7.40",
-    "@swc/jest": "0.2.36",
+    "@swc/jest": "0.2.37",
     "@types/jest": "29.5.14",
     "@types/js-yaml": "4.0.9",
     "@types/node": "20.17.3",
