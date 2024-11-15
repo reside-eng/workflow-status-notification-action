@@ -1587,16 +1587,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@side/eslint-config-base@npm:2.3.0":
-  version: 2.3.0
-  resolution: "@side/eslint-config-base@npm:2.3.0"
+"@side/eslint-config-base@npm:2.3.1":
+  version: 2.3.1
+  resolution: "@side/eslint-config-base@npm:2.3.1"
   dependencies:
     eslint-config-airbnb-base: "npm:^15.0.0"
     eslint-plugin-import: "npm:^2.25.2"
-    glob: "npm:^10.4.1"
+    glob: "npm:^11.0.0"
   peerDependencies:
     eslint: ">=7.14.0"
-  checksum: 10/4451e5bc4d87a275e2bf0ca1b40b94a03d0c064fa52159c24daebb60178f4dbbec3b4836d14e603ba8ee64e8eef2aebd19e4f5e4d06b1c25a9ef38807b5b9a84
+  checksum: 10/2b83c334b69854b38f9205057a16b945b08ab3f411d1fb9b9c0a01f802c1a0a2fb04f18643402a6dafb2ea640b28612eb94c5ccdeb8b1610a1dcfe94f4a809d3
   languageName: node
   linkType: hard
 
@@ -1646,7 +1646,7 @@ __metadata:
     "@actions/github": "npm:6.0.0"
     "@commitlint/cli": "npm:19.5.0"
     "@side/commitlint-config": "npm:1.1.0"
-    "@side/eslint-config-base": "npm:2.3.0"
+    "@side/eslint-config-base": "npm:2.3.1"
     "@side/eslint-config-jest": "npm:1.1.1"
     "@side/lint-staged-config": "npm:1.1.0"
     "@side/prettier-config": "npm:1.1.0"
@@ -4347,7 +4347,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.2.2, glob@npm:^10.3.10, glob@npm:^10.4.1":
+"glob@npm:^10.2.2, glob@npm:^10.3.10":
   version: 10.4.5
   resolution: "glob@npm:10.4.5"
   dependencies:
