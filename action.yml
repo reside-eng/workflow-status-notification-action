@@ -10,7 +10,7 @@ inputs:
     required: true
     default: ''
   notify-type:
-    description: 'Type of notification (on-state-change, release)'
+    description: 'Type of notification (on-state-change, on-failure-and-recovery, release)'
     required: false
     default: 'on-state-change'
   github-token:

@@ -65,7 +65,7 @@ async function pipeline(): Promise<void> {
     await sendSlackMessage(webhookUrl, message);
   } else if (
     currentStatus === 'failure' &&
-    (lastStatus === 'completed/success' || lastStatus === '')
+    (lastStatus === 'completed/success' || lastStatus === '' || notifyType === 'on-failure-and-recovery')
   ) {
     core.info(`Failure notification`);
     const message = await prepareSlackNotification(
