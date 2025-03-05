@@ -6,6 +6,13 @@
 ## How it works
 
 At the end of a workflow, on success() and on failure(), call this action with the current status as a parameter (success/failure).
+
+### If notification-type = release
+
+This action will send a release notification with the current status (success or failure) whatever the current and previous workflow status.
+
+### If notification-type = on-state-change
+
 This action will first check the previous workflow status and will send a Slack notification according to the current workflow status.
 Status is retrieved from cache if the current workflow has already run previously (from `re-run all jobs` button for example).
 If it's the first time this workflow runs, this action will retrieve previous workflow status on the same branch with `gh` cli using provided `github-token`.
@@ -21,6 +28,10 @@ It'll not send a notification to Slack if:
 - Current status is `success` and previous run status was `success`.
 - Current status is `success` and it's the first run.
 - Current status is `failure` and previous run status was `failure`.
+
+### If notification-type = on-failure-and-recover
+ 
+Same as on-state-change but will notify on each failure (so will also notify when current status is `failure` and previous run status was `failure`).
 
 ## Notes
 
@@ -46,7 +57,7 @@ YOUR_SLACK_WEBHOOK: Webhook URL from Slack Incoming Webhook application
     # Required: true
     slack-webhook: ''
 
-    # Type of notification (on-state-change, release)
+    # Type of notification (on-state-change, on-failure-and-recovery, release)
     #
     # Default: on-state-change
     notify-type: ''
