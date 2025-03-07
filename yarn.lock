@@ -1764,7 +1764,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:8.26.0"
     "@vercel/ncc": "npm:0.38.3"
     eslint: "npm:8.57.1"
-    eslint-config-prettier: "npm:10.1.0"
+    eslint-config-prettier: "npm:10.1.1"
     eslint-plugin-jsdoc: "npm:50.6.3"
     got: "npm:11.8.6"
     husky: "npm:9.1.7"
@@ -3655,14 +3655,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:10.1.0":
-  version: 10.1.0
-  resolution: "eslint-config-prettier@npm:10.1.0"
+"eslint-config-prettier@npm:10.1.1":
+  version: 10.1.1
+  resolution: "eslint-config-prettier@npm:10.1.1"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: bin/cli.js
-  checksum: 10/b0e643bcb5291dcc598479b801c9e10dc319a3fbb8a265cb839595e77de341a1b6c42f018e9641227e18c79c87952126fc51777fe6250d1d2e7849fdbbb7bd4b
+  checksum: 10/e78e195a4f19e0de9bf655648bb3433877d6a5368537f1b1049976b74180844a00dd7c1ba3144e3da6e8b6864f8dcdfcda6c7338a537883fcf5b212ef6dcd0e0
   languageName: node
   linkType: hard
 
