@@ -5,9 +5,9 @@ __metadata:
   version: 8
   cacheKey: 10
 
-"@actions/cache@npm:4.0.2":
-  version: 4.0.2
-  resolution: "@actions/cache@npm:4.0.2"
+"@actions/cache@npm:4.0.3":
+  version: 4.0.3
+  resolution: "@actions/cache@npm:4.0.3"
   dependencies:
     "@actions/core": "npm:^1.11.1"
     "@actions/exec": "npm:^1.0.1"
@@ -19,7 +19,7 @@ __metadata:
     "@azure/storage-blob": "npm:^12.13.0"
     "@protobuf-ts/plugin": "npm:^2.9.4"
     semver: "npm:^6.3.1"
-  checksum: 10/9a3d166086e3cc3232164338077122f7fb8ad22c376b98e7690f2017ce7bd8ea7560d5615c5fcc87bb808b700a845cee39d4f5650ad1f5e25209596714a6ddba
+  checksum: 10/232790477fcbddf4591c84cd2860b009715515e53edb7bcba718b73ddd46401f09fd859f04b426614ad82e8cdcf6948fdc4ff03e926fbf5081163d77d9a8eec8
   languageName: node
   linkType: hard
 
@@ -1745,7 +1745,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@side/workflow-status-notification-action@workspace:."
   dependencies:
-    "@actions/cache": "npm:4.0.2"
+    "@actions/cache": "npm:4.0.3"
     "@actions/core": "npm:1.11.1"
     "@actions/exec": "npm:1.1.1"
     "@actions/github": "npm:6.0.0"
