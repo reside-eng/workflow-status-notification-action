@@ -1461,9 +1461,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mswjs/interceptors@npm:^0.38.1":
-  version: 0.38.2
-  resolution: "@mswjs/interceptors@npm:0.38.2"
+"@mswjs/interceptors@npm:^0.38.5":
+  version: 0.38.5
+  resolution: "@mswjs/interceptors@npm:0.38.5"
   dependencies:
     "@open-draft/deferred-promise": "npm:^2.2.0"
     "@open-draft/logger": "npm:^0.3.0"
@@ -1472,7 +1472,7 @@ __metadata:
     jsdom: "npm:^26.0.0"
     outvariant: "npm:^1.4.3"
     strict-event-emitter: "npm:^0.5.1"
-  checksum: 10/b7b027743102c5fe3525b4f6e3ef37b8c75e203e19b1256817f688c682f5ed4f00c2451f1194c0e379fb25445c2afb8075e6d2950469789088825590dd15c3d5
+  checksum: 10/ffb883d8abc626e045d8e272e1863c28757a242c7fc30553547d692c5b9804da8c9b460f5c72a4f56065c01a4644acfbf9953d08cd523c9133d18ad46461125c
   languageName: node
   linkType: hard
 
@@ -1831,7 +1831,7 @@ __metadata:
     jest: "npm:29.7.0"
     js-yaml: "npm:4.1.0"
     lint-staged: "npm:15.5.1"
-    nock: "npm:14.0.3"
+    nock: "npm:14.0.4"
     prettier: "npm:3.5.3"
     rimraf: "npm:6.0.1"
     tsx: "npm:4.19.3"
@@ -6332,14 +6332,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nock@npm:14.0.3":
-  version: 14.0.3
-  resolution: "nock@npm:14.0.3"
+"nock@npm:14.0.4":
+  version: 14.0.4
+  resolution: "nock@npm:14.0.4"
   dependencies:
-    "@mswjs/interceptors": "npm:^0.38.1"
+    "@mswjs/interceptors": "npm:^0.38.5"
     json-stringify-safe: "npm:^5.0.1"
     propagate: "npm:^2.0.0"
-  checksum: 10/e9f9599c43b38d10337b749d246bbdb4092c67a38c3c7211635975724e0fd2fc6a629acdbebbeffcc94a9d37704262b6be5cd4647e3bcc02874fa6449766ea94
+  checksum: 10/43ad012cbaf6062e500e1535ec2ef6e7e3f037289e3b2a88490204701b9434bb873f4f43fce603c47237d13ee7985ca949f5e6b55b68bc6446929ff1da1d0b53
   languageName: node
   linkType: hard
 
