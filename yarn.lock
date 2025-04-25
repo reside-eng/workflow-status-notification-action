@@ -1812,7 +1812,7 @@ __metadata:
     "@swc/jest": "npm:0.2.38"
     "@types/jest": "npm:29.5.14"
     "@types/js-yaml": "npm:4.0.9"
-    "@types/node": "npm:22.15.0"
+    "@types/node": "npm:22.15.2"
     "@typescript-eslint/eslint-plugin": "npm:8.31.0"
     "@typescript-eslint/parser": "npm:8.31.0"
     "@vercel/ncc": "npm:0.38.3"
@@ -2163,12 +2163,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.15.0":
-  version: 22.15.0
-  resolution: "@types/node@npm:22.15.0"
+"@types/node@npm:22.15.2":
+  version: 22.15.2
+  resolution: "@types/node@npm:22.15.2"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/96911bc8bcebd32e96d0d6b46214f5b935e47ff3dac1fc6cf6a5256ebdd01dfecf689a41b3e3a1f35385c3341e0b79e0cf42a6409ce81e6b5fb9b3d7317fedbb
+  checksum: 10/e22071571205413518aa3710644ed9603d8f4a417fc59f0e180240e1c05aaf7fb8feecdf553a2da305247b3533d03b58eab6e333115f01f581b9139a6b1dcd47
   languageName: node
   linkType: hard
 
