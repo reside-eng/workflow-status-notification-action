@@ -130,7 +130,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
   it('should send success notification if last run failed and current succeeded', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn).toBeCalledTimes(1);
+    expect(mockFn).toHaveBeenCalledTimes(1);
     expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
     expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
@@ -138,7 +138,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
   it('should not send notification if last run succeeded and current succeeded', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn).toBeCalledTimes(0);
+    expect(mockFn).toHaveBeenCalledTimes(0);
   });
 
   it('should send failure notification if last run succeeded and current fails', async () => {
@@ -147,7 +147,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn).toBeCalledTimes(1);
+    expect(mockFn).toHaveBeenCalledTimes(1);
     expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
     expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
@@ -158,7 +158,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn).toBeCalledTimes(0);
+    expect(mockFn).toHaveBeenCalledTimes(0);
   });
 
   it('not a pull_request: should send success notification if last run failed and current succeeded', async () => {
@@ -167,7 +167,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
 
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn).toBeCalledTimes(1);
+    expect(mockFn).toHaveBeenCalledTimes(1);
     expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
     expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
@@ -187,7 +187,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
   it('should send success notification if last run failed and current succeeded', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn).toBeCalledTimes(1);
+    expect(mockFn).toHaveBeenCalledTimes(1);
     expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
 
@@ -198,7 +198,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn).toBeCalledTimes(0);
+    expect(mockFn).toHaveBeenCalledTimes(0);
   });
 
   it('should send failure notification if last run succeeded and current fails', async () => {
@@ -209,7 +209,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn).toBeCalledTimes(1);
+    expect(mockFn).toHaveBeenCalledTimes(1);
     expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
 
@@ -219,7 +219,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     await run();
 
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn).toBeCalledTimes(0);
+    expect(mockFn).toHaveBeenCalledTimes(0);
   });
 
   it('not a pull_request: should send success notification if last run failed and current succeeded', async () => {
@@ -244,14 +244,14 @@ describe('inputs format', () => {
   it('should not fail with expected inputs format', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
-    expect(mockFn).toBeCalledTimes(1);
+    expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
   it('should fail with wrong current status value', async () => {
     mock.inputs['current-status'] = 'notgood';
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
-    expect(mockFn).toBeCalledTimes(0);
+    expect(mockFn).toHaveBeenCalledTimes(0);
   });
 
   it('should fail with wrong slack webhook format', async () => {
@@ -261,6 +261,6 @@ describe('inputs format', () => {
     expect(mockCore.setFailed.mock.calls[0][0]).toMatch(
       `Wrong Slack Webhook URL format`,
     );
-    expect(mockFn).toBeCalledTimes(0);
+    expect(mockFn).toHaveBeenCalledTimes(0);
   });
 });
