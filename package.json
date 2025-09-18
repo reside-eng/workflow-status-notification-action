@@ -64,6 +64,6 @@
   ],
   "author": "Side",
   "license": "MIT",
-  "packageManager": "yarn@4.9.4",
+  "packageManager": "yarn@4.10.1",
   "private": true
 }
