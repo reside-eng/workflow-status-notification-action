@@ -1807,12 +1807,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@side/eslint-config-jest@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@side/eslint-config-jest@npm:1.1.1"
+"@side/eslint-config-jest@npm:1.1.2":
+  version: 1.1.2
+  resolution: "@side/eslint-config-jest@npm:1.1.2"
   dependencies:
     eslint-plugin-filenames: "npm:1.3.2"
-    eslint-plugin-jest: "npm:^28.0.0"
+    eslint-plugin-jest: "npm:^29.0.0"
     eslint-plugin-jest-formatting: "npm:^3.1.0"
     eslint-plugin-testing-library: "npm:>=5.3.0"
   peerDependencies:
@@ -1821,7 +1821,7 @@ __metadata:
   dependenciesMeta:
     eslint-plugin-testing-library:
       optional: true
-  checksum: 10/259c2dca29d38e657f223423acc85ea20f3d5da3cdb4ad8bcd6b179214993e090b6e76bdb70964f28e5f59d7f23133bad86a18db2388f294e32c98f1e2efa848
+  checksum: 10/9b32314bffb76bb43373dab61190b307f421f3adc5dbc352a23ca39d4b6a3c0646db6cfff80ba84667196cd058b6743b1bc6adf57e2d5ee278eba4f17402a09d
   languageName: node
   linkType: hard
 
@@ -1854,7 +1854,7 @@ __metadata:
     "@commitlint/cli": "npm:19.8.1"
     "@side/commitlint-config": "npm:1.1.0"
     "@side/eslint-config-base": "npm:2.3.1"
-    "@side/eslint-config-jest": "npm:1.1.1"
+    "@side/eslint-config-jest": "npm:1.1.2"
     "@side/lint-staged-config": "npm:1.1.0"
     "@side/prettier-config": "npm:1.1.0"
     "@swc/core": "npm:1.13.19"
@@ -2431,7 +2431,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:8.44.1":
+"@typescript-eslint/utils@npm:8.44.1, @typescript-eslint/utils@npm:^8.0.0":
   version: 8.44.1
   resolution: "@typescript-eslint/utils@npm:8.44.1"
   dependencies:
@@ -2446,7 +2446,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:^6.0.0 || ^7.0.0 || ^8.0.0, @typescript-eslint/utils@npm:^8.15.0":
+"@typescript-eslint/utils@npm:^8.15.0":
   version: 8.44.0
   resolution: "@typescript-eslint/utils@npm:8.44.0"
   dependencies:
@@ -4032,21 +4032,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:^28.0.0":
-  version: 28.14.0
-  resolution: "eslint-plugin-jest@npm:28.14.0"
+"eslint-plugin-jest@npm:^29.0.0":
+  version: 29.0.1
+  resolution: "eslint-plugin-jest@npm:29.0.1"
   dependencies:
-    "@typescript-eslint/utils": "npm:^6.0.0 || ^7.0.0 || ^8.0.0"
+    "@typescript-eslint/utils": "npm:^8.0.0"
   peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^6.0.0 || ^7.0.0 || ^8.0.0
-    eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
+    "@typescript-eslint/eslint-plugin": ^8.0.0
+    eslint: ^8.57.0 || ^9.0.0
     jest: "*"
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":
       optional: true
     jest:
       optional: true
-  checksum: 10/6032497bd97d6dd010450d5fdf535b8613a2789f4f83764ae04361c48d06d92f3d9b2e4350914b8fd857b6e611ba2b5282a1133ab8ec51b3e7053f9d336058e6
+  checksum: 10/d7b0a3fbdbf795225fbbff2c69c7711bb6502a3d4444d857c95a9d6578a65c80fd8a9fcd3ebc3d0634fe1cc70b4b77e887943945fadab6a974a736d2ffc5babf
   languageName: node
   linkType: hard
 

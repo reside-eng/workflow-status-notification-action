@@ -28,7 +28,7 @@
     "@commitlint/cli": "19.8.1",
     "@side/commitlint-config": "1.1.0",
     "@side/eslint-config-base": "2.3.1",
-    "@side/eslint-config-jest": "1.1.1",
+    "@side/eslint-config-jest": "1.1.2",
     "@side/lint-staged-config": "1.1.0",
     "@side/prettier-config": "1.1.0",
     "@swc/core": "1.13.19",
