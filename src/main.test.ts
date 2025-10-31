@@ -135,6 +135,15 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
     expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
   });
 
+  it('should not send notification and not update last run status cache if current status is skipped', async () => {
+    mock.inputs['current-status'] = 'skipped';
+
+    await run();
+
+    expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
+    expect(mockFn).toHaveBeenCalledTimes(0);
+  });
+
   it('should not send notification if last run succeeded and current succeeded', async () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);

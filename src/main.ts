@@ -15,7 +15,7 @@ async function pipeline(): Promise<void> {
   const notifyType = core.getInput(Inputs.NotifyType);
   core.info(`Current run status: ${currentStatus}`);
 
-  if (currentStatus !== 'success' && currentStatus !== 'failure') {
+  if (currentStatus !== 'success' && currentStatus !== 'failure' && currentStatus !== 'skipped') {
     core.setFailed('Wrong current status value');
     return;
   }
@@ -35,7 +35,7 @@ async function pipeline(): Promise<void> {
   const repository = context.repo.repo;
 
   // Release messaging
-  if (notifyType === 'release') {
+  if (notifyType === 'release' && currentStatus !== 'skipped') {
     const releaseAction = ['select-for-release.yml', 'merge-main.yml'].includes(
       context.workflow,
     )
@@ -54,7 +54,9 @@ async function pipeline(): Promise<void> {
   // Previous status dependent messaging (i.e. messaging on success only if previous)
   core.info(`Last run status: ${lastStatus}`);
 
-  await writeStatusToCache(currentStatus);
+  if (currentStatus !== 'skipped') {
+    await writeStatusToCache(currentStatus);
+  }
 
   if (currentStatus === 'success' && lastStatus === 'completed/failure') {
     core.info(`Success notification`);
