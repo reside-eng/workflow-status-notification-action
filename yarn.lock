@@ -1899,7 +1899,7 @@ __metadata:
     "@vercel/ncc": "npm:0.38.4"
     eslint: "npm:8.57.1"
     eslint-config-prettier: "npm:10.1.8"
-    eslint-plugin-jsdoc: "npm:61.4.1"
+    eslint-plugin-jsdoc: "npm:61.4.2"
     got: "npm:11.8.6"
     husky: "npm:9.1.7"
     jest: "npm:30.0.5"
@@ -4093,9 +4093,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:61.4.1":
-  version: 61.4.1
-  resolution: "eslint-plugin-jsdoc@npm:61.4.1"
+"eslint-plugin-jsdoc@npm:61.4.2":
+  version: 61.4.2
+  resolution: "eslint-plugin-jsdoc@npm:61.4.2"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.76.0"
     "@es-joy/resolve.exports": "npm:1.2.0"
@@ -4113,7 +4113,7 @@ __metadata:
     to-valid-identifier: "npm:^1.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10/73674dbdf2e8e4e7647536570bb5ab3712c753e0160a5688ad037a9fbb1c89e62436e32068347b98c884d804a0e0800f3b31c8eec53b6e62449ff4a404f285f2
+  checksum: 10/8e579db4a3e402200f522a90b1c92f28c6a7bdcaaf7d05dc4a160f755b86a5679252fed16f5bc7f62ab18834ba62c9ba7949a53386d865526b7b02c8a0076c24
   languageName: node
   linkType: hard
 
