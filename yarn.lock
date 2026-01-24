@@ -895,16 +895,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@es-joy/jsdoccomment@npm:~0.82.0":
-  version: 0.82.0
-  resolution: "@es-joy/jsdoccomment@npm:0.82.0"
+"@es-joy/jsdoccomment@npm:~0.83.0":
+  version: 0.83.0
+  resolution: "@es-joy/jsdoccomment@npm:0.83.0"
   dependencies:
     "@types/estree": "npm:^1.0.8"
     "@typescript-eslint/types": "npm:^8.53.1"
-    comment-parser: "npm:1.4.4"
+    comment-parser: "npm:1.4.5"
     esquery: "npm:^1.7.0"
     jsdoc-type-pratt-parser: "npm:~7.1.0"
-  checksum: 10/ebfc82524b0c84eef97144fbcb9c70bd8a7233d211ef9f92502c6348bc33418784e3350ce30b8e83656f5d84c95f4e8e66f3d6b1080ae2ea888af2fd8dfe2955
+  checksum: 10/228be4bb361a2b43f9df488c63d5d30aadd479e535b36bb4035dd80995e3ad6c9d7211835b0f290b065d0c7993922712a50933bfe194e340be2f915be2897c25
   languageName: node
   linkType: hard
 
@@ -1919,7 +1919,7 @@ __metadata:
     "@vercel/ncc": "npm:0.38.4"
     eslint: "npm:8.57.1"
     eslint-config-prettier: "npm:10.1.8"
-    eslint-plugin-jsdoc: "npm:62.4.0"
+    eslint-plugin-jsdoc: "npm:62.4.1"
     got: "npm:11.8.6"
     husky: "npm:9.1.7"
     jest: "npm:30.0.5"
@@ -3381,13 +3381,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"comment-parser@npm:1.4.4":
-  version: 1.4.4
-  resolution: "comment-parser@npm:1.4.4"
-  checksum: 10/e2480c88288ad479525c81eca0b1711a4b5157e756ed723e7ae95c1da4468266a621a2f46097abf30553ba0373557e2467adb2490368f0aac12093d0e2ef4633
-  languageName: node
-  linkType: hard
-
 "comment-parser@npm:1.4.5":
   version: 1.4.5
   resolution: "comment-parser@npm:1.4.5"
@@ -4119,11 +4112,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:62.4.0":
-  version: 62.4.0
-  resolution: "eslint-plugin-jsdoc@npm:62.4.0"
+"eslint-plugin-jsdoc@npm:62.4.1":
+  version: 62.4.1
+  resolution: "eslint-plugin-jsdoc@npm:62.4.1"
   dependencies:
-    "@es-joy/jsdoccomment": "npm:~0.82.0"
+    "@es-joy/jsdoccomment": "npm:~0.83.0"
     "@es-joy/resolve.exports": "npm:1.2.0"
     are-docs-informative: "npm:^0.0.2"
     comment-parser: "npm:1.4.5"
@@ -4139,7 +4132,7 @@ __metadata:
     to-valid-identifier: "npm:^1.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10/5f4bb0c2112d7a611a17fba7eacc093123d225c5b1f39bfd11ba4b74df24d6d811c5f3e3a4e7e4ea6e1e290544de4ac3ba6326e8d8e9e8c30e697c2e647af90b
+  checksum: 10/e11cec725c2d6806a46fe9cb570177e9fd122eb2d27bd6eaae0e14ec44da23af83c53fa56948cea595d2ca68ad8a7d31e576f97409b410094441255da0503f5f
   languageName: node
   linkType: hard
 
