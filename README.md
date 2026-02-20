@@ -30,7 +30,7 @@ It'll not send a notification to Slack if:
 - Current status is `failure` and previous run status was `failure`.
 
 ### If notification-type = on-failure-and-recover
- 
+
 Same as on-state-change but will notify on each failure (so will also notify when current status is `failure` and previous run status was `failure`).
 
 ## Notes
