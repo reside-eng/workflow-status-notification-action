@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`last run status retrieved from GH CLI (new commit workflow behavior) not a pull_request: should send success notification if last run failed and current succeeded 1`] = `
 {
