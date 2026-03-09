@@ -198,17 +198,17 @@ __metadata:
   linkType: hard
 
 "@azure/core-rest-pipeline@npm:^1.19.1, @azure/core-rest-pipeline@npm:^1.22.0":
-  version: 1.22.2
-  resolution: "@azure/core-rest-pipeline@npm:1.22.2"
+  version: 1.23.0
+  resolution: "@azure/core-rest-pipeline@npm:1.23.0"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.10.0"
     "@azure/core-tracing": "npm:^1.3.0"
     "@azure/core-util": "npm:^1.13.0"
     "@azure/logger": "npm:^1.3.0"
-    "@typespec/ts-http-runtime": "npm:^0.3.0"
+    "@typespec/ts-http-runtime": "npm:^0.3.4"
     tslib: "npm:^2.6.2"
-  checksum: 10/3164869c5d169af5b3c1b0ae40e661ce641f834ec9e03c70aba6700381d9087929b5a278ae5144fd2a9ac4dcdffb3e60b76727470769566137c22fc4950810b6
+  checksum: 10/9c60c8bb858cec1caf49d3c323667814512fbf0ca3b34fa382c010f4a6fcccf0a6ef8210c2f7d791b2af67b5c427aefb9b1e4c58a9a9ef60d1cff871fca548f3
   languageName: node
   linkType: hard
 
@@ -701,12 +701,12 @@ __metadata:
   linkType: hard
 
 "@commitlint/config-conventional@npm:^20.0.0":
-  version: 20.4.2
-  resolution: "@commitlint/config-conventional@npm:20.4.2"
+  version: 20.4.3
+  resolution: "@commitlint/config-conventional@npm:20.4.3"
   dependencies:
-    "@commitlint/types": "npm:^20.4.0"
-    conventional-changelog-conventionalcommits: "npm:^9.1.0"
-  checksum: 10/60d2f25db3bf1e1ecb6d13a7420e707bb121d19de27fc6579ea251786cbfacccb8a67a6a3c5eb65a5ff107c8c32e5670a16cdfe3608d519b005d4be87fbfabc5
+    "@commitlint/types": "npm:^20.4.3"
+    conventional-changelog-conventionalcommits: "npm:^9.2.0"
+  checksum: 10/9eaaaa08770fa4dc2f4e50ca42f715a4c0b038a715edaeb0f362f7876e3053f4bd9bf57b1b57d3a4863144aad744d0946001950a746b5f6f77171d32853d0b21
   languageName: node
   linkType: hard
 
@@ -860,16 +860,6 @@ __metadata:
   dependencies:
     escalade: "npm:^3.2.0"
   checksum: 10/52ab64f6ae2b5b456aff7ae8816d9fa4fc92b33740b6fc0128ced8cd4ef3f2e5860369e6b78af0c18569ac20c20cf3b899cc9dc61b205e093bf0d32a9f77cb69
-  languageName: node
-  linkType: hard
-
-"@commitlint/types@npm:^20.4.0":
-  version: 20.4.0
-  resolution: "@commitlint/types@npm:20.4.0"
-  dependencies:
-    conventional-commits-parser: "npm:^6.2.1"
-    picocolors: "npm:^1.1.1"
-  checksum: 10/aff0e6d33eb3191fad3c20d7d46e282ae3dacca52a24f372ac880f0231c859a26726d25565246ea34b67aa9ac1db55f12ef3d635bd6fe9e68cb34fa0a7c5fe47
   languageName: node
   linkType: hard
 
@@ -2253,11 +2243,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 25.3.3
-  resolution: "@types/node@npm:25.3.3"
+  version: 25.3.5
+  resolution: "@types/node@npm:25.3.5"
   dependencies:
     undici-types: "npm:~7.18.0"
-  checksum: 10/883e8942b0ddf89f9aae56c4205af8d9a368acd6cab83aa052447a6c5e69ce2bc8ab3f54e549233ada160ba9216dad7f30c62c35867c584fe844ae99f7dea2e0
+  checksum: 10/bca6dafa72a0fdc51f4832be89bb7fe6f22a8b68c73722cb78ebb94f5bee9c1049416e73b6776886083a72941ee2235eea363dfc9678a78077d24a090b35a01d
   languageName: node
   linkType: hard
 
@@ -2437,14 +2427,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typespec/ts-http-runtime@npm:^0.3.0":
-  version: 0.3.3
-  resolution: "@typespec/ts-http-runtime@npm:0.3.3"
+"@typespec/ts-http-runtime@npm:^0.3.0, @typespec/ts-http-runtime@npm:^0.3.4":
+  version: 0.3.4
+  resolution: "@typespec/ts-http-runtime@npm:0.3.4"
   dependencies:
     http-proxy-agent: "npm:^7.0.0"
     https-proxy-agent: "npm:^7.0.0"
     tslib: "npm:^2.6.2"
-  checksum: 10/f5e2f63e53296c25cf7651f81326e8dccdc861355f12d603387dca4c398c718abe85fb36678c60fe52d95413fae9389c37ed553a1aed0c510d2e1f4efeffc76c
+  checksum: 10/9b09522e545d306efbe959aedef75a2b3e7452128279ee7f9f150c46fa76c0c1b7b9771d3b6c78fad970d6130b893f395cc9397e34f38449aa7d96294f686ded
   languageName: node
   linkType: hard
 
@@ -3140,9 +3130,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001759":
-  version: 1.0.30001775
-  resolution: "caniuse-lite@npm:1.0.30001775"
-  checksum: 10/422bb35abdb5aa57c9e70bee594e51c504a264d62d4ac263d288952ece14dcc7876d86ca957cd099c5043cef2f503b5779fdf58c00ea37471e725c8d59fd67bf
+  version: 1.0.30001777
+  resolution: "caniuse-lite@npm:1.0.30001777"
+  checksum: 10/4f71c57ac7f46bd0c0b42bef212df28639652972e7cf6e3f40f902a87fa86d77217f76b1021dcef202ab6eb5958bad83cdcc81336a954fb4e857c2975ddb2569
   languageName: node
   linkType: hard
 
@@ -3308,24 +3298,24 @@ __metadata:
   linkType: hard
 
 "conventional-changelog-angular@npm:^8.2.0":
-  version: 8.2.0
-  resolution: "conventional-changelog-angular@npm:8.2.0"
+  version: 8.3.0
+  resolution: "conventional-changelog-angular@npm:8.3.0"
   dependencies:
     compare-func: "npm:^2.0.0"
-  checksum: 10/d40512899c87b5b07e48406190962f28ecc341a481565dda2e6e4e47f9766ef0dec94315f8a300caa7afedd73af87e7b339641d7f0b0e1e515a36ed417ab3c44
+  checksum: 10/c5be846ed1d52e5bb697eee27c01fc5edda0c970f2048096e047c51775a3f998569b301ae71ae1151bbc00d306156736e505f50f16a669bde6f38ab1807a662a
   languageName: node
   linkType: hard
 
-"conventional-changelog-conventionalcommits@npm:^9.1.0":
-  version: 9.2.0
-  resolution: "conventional-changelog-conventionalcommits@npm:9.2.0"
+"conventional-changelog-conventionalcommits@npm:^9.2.0":
+  version: 9.3.0
+  resolution: "conventional-changelog-conventionalcommits@npm:9.3.0"
   dependencies:
     compare-func: "npm:^2.0.0"
-  checksum: 10/957c841ba9f1ed0ddc7601ca7d6a71cc13d90a9b6d4c347af8f0718febdade75d6cb693a674964a080213ede9b789773c1d225cad13dc6a553feeebe37d02e78
+  checksum: 10/678785cf8189b563d89f3e3dc070d36d74a0b0c4ec24e67ca2892e8c030be993e6da446885352c6240ac2146baf4431df1ba01cc35617bed986feae7d73adc6f
   languageName: node
   linkType: hard
 
-"conventional-commits-parser@npm:^6.2.1, conventional-commits-parser@npm:^6.3.0":
+"conventional-commits-parser@npm:^6.3.0":
   version: 6.3.0
   resolution: "conventional-commits-parser@npm:6.3.0"
   dependencies:
@@ -3577,9 +3567,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.263":
-  version: 1.5.302
-  resolution: "electron-to-chromium@npm:1.5.302"
-  checksum: 10/0d31470d04a0d1ea046dd363370081b67e6fe822949b10cfece0a64fd2f8180afb5ccaf14f4294251e444a0af627eb0dc0156242b714c0f10561adf2a21aa5f7
+  version: 1.5.307
+  resolution: "electron-to-chromium@npm:1.5.307"
+  checksum: 10/a72af3f89b83d81d151872c28a0886817b1da973e00629c0189c928ed46efa3e975c856969727bf6ebb32ec5ea8362c96e765f307260beaef3003d50fa5fbc11
   languageName: node
   linkType: hard
 
@@ -4101,13 +4091,13 @@ __metadata:
   linkType: hard
 
 "espree@npm:^11.1.0":
-  version: 11.1.1
-  resolution: "espree@npm:11.1.1"
+  version: 11.2.0
+  resolution: "espree@npm:11.2.0"
   dependencies:
     acorn: "npm:^8.16.0"
     acorn-jsx: "npm:^5.3.2"
     eslint-visitor-keys: "npm:^5.0.1"
-  checksum: 10/58ecfae40f4e1f2c54a825ff7a50c5f9cda42901468ba93354c13a1eb69aba0f15d68df5822bbcb02058f822214aba7ca24389eee2e6c27bb0cd3a05972606ae
+  checksum: 10/5cc4233b8f150010c70713669ef8231f07fe9b6391870cfa0a292a07f723ed5c2922064b978e627f7cabf7753280e64c5bde41d3840caaa40946989df7009a51
   languageName: node
   linkType: hard
 
@@ -4266,14 +4256,14 @@ __metadata:
   linkType: hard
 
 "fast-xml-parser@npm:^5.0.7":
-  version: 5.4.1
-  resolution: "fast-xml-parser@npm:5.4.1"
+  version: 5.4.2
+  resolution: "fast-xml-parser@npm:5.4.2"
   dependencies:
     fast-xml-builder: "npm:^1.0.0"
     strnum: "npm:^2.1.2"
   bin:
     fxparser: src/cli/cli.js
-  checksum: 10/2b40067c3ad3542ca197d1353bcb0416cd5db20d5c66d74ac176b99af6ff9bd55a6182d36856a2fd477c95b8fc1f07405475f1662a31185480130ba7076c702a
+  checksum: 10/12585d5dd77113411d01cf41818cfecbbaf8f3d9e8448b1c35f50a7eb51205408bc8db27af5733173a77f96f72d7e121d9e675674f71334569157c77845aba39
   languageName: node
   linkType: hard
 
@@ -4357,9 +4347,9 @@ __metadata:
   linkType: hard
 
 "flatted@npm:^3.2.9":
-  version: 3.3.4
-  resolution: "flatted@npm:3.3.4"
-  checksum: 10/185b93176da0f54a97f88f56f9b8bccca9cbbb6ff1caaf264ae8b6ee4d3c041d7df131301060208695d7b573925dbee7162951be5ffd1efb5b6969495e83dba8
+  version: 3.4.0
+  resolution: "flatted@npm:3.4.0"
+  checksum: 10/6007896f62acb93c811aef52d962c5cd2fa3c703eacfc4146865c3fc8964d3e466c66e10b1c175a84ce0a207fdc761e2e70d7ca982c82604257d45866169af6a
   languageName: node
   linkType: hard
 
@@ -6373,9 +6363,9 @@ __metadata:
   linkType: hard
 
 "node-releases@npm:^2.0.27":
-  version: 2.0.27
-  resolution: "node-releases@npm:2.0.27"
-  checksum: 10/f6c78ddb392ae500719644afcbe68a9ea533242c02312eb6a34e8478506eb7482a3fb709c70235b01c32fe65625b68dfa9665113f816d87f163bc3819b62b106
+  version: 2.0.36
+  resolution: "node-releases@npm:2.0.36"
+  checksum: 10/b31ead96e328b1775f07cad80c17b0601d0ee2894650b737e7ab5cbeb14e284e82dbc37ef38f1d915fa46dd7909781bd933d19b79cfe31b352573fac6da377aa
   languageName: node
   linkType: hard
 
@@ -7538,15 +7528,15 @@ __metadata:
   linkType: hard
 
 "tar@npm:^7.5.4":
-  version: 7.5.9
-  resolution: "tar@npm:7.5.9"
+  version: 7.5.11
+  resolution: "tar@npm:7.5.11"
   dependencies:
     "@isaacs/fs-minipass": "npm:^4.0.0"
     chownr: "npm:^3.0.0"
     minipass: "npm:^7.1.2"
     minizlib: "npm:^3.1.0"
     yallist: "npm:^5.0.0"
-  checksum: 10/1213cdde9c22d6acf8809ba5d2a025212ce3517bc99c4a4c6981b7dc0489bf3b164db9c826c9517680889194c9ba57448c8ff0da35eca9a60bb7689bf0b3897d
+  checksum: 10/fb2e77ee858a73936c68e066f4a602d428d6f812e6da0cc1e14a41f99498e4f7fd3535e355fa15157240a5538aa416026cfa6306bb0d1d1c1abf314b1f878e9a
   languageName: node
   linkType: hard
 
