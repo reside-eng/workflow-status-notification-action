@@ -45,7 +45,7 @@
     "husky": "9.1.7",
     "jest": "30.3.0",
     "js-yaml": "4.1.1",
-    "lint-staged": "16.3.2",
+    "lint-staged": "16.3.3",
     "nock": "14.0.11",
     "prettier": "3.8.1",
     "rimraf": "6.1.3",
