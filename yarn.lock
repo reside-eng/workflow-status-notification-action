@@ -683,20 +683,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:20.5.2":
-  version: 20.5.2
-  resolution: "@commitlint/cli@npm:20.5.2"
+"@commitlint/cli@npm:20.5.3":
+  version: 20.5.3
+  resolution: "@commitlint/cli@npm:20.5.3"
   dependencies:
     "@commitlint/format": "npm:^20.5.0"
-    "@commitlint/lint": "npm:^20.5.0"
-    "@commitlint/load": "npm:^20.5.2"
+    "@commitlint/lint": "npm:^20.5.3"
+    "@commitlint/load": "npm:^20.5.3"
     "@commitlint/read": "npm:^20.5.0"
     "@commitlint/types": "npm:^20.5.0"
     tinyexec: "npm:^1.0.0"
     yargs: "npm:^17.0.0"
   bin:
     commitlint: ./cli.js
-  checksum: 10/35433b69e559982273b9cd6fee27a6a5461ed03f4fa8c70108051abbe871623b02160b18f5464f58ebceaf373f9e8479e118a218f6af2742f3a535a692a515f7
+  checksum: 10/a849f47638e42c3a5f1e46f924bad76041396d4b43f21ef00242710592e488461b845b5e993cb892482a21b76d2770e7a4ee0deae4758a6cbc3980034bf43d2b
   languageName: node
   linkType: hard
 
@@ -757,7 +757,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/lint@npm:^20.5.0":
+"@commitlint/lint@npm:^20.5.3":
   version: 20.5.3
   resolution: "@commitlint/lint@npm:20.5.3"
   dependencies:
@@ -769,7 +769,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/load@npm:^20.5.2":
+"@commitlint/load@npm:^20.5.3":
   version: 20.5.3
   resolution: "@commitlint/load@npm:20.5.3"
   dependencies:
@@ -1867,7 +1867,7 @@ __metadata:
     "@actions/core": "npm:2.0.3"
     "@actions/exec": "npm:1.1.1"
     "@actions/github": "npm:7.0.0"
-    "@commitlint/cli": "npm:20.5.2"
+    "@commitlint/cli": "npm:20.5.3"
     "@side/commitlint-config": "npm:1.1.1"
     "@side/eslint-config-base": "npm:2.3.1"
     "@side/eslint-config-jest": "npm:1.1.2"
