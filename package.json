@@ -3,7 +3,7 @@
   "version": "0.0.0-development",
   "description": "Github Action workflow failure/success notification.",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/index.mjs",
   "engines": {
     "node": "^24.0.0"
   },
@@ -13,7 +13,7 @@
   "scripts": {
     "prepare": "lefthook install",
     "build:docs": "tsx bin/generate-docs.ts",
-    "build": "rimraf dist && ncc build src/index.ts && yarn build:docs",
+    "build": "rimraf dist && esbuild src/index.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/index.mjs --banner:js=\"import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);\" && yarn build:docs",
     "check": "biome check --error-on-warnings",
     "check:fix": "biome check --write --error-on-warnings",
     "check:fix:staged": "biome check --write --error-on-warnings --staged --no-errors-on-unmatched",
@@ -41,7 +41,7 @@
     "@types/jest": "30.0.0",
     "@types/js-yaml": "4.0.9",
     "@types/node": "24.12.2",
-    "@vercel/ncc": "0.38.4",
+    "esbuild": "0.27.7",
     "jest": "30.3.0",
     "js-yaml": "4.1.1",
     "lefthook": "2.1.6",

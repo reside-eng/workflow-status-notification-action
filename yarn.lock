@@ -1742,7 +1742,7 @@ __metadata:
     "@types/jest": "npm:30.0.0"
     "@types/js-yaml": "npm:4.0.9"
     "@types/node": "npm:24.12.2"
-    "@vercel/ncc": "npm:0.38.4"
+    esbuild: "npm:0.27.7"
     jest: "npm:30.3.0"
     js-yaml: "npm:4.1.1"
     ky: "npm:1.7.5"
@@ -2249,17 +2249,6 @@ __metadata:
   version: 1.11.1
   resolution: "@unrs/resolver-binding-win32-x64-msvc@npm:1.11.1"
   conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@vercel/ncc@npm:0.38.4":
-  version: 0.38.4
-  resolution: "@vercel/ncc@npm:0.38.4"
-  dependencies:
-    node-gyp: "npm:latest"
-  bin:
-    ncc: dist/ncc/cli.js
-  checksum: 10/06561fb3fd46c4db525ea1c9f39b7982e449e9a1995e94d8f5b876c939147c31dba0ca5ffaed4b30ebc6782ffbde531b3f01658996bdaaecb3928df5b1aec155
   languageName: node
   linkType: hard
 
@@ -2852,7 +2841,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:~0.27.0":
+"esbuild@npm:0.27.7, esbuild@npm:~0.27.0":
   version: 0.27.7
   resolution: "esbuild@npm:0.27.7"
   dependencies:

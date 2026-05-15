@@ -1,15 +1,21 @@
 import { promises as fsp } from 'node:fs';
+import * as cache from '@actions/cache';
 import * as core from '@actions/core';
 import { context } from '@actions/github';
 import ky from 'ky';
 import { run } from './main.js';
 
-const mockCache = {
-  restoreCache: jest.fn(),
-  saveCache: jest.fn(),
-};
-jest.mock('@actions/cache', () => mockCache, { virtual: true });
+jest.mock(
+  '@actions/cache',
+  () => ({
+    __esModule: true,
+    restoreCache: jest.fn(),
+    saveCache: jest.fn(),
+  }),
+  { virtual: true },
+);
 jest.mock('@actions/core');
+const mockCache = cache as jest.Mocked<typeof cache>;
 
 interface MockObj {
   inputs: Record<string, string | undefined>;

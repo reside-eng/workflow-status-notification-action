@@ -1,4 +1,5 @@
 import { promises as fsp } from 'node:fs';
+import * as cache from '@actions/cache';
 import * as core from '@actions/core';
 import { type ExecOptions, exec } from '@actions/exec';
 import { context } from '@actions/github';
@@ -60,7 +61,6 @@ async function getStatusFromGithub() {
 export async function getLastRunStatus(): Promise<string> {
   let lastStatus = '';
 
-  const cache = await import('@actions/cache');
   const cacheKey = await cache.restoreCache(
     cachePaths,
     cachePrimaryKey,
@@ -90,6 +90,5 @@ export async function writeStatusToCache(status: string): Promise<void> {
     encoding: 'utf8',
   });
 
-  const cache = await import('@actions/cache');
   await cache.saveCache(cachePaths, cachePrimaryKey);
 }
