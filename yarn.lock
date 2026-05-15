@@ -1776,6 +1776,7 @@ __metadata:
     "@side/commitlint-config": "npm:1.1.1"
     "@swc/core": "npm:1.15.33"
     "@swc/jest": "npm:0.2.39"
+    "@tsconfig/node24": "npm:24.0.4"
     "@types/jest": "npm:30.0.0"
     "@types/js-yaml": "npm:4.0.9"
     "@types/node": "npm:24.12.2"
@@ -2010,6 +2011,13 @@ __metadata:
   dependencies:
     defer-to-connect: "npm:^2.0.0"
   checksum: 10/c29df3bcec6fc3bdec2b17981d89d9c9fc9bd7d0c9bcfe92821dc533f4440bc890ccde79971838b4ceed1921d456973c4180d7175ee1d0023ad0562240a58d95
+  languageName: node
+  linkType: hard
+
+"@tsconfig/node24@npm:24.0.4":
+  version: 24.0.4
+  resolution: "@tsconfig/node24@npm:24.0.4"
+  checksum: 10/e3c011e4589d1d3f8774e6587434bf6d5655ca31c848ac1d173de7949e2f2e1c3dd0be5f97869201e46c4a6dda03003659e1c5078efc580ecefce1d706b8b6a1
   languageName: node
   linkType: hard
 
