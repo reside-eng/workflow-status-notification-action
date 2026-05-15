@@ -1,9 +1,9 @@
 import { URL } from 'node:url';
 import * as core from '@actions/core';
 import { context } from '@actions/github';
-import { Inputs } from './inputs';
-import { getLastRunStatus, writeStatusToCache } from './utils/github';
-import { prepareSlackNotification, sendSlackMessage } from './utils/slack';
+import { Inputs } from './inputs.js';
+import { getLastRunStatus, writeStatusToCache } from './utils/github.js';
+import { prepareSlackNotification, sendSlackMessage } from './utils/slack.js';
 
 /**
  * Action run pipeline

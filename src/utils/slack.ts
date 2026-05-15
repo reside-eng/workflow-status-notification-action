@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import { context } from '@actions/github';
-import got from 'got';
-import { getHeadRef } from './github';
+import ky from 'ky';
+import { getHeadRef } from './github.js';
 
 /**
  * Handles the actual sending request.
@@ -15,7 +15,7 @@ export async function sendSlackMessage(
 ): Promise<void> {
   core.info(`Message body: ${JSON.stringify(messageBody)}`);
 
-  await got.post(webhookURL, {
+  await ky.post(webhookURL, {
     json: messageBody,
   });
 }

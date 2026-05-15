@@ -2,7 +2,7 @@ import { promises as fsp } from 'node:fs';
 import * as core from '@actions/core';
 import { type ExecOptions, exec } from '@actions/exec';
 import { context } from '@actions/github';
-import { Inputs } from '../inputs';
+import { Inputs } from '../inputs.js';
 
 const cachePrimaryKey = `last-run-status-${context.runId}-${Math.random()
   .toString(36)

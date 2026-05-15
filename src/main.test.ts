@@ -1,9 +1,8 @@
 import { promises as fsp } from 'node:fs';
 import * as core from '@actions/core';
 import { context } from '@actions/github';
-import got from 'got';
-import nock from 'nock';
-import { run } from './main';
+import ky from 'ky';
+import { run } from './main.js';
 
 const mockCache = {
   restoreCache: jest.fn(),
@@ -31,13 +30,16 @@ interface MockObj {
 let mock: MockObj;
 
 const mockCore = core as jest.Mocked<typeof core>;
-jest.mock('got');
+jest.mock(
+  'ky',
+  () => ({ __esModule: true, default: { post: jest.fn() } }),
+  { virtual: true },
+);
+const mockKy = ky as unknown as { post: jest.Mock };
 const mockFn = jest.fn();
 
 const slackUrl = 'https://hooks.slack.com';
 const slackPath = '/services/test/test';
-
-nock(slackUrl).persist().post(slackPath).reply(200);
 
 /**
  *
@@ -66,7 +68,7 @@ function setupMock() {
     serverUrl: 'https://github.com',
   };
 
-  jest.spyOn(got, 'post').mockImplementation(mockFn);
+  mockKy.post.mockImplementation(mockFn);
 
   mockCore.getInput.mockImplementation(
     (name: string): string => mock.inputs[name] || '',

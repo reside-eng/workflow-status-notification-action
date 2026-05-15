@@ -2,6 +2,7 @@
   "name": "@side/workflow-status-notification-action",
   "version": "0.0.0-development",
   "description": "Github Action workflow failure/success notification.",
+  "type": "module",
   "main": "dist/index.js",
   "engines": {
     "node": "^24.0.0"
@@ -28,7 +29,7 @@
     "@actions/core": "2.0.3",
     "@actions/exec": "1.1.1",
     "@actions/github": "7.0.0",
-    "got": "11.8.6"
+    "ky": "1.7.5"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
@@ -44,7 +45,6 @@
     "jest": "30.3.0",
     "js-yaml": "4.1.1",
     "lefthook": "2.1.6",
-    "nock": "14.0.14",
     "rimraf": "6.1.3",
     "tsx": "4.21.0",
     "typescript": "6.0.3"
