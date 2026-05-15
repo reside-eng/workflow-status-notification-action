@@ -3,19 +3,26 @@ import * as cache from '@actions/cache';
 import * as core from '@actions/core';
 import { context } from '@actions/github';
 import ky from 'ky';
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import { run } from './main.js';
 
-jest.mock(
-  '@actions/cache',
-  () => ({
-    __esModule: true,
-    restoreCache: jest.fn(),
-    saveCache: jest.fn(),
-  }),
-  { virtual: true },
-);
-jest.mock('@actions/core');
-const mockCache = cache as jest.Mocked<typeof cache>;
+vi.mock('@actions/cache');
+vi.mock('@actions/core');
+vi.mock('ky', () => ({ default: { post: vi.fn() } }));
+
+const mockCache = vi.mocked(cache);
+const mockCore = vi.mocked(core);
+const mockKy = ky as unknown as { post: ReturnType<typeof vi.fn> };
+const mockFn = vi.fn();
 
 interface MockObj {
   inputs: Record<string, string | undefined>;
@@ -35,26 +42,13 @@ interface MockObj {
 
 let mock: MockObj;
 
-const mockCore = core as jest.Mocked<typeof core>;
-jest.mock(
-  'ky',
-  () => ({ __esModule: true, default: { post: jest.fn() } }),
-  { virtual: true },
-);
-const mockKy = ky as unknown as { post: jest.Mock };
-const mockFn = jest.fn();
-
 const slackUrl = 'https://hooks.slack.com';
 const slackPath = '/services/test/test';
 
-/**
- *
- */
 function setupMock() {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 
   mock = {
-    // Default action inputs
     inputs: {
       'current-status': 'success',
       'slack-webhook': `${slackUrl}${slackPath}`,
@@ -91,21 +85,16 @@ function setupMock() {
     },
   );
 
-  // Setting to this Github repo by default
   context.payload.repository = {
     name: mock.repo.repo,
-    owner: {
-      login: mock.actor,
-    },
+    owner: { login: mock.actor },
     clone_url: mock.repo,
   };
   context.workflow = mock.workflow;
   context.runId = mock.runId;
   context.payload.pull_request = {
     number: mock.prNumber,
-    head: {
-      ref: mock.headRef,
-    },
+    head: { ref: mock.headRef },
   };
   context.ref = mock.ref;
   context.eventName = mock.eventName;
@@ -113,28 +102,19 @@ function setupMock() {
   context.serverUrl = mock.serverUrl;
 }
 
-/**
- *
- */
 async function writeStatusToCache() {
-  fsp.writeFile('last-run-status', 'completed/failure', {
+  await fsp.writeFile('last-run-status', 'completed/failure', {
     encoding: 'utf8',
   });
 }
 
-/**
- *
- */
 async function cleanCache() {
-  fsp.unlink('last-run-status');
+  await fsp.unlink('last-run-status');
 }
 
-// Test using cache only to retrieve previous status (re-run workflow behavior)
 describe('last run status retrieved from cache (re-run workflow behavior)', () => {
   beforeEach(() => setupMock());
-
   beforeAll(() => writeStatusToCache());
-
   afterAll(() => cleanCache());
 
   it('should send success notification if last run failed and current succeeded', async () => {
@@ -147,9 +127,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
 
   it('should not send notification and not update last run status cache if current status is skipped', async () => {
     mock.inputs['current-status'] = 'skipped';
-
     await run();
-
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toHaveBeenCalledTimes(0);
   });
@@ -162,9 +140,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
 
   it('should send failure notification if last run succeeded and current fails', async () => {
     mock.inputs['current-status'] = 'failure';
-
     await run();
-
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toHaveBeenCalledTimes(1);
     expect(mockFn.mock.calls[0][0]).toStrictEqual(mock.inputs['slack-webhook']);
@@ -173,9 +149,7 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
 
   it('should not send notification if last run failed and current fails', async () => {
     mock.inputs['current-status'] = 'failure';
-
     await run();
-
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toHaveBeenCalledTimes(0);
   });
@@ -183,7 +157,6 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
   it('not a pull_request: should send success notification if last run failed and current succeeded', async () => {
     context.payload.pull_request = undefined;
     context.eventName = 'workflow_dispatch';
-
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toHaveBeenCalledTimes(1);
@@ -192,7 +165,6 @@ describe('last run status retrieved from cache (re-run workflow behavior)', () =
   });
 });
 
-// Test using GH CLI to retrieve previous status (new commit workflow behavior)
 describe('last run status retrieved from GH CLI (new commit workflow behavior)', () => {
   beforeEach(async () => {
     setupMock();
@@ -213,9 +185,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
   it('should not send notification if last run succeeded and current succeeded', async () => {
     await cleanCache();
     context.workflow = 'Success workflow (for test purpose only)';
-
     await run();
-
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toHaveBeenCalledTimes(0);
   });
@@ -224,9 +194,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
     await cleanCache();
     context.workflow = 'Success workflow (for test purpose only)';
     mock.inputs['current-status'] = 'failure';
-
     await run();
-
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toHaveBeenCalledTimes(1);
     expect(mockFn.mock.calls[0][1]).toMatchSnapshot();
@@ -234,9 +202,7 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
 
   it('should not send notification if last run failed and current fails', async () => {
     mock.inputs['current-status'] = 'failure';
-
     await run();
-
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn).toHaveBeenCalledTimes(0);
   });
@@ -244,7 +210,6 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
   it('not a pull_request: should send success notification if last run failed and current succeeded', async () => {
     context.payload.pull_request = undefined;
     context.eventName = 'workflow_dispatch';
-
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(0);
     expect(mockFn.mock.calls.length).toStrictEqual(1);
@@ -252,12 +217,9 @@ describe('last run status retrieved from GH CLI (new commit workflow behavior)',
   });
 });
 
-// Test inputs format
 describe('inputs format', () => {
   beforeEach(() => setupMock());
-
   beforeAll(() => writeStatusToCache());
-
   afterAll(() => cleanCache());
 
   it('should not fail with expected inputs format', async () => {

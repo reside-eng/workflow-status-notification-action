@@ -16,8 +16,7 @@
       "!**/yarn.lock",
       "!**/.github/CODEOWNERS",
       "!**/dist",
-      "!**/__snapshots__",
-      "!**/*.test.ts"
+      "!**/__snapshots__"
     ]
   },
   "formatter": {

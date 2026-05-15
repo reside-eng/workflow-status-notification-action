@@ -64888,9 +64888,9 @@ var require_browser = __commonJS({
   }
 });
 
-// node_modules/has-flag/index.js
+// ../../../node_modules/has-flag/index.js
 var require_has_flag = __commonJS({
-  "node_modules/has-flag/index.js"(exports2, module) {
+  "../../../node_modules/has-flag/index.js"(exports2, module) {
     "use strict";
     module.exports = (flag, argv = process.argv) => {
       const prefix2 = flag.startsWith("-") ? "" : flag.length === 1 ? "-" : "--";
@@ -64901,9 +64901,9 @@ var require_has_flag = __commonJS({
   }
 });
 
-// node_modules/supports-color/index.js
+// ../../../node_modules/supports-color/index.js
 var require_supports_color = __commonJS({
-  "node_modules/supports-color/index.js"(exports2, module) {
+  "../../../node_modules/supports-color/index.js"(exports2, module) {
     "use strict";
     var os9 = __require("os");
     var tty = __require("tty");
