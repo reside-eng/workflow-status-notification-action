@@ -13,7 +13,7 @@
   "scripts": {
     "postinstall": "lefthook install",
     "build:docs": "tsx bin/generate-docs.ts",
-    "build": "rimraf dist && esbuild src/index.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/index.mjs --banner:js=\"import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);\" && yarn build:docs",
+    "build": "rimraf dist && node build.mjs && yarn build:docs",
     "check": "biome check --error-on-warnings",
     "check:fix": "biome check --write --error-on-warnings",
     "check:fix:staged": "biome check --write --error-on-warnings --staged --no-errors-on-unmatched",
