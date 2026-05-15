@@ -1,1 +1,0 @@
-yarn lint-staged && yarn build && git add dist && yarn build:docs && git add README.md

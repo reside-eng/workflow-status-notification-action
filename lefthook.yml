@@ -1,0 +1,19 @@
+#   https://lefthook.dev/configuration/
+
+## Exit with error if lefthook executable is not found
+assert_lefthook_installed: true
+
+commit-msg:
+  jobs:
+    - run: |
+        echo "Linting commit message..."
+        yarn commitlint --edit {1}
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: Cleanup lint and formatting
+      stage_fixed: true
+      run: yarn check:fix:staged
+    - name: Check types
+      run: yarn types:check

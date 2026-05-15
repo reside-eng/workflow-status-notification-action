@@ -1,8 +1,8 @@
+import { URL } from 'node:url';
 import * as core from '@actions/core';
 import { context } from '@actions/github';
-import { URL } from 'url';
-import { getLastRunStatus, writeStatusToCache } from './utils/github';
 import { Inputs } from './inputs';
+import { getLastRunStatus, writeStatusToCache } from './utils/github';
 import { prepareSlackNotification, sendSlackMessage } from './utils/slack';
 
 /**
@@ -15,12 +15,16 @@ async function pipeline(): Promise<void> {
   const notifyType = core.getInput(Inputs.NotifyType);
   core.info(`Current run status: ${currentStatus}`);
 
-  if (currentStatus !== 'success' && currentStatus !== 'failure' && currentStatus !== 'skipped') {
+  if (
+    currentStatus !== 'success' &&
+    currentStatus !== 'failure' &&
+    currentStatus !== 'skipped'
+  ) {
     core.setFailed('Wrong current status value');
     return;
   }
 
-  let url;
+  let url: URL;
   try {
     url = new URL(webhookUrl);
   } catch {
@@ -41,7 +45,7 @@ async function pipeline(): Promise<void> {
     )
       ? 'deploy'
       : 'releas';
-    const message = await prepareSlackNotification(
+    const message = prepareSlackNotification(
       currentStatus === 'success'
         ? `${repository} successfully ${releaseAction}ed`
         : `error ${releaseAction}ing ${repository}`,
@@ -59,24 +63,26 @@ async function pipeline(): Promise<void> {
   }
 
   if (currentStatus === 'success' && lastStatus === 'completed/failure') {
-    core.info(`Success notification`);
-    const message = await prepareSlackNotification(
+    core.info('Success notification');
+    const message = prepareSlackNotification(
       `Previously failing ${context.workflow} workflow in ${repository} succeeded.`,
       currentStatus,
     );
     await sendSlackMessage(webhookUrl, message);
   } else if (
     currentStatus === 'failure' &&
-    (lastStatus === 'completed/success' || lastStatus === '' || notifyType === 'on-failure-and-recovery')
+    (lastStatus === 'completed/success' ||
+      lastStatus === '' ||
+      notifyType === 'on-failure-and-recovery')
   ) {
-    core.info(`Failure notification`);
-    const message = await prepareSlackNotification(
+    core.info('Failure notification');
+    const message = prepareSlackNotification(
       `${context.workflow} workflow in ${repository} failed.`,
       currentStatus,
     );
     await sendSlackMessage(webhookUrl, message);
   } else {
-    core.info(`No notification needed`);
+    core.info('No notification needed');
   }
 }
 
@@ -85,7 +91,6 @@ async function pipeline(): Promise<void> {
  * @param err Any possible errors
  */
 function handleError(err: Error): void {
-  console.error(err);
   core.setFailed(err.message);
 }
 

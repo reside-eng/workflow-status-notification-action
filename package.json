@@ -10,12 +10,18 @@
     "dist"
   ],
   "scripts": {
-    "prepare": "husky",
-    "build:docs": "tsx bin/generate-docs.ts && prettier --write README.md",
+    "prepare": "lefthook install",
+    "build:docs": "tsx bin/generate-docs.ts",
     "build": "rimraf dist && ncc build src/index.ts && yarn build:docs",
-    "lint": "eslint . --ignore-pattern='!.eslintrc.js' --ext .ts,.js",
-    "types": "tsc --noEmit",
-    "test": "yarn tsc && GITHUB_REPOSITORY='reside-eng/workflow-status-notification-action' jest"
+    "check": "biome check --error-on-warnings",
+    "check:fix": "biome check --write --error-on-warnings",
+    "check:fix:staged": "biome check --write --error-on-warnings --staged --no-errors-on-unmatched",
+    "lint": "biome lint --error-on-warnings",
+    "lint:fix": "biome lint --write --error-on-warnings",
+    "format": "biome format --write --error-on-warnings",
+    "format:check": "biome format --error-on-warnings",
+    "types:check": "tsc --noEmit",
+    "test": "yarn types:check && GITHUB_REPOSITORY='reside-eng/workflow-status-notification-action' jest"
   },
   "dependencies": {
     "@actions/cache": "6.0.0",
@@ -25,34 +31,23 @@
     "got": "11.8.6"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.15",
     "@commitlint/cli": "20.5.3",
     "@side/commitlint-config": "1.1.1",
-    "@side/eslint-config-base": "2.3.1",
-    "@side/eslint-config-jest": "1.1.2",
-    "@side/lint-staged-config": "1.1.0",
-    "@side/prettier-config": "1.1.0",
     "@swc/core": "1.15.33",
     "@swc/jest": "0.2.39",
     "@types/jest": "30.0.0",
     "@types/js-yaml": "4.0.9",
     "@types/node": "24.12.2",
-    "@typescript-eslint/eslint-plugin": "8.59.1",
-    "@typescript-eslint/parser": "8.59.1",
     "@vercel/ncc": "0.38.4",
-    "eslint": "8.57.1",
-    "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-jsdoc": "62.9.0",
-    "husky": "9.1.7",
     "jest": "30.3.0",
     "js-yaml": "4.1.1",
-    "lint-staged": "16.4.0",
+    "lefthook": "2.1.6",
     "nock": "14.0.14",
-    "prettier": "3.8.3",
     "rimraf": "6.1.3",
     "tsx": "4.21.0",
     "typescript": "6.0.3"
   },
-  "prettier": "@side/prettier-config",
   "repository": {
     "type": "git",
     "url": "https://github.com/reside-eng/workflow-status-notification-action"

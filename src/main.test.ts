@@ -1,6 +1,6 @@
+import { promises as fsp } from 'node:fs';
 import * as core from '@actions/core';
 import { context } from '@actions/github';
-import { promises as fsp } from 'fs';
 import got from 'got';
 import nock from 'nock';
 import { run } from './main';
@@ -109,7 +109,7 @@ function setupMock() {
  *
  */
 async function writeStatusToCache() {
-  fsp.writeFile('last-run-status', `completed/failure`, {
+  fsp.writeFile('last-run-status', 'completed/failure', {
     encoding: 'utf8',
   });
 }
@@ -270,7 +270,7 @@ describe('inputs format', () => {
     await run();
     expect(mockCore.setFailed).toHaveBeenCalledTimes(1);
     expect(mockCore.setFailed.mock.calls[0][0]).toMatch(
-      `Wrong Slack Webhook URL format`,
+      'Wrong Slack Webhook URL format',
     );
     expect(mockFn).toHaveBeenCalledTimes(0);
   });

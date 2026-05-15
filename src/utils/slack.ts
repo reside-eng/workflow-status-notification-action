@@ -1,5 +1,5 @@
-import { context } from '@actions/github';
 import * as core from '@actions/core';
+import { context } from '@actions/github';
 import got from 'got';
 import { getHeadRef } from './github';
 
@@ -26,10 +26,10 @@ export async function sendSlackMessage(
  * @param status current status to notify
  * @returns the Slack message body
  */
-export async function prepareSlackNotification(
+export function prepareSlackNotification(
   message: string,
   status: string,
-): Promise<Record<string, string | number | boolean | unknown>> {
+): Record<string, string | number | boolean | unknown> {
   const {
     runId,
     workflow,
