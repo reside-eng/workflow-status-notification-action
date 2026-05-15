@@ -1,13 +1,16 @@
 import * as core from '@actions/core';
 import { context } from '@actions/github';
-import * as cache from '@actions/cache';
 import { promises as fsp } from 'fs';
 import got from 'got';
 import nock from 'nock';
 import { run } from './main';
 
+const mockCache = {
+  restoreCache: jest.fn(),
+  saveCache: jest.fn(),
+};
+jest.mock('@actions/cache', () => mockCache, { virtual: true });
 jest.mock('@actions/core');
-jest.mock('@actions/cache');
 
 interface MockObj {
   inputs: Record<string, string | undefined>;
@@ -28,7 +31,6 @@ interface MockObj {
 let mock: MockObj;
 
 const mockCore = core as jest.Mocked<typeof core>;
-const mockCache = cache as jest.Mocked<typeof cache>;
 jest.mock('got');
 const mockFn = jest.fn();
 
