@@ -1,8 +1,8 @@
 //
 // TODO: Make this file a shareable library script for other actions to utilize
 //
-import * as fs from 'fs';
-import * as os from 'os';
+import * as fs from 'node:fs';
+import * as os from 'node:os';
 import * as yaml from 'js-yaml';
 
 interface Inputs {
@@ -50,7 +50,8 @@ function updateUsage(
   const endTokenIndex = originalReadme.indexOf(endToken);
   if (endTokenIndex < 0) {
     throw new Error(`End token '${endToken}' not found`);
-  } else if (endTokenIndex < startTokenIndex) {
+  }
+  if (endTokenIndex < startTokenIndex) {
     throw new Error('Start token must appear before end token');
   }
 
@@ -117,7 +118,7 @@ function updateUsage(
 
     if (input.default || input.required) {
       // Append blank line if default or required are set
-      newReadme.push(`    #`);
+      newReadme.push('    #');
     }
 
     if (input.default) {

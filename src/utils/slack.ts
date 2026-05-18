@@ -1,7 +1,7 @@
-import { context } from '@actions/github';
 import * as core from '@actions/core';
-import got from 'got';
-import { getHeadRef } from './github';
+import { context } from '@actions/github';
+import ky from 'ky';
+import { getHeadRef } from './github.js';
 
 /**
  * Handles the actual sending request.
@@ -15,7 +15,7 @@ export async function sendSlackMessage(
 ): Promise<void> {
   core.info(`Message body: ${JSON.stringify(messageBody)}`);
 
-  await got.post(webhookURL, {
+  await ky.post(webhookURL, {
     json: messageBody,
   });
 }
@@ -26,10 +26,10 @@ export async function sendSlackMessage(
  * @param status current status to notify
  * @returns the Slack message body
  */
-export async function prepareSlackNotification(
+export function prepareSlackNotification(
   message: string,
   status: string,
-): Promise<Record<string, string | number | boolean | unknown>> {
+): Record<string, string | number | boolean | unknown> {
   const {
     runId,
     workflow,
