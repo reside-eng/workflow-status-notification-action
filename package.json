@@ -30,7 +30,7 @@
     "@actions/core": "2.0.3",
     "@actions/exec": "1.1.1",
     "@actions/github": "7.0.0",
-    "ky": "1.7.5"
+    "ky": "2.0.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
