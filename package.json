@@ -38,7 +38,7 @@
     "@side/commitlint-config": "1.1.1",
     "@tsconfig/node24": "24.0.4",
     "@types/js-yaml": "4.0.9",
-    "@types/node": "24.12.3",
+    "@types/node": "24.12.4",
     "esbuild": "0.28.0",
     "js-yaml": "4.1.1",
     "lefthook": "2.1.6",
