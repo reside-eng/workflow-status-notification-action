@@ -364,20 +364,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:21.0.0":
-  version: 21.0.0
-  resolution: "@commitlint/cli@npm:21.0.0"
+"@commitlint/cli@npm:21.0.1":
+  version: 21.0.1
+  resolution: "@commitlint/cli@npm:21.0.1"
   dependencies:
-    "@commitlint/format": "npm:^21.0.0"
-    "@commitlint/lint": "npm:^21.0.0"
-    "@commitlint/load": "npm:^21.0.0"
-    "@commitlint/read": "npm:^21.0.0"
-    "@commitlint/types": "npm:^21.0.0"
+    "@commitlint/format": "npm:^21.0.1"
+    "@commitlint/lint": "npm:^21.0.1"
+    "@commitlint/load": "npm:^21.0.1"
+    "@commitlint/read": "npm:^21.0.1"
+    "@commitlint/types": "npm:^21.0.1"
     tinyexec: "npm:^1.0.0"
     yargs: "npm:^18.0.0"
   bin:
-    commitlint: ./cli.js
-  checksum: 10/a4be0c93d814bc6b75ab2bb90e1717726dc26a19b8935c0ad1705c758fb0573044f5000303ce036711c0e35a24fc8ceed439944f3649d6cbe21a5aef5c48d6e7
+    commitlint: cli.js
+  checksum: 10/842eb2c79ca1b8e95c3ad88f0925ea61cee9269e3a9bdc4c5e5f91d63fd05d3cec08245b1e7f0a0e853324d8555c3663a6f715fcaf1501e7f1b8f0c6437d1438
   languageName: node
   linkType: hard
 
@@ -418,7 +418,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/format@npm:^21.0.0":
+"@commitlint/format@npm:^21.0.1":
   version: 21.0.1
   resolution: "@commitlint/format@npm:21.0.1"
   dependencies:
@@ -438,7 +438,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/lint@npm:^21.0.0":
+"@commitlint/lint@npm:^21.0.1":
   version: 21.0.1
   resolution: "@commitlint/lint@npm:21.0.1"
   dependencies:
@@ -450,7 +450,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/load@npm:^21.0.0":
+"@commitlint/load@npm:^21.0.1":
   version: 21.0.1
   resolution: "@commitlint/load@npm:21.0.1"
   dependencies:
@@ -485,7 +485,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/read@npm:^21.0.0":
+"@commitlint/read@npm:^21.0.1":
   version: 21.0.1
   resolution: "@commitlint/read@npm:21.0.1"
   dependencies:
@@ -548,7 +548,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/types@npm:^21.0.0, @commitlint/types@npm:^21.0.1":
+"@commitlint/types@npm:^21.0.1":
   version: 21.0.1
   resolution: "@commitlint/types@npm:21.0.1"
   dependencies:
@@ -1268,7 +1268,7 @@ __metadata:
     "@actions/exec": "npm:3.0.0"
     "@actions/github": "npm:9.1.1"
     "@biomejs/biome": "npm:2.4.15"
-    "@commitlint/cli": "npm:21.0.0"
+    "@commitlint/cli": "npm:21.0.1"
     "@side/commitlint-config": "npm:1.1.1"
     "@tsconfig/node24": "npm:24.0.4"
     "@types/js-yaml": "npm:4.0.9"
