@@ -9,6 +9,7 @@ node_modules
 package-lock.json
 .npmrc
 coverage
+dist
 .DS_Store
 .cache
 *.log
