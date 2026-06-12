@@ -364,20 +364,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:21.0.1":
-  version: 21.0.1
-  resolution: "@commitlint/cli@npm:21.0.1"
+"@commitlint/cli@npm:21.0.2":
+  version: 21.0.2
+  resolution: "@commitlint/cli@npm:21.0.2"
   dependencies:
     "@commitlint/format": "npm:^21.0.1"
-    "@commitlint/lint": "npm:^21.0.1"
-    "@commitlint/load": "npm:^21.0.1"
-    "@commitlint/read": "npm:^21.0.1"
+    "@commitlint/lint": "npm:^21.0.2"
+    "@commitlint/load": "npm:^21.0.2"
+    "@commitlint/read": "npm:^21.0.2"
     "@commitlint/types": "npm:^21.0.1"
     tinyexec: "npm:^1.0.0"
     yargs: "npm:^18.0.0"
   bin:
     commitlint: cli.js
-  checksum: 10/842eb2c79ca1b8e95c3ad88f0925ea61cee9269e3a9bdc4c5e5f91d63fd05d3cec08245b1e7f0a0e853324d8555c3663a6f715fcaf1501e7f1b8f0c6437d1438
+  checksum: 10/70a46f3eb13ab1cb315ed03fc1faad8b452de280c677b1116fb240561ae3a70a982a7a9aee2073ddff39a004f991d5fdcebc71ccd0c8591e6ebf155afa4e8140
   languageName: node
   linkType: hard
 
@@ -438,7 +438,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/lint@npm:^21.0.1":
+"@commitlint/lint@npm:^21.0.2":
   version: 21.0.2
   resolution: "@commitlint/lint@npm:21.0.2"
   dependencies:
@@ -450,7 +450,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/load@npm:^21.0.1":
+"@commitlint/load@npm:^21.0.2":
   version: 21.0.2
   resolution: "@commitlint/load@npm:21.0.2"
   dependencies:
@@ -485,7 +485,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/read@npm:^21.0.1":
+"@commitlint/read@npm:^21.0.2":
   version: 21.0.2
   resolution: "@commitlint/read@npm:21.0.2"
   dependencies:
@@ -1075,7 +1075,7 @@ __metadata:
     "@actions/exec": "npm:3.0.0"
     "@actions/github": "npm:9.1.1"
     "@biomejs/biome": "npm:2.4.15"
-    "@commitlint/cli": "npm:21.0.1"
+    "@commitlint/cli": "npm:21.0.2"
     "@side/commitlint-config": "npm:2.0.2"
     "@tsconfig/node24": "npm:24.0.4"
     "@types/js-yaml": "npm:4.0.9"
