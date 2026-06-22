@@ -381,13 +381,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:21.0.0":
-  version: 21.0.0
-  resolution: "@commitlint/config-conventional@npm:21.0.0"
+"@commitlint/config-conventional@npm:21.0.2":
+  version: 21.0.2
+  resolution: "@commitlint/config-conventional@npm:21.0.2"
   dependencies:
-    "@commitlint/types": "npm:^21.0.0"
+    "@commitlint/types": "npm:^21.0.1"
     conventional-changelog-conventionalcommits: "npm:^9.2.0"
-  checksum: 10/f8d879228d46dd68135293851b76bd4419345829a4a7d8c3f6297d009a06af02079f4ab204958b5d3e8b94f6d440968a0e14075dca5ec6b3cf74272ba327cfbe
+  checksum: 10/7eba44bf097c60a9be5c041b474af466f8060089d0a6fa0056a33bb2b41b2f6193b977a0f677ab8febf16fc1786d3c4465e6d420d8a7520cda509bd6d1b57b51
   languageName: node
   linkType: hard
 
@@ -538,7 +538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/types@npm:^21.0.0, @commitlint/types@npm:^21.0.1":
+"@commitlint/types@npm:^21.0.1":
   version: 21.0.1
   resolution: "@commitlint/types@npm:21.0.1"
   dependencies:
@@ -1055,14 +1055,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@side/commitlint-config@npm:2.0.3":
-  version: 2.0.3
-  resolution: "@side/commitlint-config@npm:2.0.3"
+"@side/commitlint-config@npm:2.0.4":
+  version: 2.0.4
+  resolution: "@side/commitlint-config@npm:2.0.4"
   dependencies:
-    "@commitlint/config-conventional": "npm:21.0.0"
+    "@commitlint/config-conventional": "npm:21.0.2"
   peerDependencies:
     "@commitlint/cli": ">=21.0.0"
-  checksum: 10/66c356f52c5de4f3109a132c542d0d8d8de97975206cd09846acc32cd9b3cef28b08a5dab6fb3ad2ccd5e41e6c4376fd446a47fa83231c4650f7a602be824056
+  checksum: 10/35833b30db415d28a313826d4cb9a9693e089c2b98e88fb36b9326170046761ec94fd8d3be06887456e5da9cfa421efb2ea931d69af26bdf7902ca113b76efc5
   languageName: node
   linkType: hard
 
@@ -1076,7 +1076,7 @@ __metadata:
     "@actions/github": "npm:9.1.1"
     "@biomejs/biome": "npm:2.4.16"
     "@commitlint/cli": "npm:21.0.2"
-    "@side/commitlint-config": "npm:2.0.3"
+    "@side/commitlint-config": "npm:2.0.4"
     "@tsconfig/node24": "npm:24.0.4"
     "@types/js-yaml": "npm:4.0.9"
     "@types/node": "npm:24.13.0"
